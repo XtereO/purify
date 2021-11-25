@@ -531,7 +531,7 @@ const App = () => {
 						go={go}
 						city={state.ecoCity ? state.ecoCity : null}
 						id={ROUTES.HOME} isGoodWind={
-							(state.ecoCity && state.ecoCity.current) ? (state.ecoCity.current.aqi<=100) : true  
+							(state.ecoCity && state.ecoCity.current) ? (state.ecoCity.current.aqi<=50) : true  
 						} />
 					
 				</View>
@@ -587,7 +587,7 @@ const App = () => {
                 fontSize={32}
                 y={76}
                 fill='rgba(0, 0, 0, 0.5)'
-                width={(state.ecoCity && state.ecoCity.current.aqi)>100 ? 121 : 146}//146
+                width={(state.ecoCity && state.ecoCity.current.aqi)>100 ? 161 : 176}//146
                 height={38}
             />
             <Text
