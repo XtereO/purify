@@ -582,12 +582,12 @@ const App = () => {
             />
             <Text
                 fontFamily={'SF-Pro-Rounded-Heavy'}
-                text={(state.ecoCity && state.ecoCity.current.aqi) > 100 ? "Плохое" : (state.ecoCity && state.ecoCity.current.aqi > 50) ? 'Неплохое' : "Хорошее"}
-                x={(state.ecoCity && state.ecoCity.current.aqi)>100 ? 66 : 53.5 } //53.5
+                text={(state.ecoCity && state.ecoCity.current.aqi > 100) ? "Плохое" : (state.ecoCity && state.ecoCity.current.aqi > 50) ? 'Неплохое' : "Хорошее"}
+                x={(state.ecoCity && state.ecoCity.current.aqi>100) ? 66 : (state.ecoCity && state.ecoCity.current.aqi>50) ? 41 : 53.5 } //53.5
                 fontSize={32}
                 y={76}
                 fill='rgba(0, 0, 0, 0.5)'
-                width={(state.ecoCity && state.ecoCity.current.aqi)>100 ? 161 : 176}//146
+                width={(state.ecoCity && state.ecoCity.current.aqi>100) ? 161 : 176}//146
                 height={38}
             />
             <Text
