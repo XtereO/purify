@@ -76,15 +76,16 @@ export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, han
 
 
 
-    const citiesJSX = cities.map((c, index) => <><Div key={c.id} className=''>
+    const citiesJSX = cities.length>0 ? cities.map((c, index) => <><Div key={c.id} className=''>
         <PlaceItem
             onClick={() => {
                 setDefaultCity(c.id)
                 handlerClose()
             }}
             city={c.name} {...c} />
-    </Div>{(index + 1) !== cities.length && <Spacing separator className="spacing" size={8} />}</>)
-    const clearestCitiesJSX = clearestCities.map((c, index) => <><Div key={c.id} className=''>
+    </Div>{(index + 1) !== cities.length && <Spacing separator className="spacing" size={8} />}</>) : <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                Городов не найдено.</div> 
+    const clearestCitiesJSX = clearestCities.length>0 ? clearestCities.map((c, index) => <><Div key={c.id} className=''>
         <PlaceItem
             value={c.aqi ? c.aqi : 10}
             onClick={() => {
@@ -92,9 +93,8 @@ export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, han
                 handlerClose()
             }}
             city={c.name} {...c} country={countryName} />
-    </Div>{(index + 1) !== cities.length && <Spacing className="spacing" separator size={8} />}</>)
-
-
+    </Div>{(index + 1) !== cities.length && <Spacing className="spacing" separator size={8} />}</>) : <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                Городов не найдено.</div> 
 
 
 
@@ -177,7 +177,7 @@ export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, han
                     className='card__app'>
                     <Group>
                         {(isFetching) ? (title.length>0 ? <BgInitCities/> : <BgInitClearestCities />) : <></>}
-                        {(!isFetching) && (title.length > 0) ? citiesJSX : clearestCitiesJSX}
+                        {(!isFetching) ? ((title.length > 0) ? citiesJSX : clearestCitiesJSX) : <></>}
                     </Group>
                 </Card>
             </Div>
@@ -195,8 +195,7 @@ export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, han
                     <Group>
                         <Group className=''>
                             {(isFetching) ? (title.length>0 ? <BgInitClearestCities/> : <BgInitCities/>) : <></>  }
-                            {citiesJSX.length > 0 ? (title.length > 0 ? clearestCitiesJSX : citiesJSX) : <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                Городов не найдено.</div>}
+                            {(!isFetching) ? ((title.length > 0) ? clearestCitiesJSX : citiesJSX) : <></> }
                         </Group>
                     </Group>
                 </Card>
