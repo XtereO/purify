@@ -3,7 +3,7 @@ import React from "react";
 //@ts-ignore
 import mask from '../media/mask.svg'
 //@ts-ignore
-import windowSVG from '../media/window.png'
+import windowSVG from '../media/window.svg'
 //@ts-ignore
 import score_high from '../media/score_high.svg'
 //@ts-ignore

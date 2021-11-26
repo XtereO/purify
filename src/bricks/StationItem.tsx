@@ -3,7 +3,7 @@ import { Cell } from "@vkontakte/vkui"
 import React, { memo } from "react"
 import {Badge} from './Badge'
 //@ts-ignore
-import stationPNG from '../media/station.png'
+import stationPNG from '../media/station.svg'
 import { Icon12ErrorCircle } from '@vkontakte/icons';
 
 

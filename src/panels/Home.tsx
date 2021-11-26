@@ -4,20 +4,16 @@ import './Home.css'
 import { Icon16Place, Icon24Search } from '@vkontakte/icons';
 import { Icon28Notifications } from '@vkontakte/icons';
 import { Icon28StoryOutline } from '@vkontakte/icons';
-import { Icon28LikeOutline } from '@vkontakte/icons';
 //@ts-ignore
 import logo from '../media/IQAir_logo.svg'
 import { Icon24Dropdown } from '@vkontakte/icons';
 import { Loader } from '../bricks/Loader'
-import { Icon24Fullscreen } from '@vkontakte/icons';
 import {ListItem} from '../bricks/ListItem'
 import {PollutionItem} from '../bricks/PollutionItem'
 import { WeatherItem } from "../bricks/WeatherItem";
 import { Advice } from "../bricks/Advice";
 import { EcoCityData, EcoCityType, EcoSearchData, EcoStation } from "../types/EcoTypes";
 import { getDescriptionPollutant, getFullNamePollutant } from "../utils/pollutants";
-import { Badge } from "../bricks/Badge";
-import { MyCanvas } from "../bricks/MyCanvas";
 import { getEcoSearchData } from "../dal/api";
 import { StationItem } from "../bricks/StationItem";
 import { getDistance } from "../utils/getDistance";
