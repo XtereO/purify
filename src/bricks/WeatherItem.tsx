@@ -14,10 +14,10 @@ type PropsType={
 
 export const WeatherItem:React.FC<PropsType>=memo(({day, value, mode, onClick})=>{
     const color='bg__'+mode
-    return<div style={{fontSize:16,paddingRight:8,paddingLeft:12, color:'#454545'}} className='w-100'>
+    return<div style={{fontSize:16, color:'#454545'}} className='w-100'>
         <Cell
         disabled={true}
-        after={<div style={{paddingRight:8}}>
+        after={<div>
         <Badge value={value}  color={color} />
         {/*<Icon24ChevronCompactRight fill='#C1C1C1' />*/}
         </div>

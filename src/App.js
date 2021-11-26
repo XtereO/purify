@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import bridge from '@vkontakte/vk-bridge';
 import { View, Panel, ScreenSpinner, AdaptivityProvider, AppRoot, ModalRoot, ConfigProvider, usePlatform } from '@vkontakte/vkui';
 import '@vkontakte/vkui/dist/vkui.css';
@@ -191,7 +191,7 @@ const App = () => {
 				const data = (await getEcoSearchData(cityName)).data
 				let currentCity = null
 				data.cities.forEach(item => {
-						if (item.name === cityName) {
+						if (item.name === cityName && (!currentCity)) {
 							id = item.id
 							currentCity = item
 						}
@@ -277,8 +277,9 @@ const App = () => {
 			}
 		}
 		setInit(false)
-	}, [state.defaultCityId,window.location.hash])
-	useEffect(async()=>{
+	}, [state.defaultCityId])
+	
+	const handlerLocationHashChange = async ()=>{
 		if(window.location.hash.slice(1,)){
 			setInit(true)
 			const data = (await getEcologyCity(window.location.hash.slice(1,))).data
@@ -292,7 +293,11 @@ const App = () => {
 			}
 			setInit(false)
 		}
+	}
+	useEffect(async()=>{
+		handlerLocationHashChange()
 	},[window.location.hash])
+	
 	useEffect(async()=>{
 		const res = await getSubscribes()
 		setState(prev=>{
@@ -583,7 +588,7 @@ const App = () => {
             <Text
                 fontFamily={'SF-Pro-Rounded-Heavy'}
                 text={(state.ecoCity && state.ecoCity.current.aqi > 100) ? "Плохое" : (state.ecoCity && state.ecoCity.current.aqi > 50) ? 'Неплохое' : "Хорошее"}
-                x={(state.ecoCity && state.ecoCity.current.aqi>100) ? 66 : (state.ecoCity && state.ecoCity.current.aqi>50) ? 41 : 53.5 } //53.5
+                x={(state.ecoCity && state.ecoCity.current.aqi>100) ? 66 : (state.ecoCity && state.ecoCity.current.aqi>50) ? 48 : 53.5 } //53.5
                 fontSize={32}
                 y={76}
                 fill='rgba(0, 0, 0, 0.5)'

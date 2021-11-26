@@ -14,10 +14,13 @@ import {ListItem} from '../bricks/ListItem'
 import {PollutionItem} from '../bricks/PollutionItem'
 import { WeatherItem } from "../bricks/WeatherItem";
 import { Advice } from "../bricks/Advice";
-import { EcoCityData, EcoCityType } from "../types/EcoTypes";
+import { EcoCityData, EcoCityType, EcoSearchData, EcoStation } from "../types/EcoTypes";
 import { getDescriptionPollutant, getFullNamePollutant } from "../utils/pollutants";
 import { Badge } from "../bricks/Badge";
 import { MyCanvas } from "../bricks/MyCanvas";
+import { getEcoSearchData } from "../dal/api";
+import { StationItem } from "../bricks/StationItem";
+import { getDistance } from "../utils/getDistance";
 
 
 
@@ -42,12 +45,22 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
 
     const [isShowMore,setShowMore] = useState(false)
     const [isShowBigImage, setShowBigImage] = useState(false)
-    
+    const [stations,setStations] = useState<EcoStation[]>([])
+
     useEffect(()=>{
+        if(city){
+            getEcoSearchData(city.name).then((res:{data:EcoSearchData})=>{
+                if(res.data){
+                    setStations(res.data.stations)
+                }
+            })
+            setShowMore(false)    
+        }
         return()=>{
             setShowMore(false)
         }
-    },[])
+    },[city])
+
 
     const handlerOpenImage=()=>{
         setShowBigImage(true)
@@ -59,6 +72,14 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
         go('FORECAST_POLLUTION_FOR_THE_DAY')
     }
     
+    const stationsJSX = city ? stations.map((c,index)=><>
+    <StationItem 
+    distance={getDistance({point1:c.coordinates,point2:city.coordinates})}
+    stationName={c.name}
+    key={`${index}${c.name}`}
+    value={c.aqi} mode={c.aqi > 100 ? 'danger' : ((c.aqi>50) ? 'okay' : 'good')} />
+    {(index+1)!==stations.length && <Spacing className="spacing" separator size={16} />}
+</>) : []
 
     const pollutantsJSX = city ? city.current.pollutants.map((p,index)=><>
     <PollutionItem
@@ -78,7 +99,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
     const currentDay = (new Date()).getDay()
     const forecastsJSX = city ? city.forecasts.daily.map((c,index)=><>
         <WeatherItem 
-        key={`${index}${c.aqi}`}
+        key={`${index}-${c.temperature}${c.aqi}`}
         onClick={goToForecastPollutionForTheDay}
         day={currentDay+index+1} value={c.aqi} mode={c.aqi > 100 ? 'danger' : ((c.aqi>50) ? 'okay' : 'good')} />
         {(index+1)!==city.forecasts.daily.length && <Spacing className="spacing" separator size={16} />}
@@ -249,6 +270,38 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
                         </div>
                     </div>{c!==10 && <Spacing separator size={16} />}</>)}
                         {(!isInit) && forecastsJSX}
+                    </div>
+                </Card>
+            </Div>
+            <Div>
+                <Header className='text__SF-Pro-Rounded-Semibold'>
+                    {(!isInit) ? <span className='text__gray'>
+                        Станции
+                    </span> : <div
+                    style={{height:12, width:85}}
+                    className='bg__init'>
+                    </div>}
+                </Header>
+                <Card  
+                mode='shadow'
+                className='card__app'>
+                    <div className=''>
+                    {(isInit) && [5,6,7,8,9,4,10].map((c)=><><div 
+                    key={`station${c}`}
+                    style={{display:'grid',gridTemplateColumns:'24px 1fr 50px', gridGap:'10px'}}>
+                        <div 
+                        style={{width:24,height:24}}
+                        className='bg__init'>
+                        </div>
+                        <div 
+                        style={{width:91,height:17}}
+                        className='bg__init'>
+                        </div>
+                        <div style={{width:52,height:24,display:'flex',justifyContent:'end'}}
+                        className='bg__init'>
+                        </div>
+                    </div>{c!==10 && <Spacing separator size={16} />}</>)}
+                        {(!isInit) && stationsJSX}
                     </div>
                 </Card>
             </Div>
