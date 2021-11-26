@@ -273,7 +273,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
                     </div>
                 </Card>
             </Div>
-            <Div>
+            {stations.length!==0 && <Div>
                 <Header className='text__SF-Pro-Rounded-Semibold'>
                     {(!isInit) ? <span className='text__gray'>
                         Станции
@@ -304,7 +304,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
                         {(!isInit) && stationsJSX}
                     </div>
                 </Card>
-            </Div>
+            </Div>}
             {/*<Div>
                 <Header>
                     <span className='text__gray'>

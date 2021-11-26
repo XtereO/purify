@@ -4,6 +4,7 @@ import React, { memo } from "react"
 import {Badge} from './Badge'
 //@ts-ignore
 import stationPNG from '../media/station.png'
+import { Icon12ErrorCircle } from '@vkontakte/icons';
 
 
 type PropsType={
@@ -29,12 +30,17 @@ export const StationItem:React.FC<PropsType>=memo(({value, mode, stationName, di
                 <img src={stationPNG} style={{marginRight:16}} />
             </div>
             <div>
-            <div style={{fontSize:16,overflowX: window.innerWidth>500 ? 'hidden' : 'scroll'}}>
+            <div style={{fontSize:16,width:200,overflowX:'scroll'}}>
                 {stationName}
             </div>
-            <div style={{fontSize:15,overflowX: window.innerWidth>500 ? 'hidden' : 'scroll'}} className="text__gray">
+            <div className="text__gray">
                 
-                {distance>10 && 'Информация может быть не точный'}
+                {distance>10 && <div
+                className='d-flex'><div style={{height:18,marginRight:5}} className='center__y'>
+                    <Icon12ErrorCircle fill='C1C1C1'/>
+                </div><div 
+                className='center__y'
+                style={{fontSize:15,height:18}}>Может быть не точный</div></div>}
             </div>
             </div>
         </div>
