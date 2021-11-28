@@ -40,7 +40,7 @@ export const StationItem:React.FC<PropsType>=memo(({value, mode, stationName, di
                     <Icon12ErrorCircle fill='C1C1C1'/>
                 </div><div 
                 className='center__y'
-                style={{fontSize:15,height:18}}>Может быть не точный</div></div>}
+                style={{fontSize:15,height:18}}>Может быть неточной</div></div>}
             </div>
             </div>
         </div>
