@@ -20,6 +20,8 @@ import bg_good from './media/bg_good.jpg'
 import bg_bad from './media/bg_bad.jpg'
 import chevron_right from "./media/chevron_right.png";
 import { TurnNoticifications } from './panels/TurnNoticifications';
+import { useSelector } from 'react-redux';
+import { bgAppSelector, platformSelector } from './bll/Selectors/initialSelector';
 
 
 
@@ -64,15 +66,14 @@ const App = () => {
 	const handlerCloseModal = () => {
 		setActiveModal(null)
 	}
-	const [platform,setPlatform] = useState('mobile')
-	const [bgApp,setBgApp] = useState('bg__app__light')
+	const platform = useSelector(platformSelector)
+	const bgApp = useSelector(bgAppSelector)
 	useEffect(async () => {
-		bridge.subscribe(({ detail: { type, data } }) => {
+		/*bridge.subscribe(({ detail: { type, data } }) => {
 			if (type === 'VKWebAppUpdateConfig') {
-				console.log(data.appearance);
 				const schemeAttribute = document.createAttribute('scheme');
 				schemeAttribute.value = data.scheme ? data.scheme : 'client_light';
-				const title = new RegExp('light')
+				const title = new RegExp('light')				
 				if((data.scheme==='vkcom') || (data.scheme.match(title))){
 					setBgApp('bg__app__light')
 					if(data.scheme==='vkcom'){
@@ -88,7 +89,7 @@ const App = () => {
 				
 				document.body.attributes.setNamedItem(schemeAttribute);
 			}
-		});
+		});*/
 		async function fetchData() {
 			const res = (await bridge.send('VKWebAppStorageGet', { keys: Object.values(STATE_KEYS) }))
 
@@ -549,11 +550,9 @@ const App = () => {
 			>
 				<Layer>
 						<Rect 
-						fillLinearGradientStartPoint={{ x: 0, y: -100 }}
+						fill={'white'}
 						width={253}
 						height={250}
-						fillLinearGradientEndPoint={{ x: 120, y: 220 }}
-						fillLinearGradientColorStops={[0,'#EBEBEB',1,'#E0E0E0']}			
 						/>
 				</Layer>
 			</Stage>

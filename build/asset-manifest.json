@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "./static/css/main.85e1fce8.chunk.css",
-    "main.js": "./static/js/main.8d23a9a5.chunk.js",
-    "main.js.map": "./static/js/main.8d23a9a5.chunk.js.map",
+    "main.js": "./static/js/main.3b925fa6.chunk.js",
+    "main.js.map": "./static/js/main.3b925fa6.chunk.js.map",
     "runtime-main.js": "./static/js/runtime-main.05501d59.js",
     "runtime-main.js.map": "./static/js/runtime-main.05501d59.js.map",
     "static/css/2.a2ab3232.chunk.css": "./static/css/2.a2ab3232.chunk.css",
-    "static/js/2.fc30d302.chunk.js": "./static/js/2.fc30d302.chunk.js",
-    "static/js/2.fc30d302.chunk.js.map": "./static/js/2.fc30d302.chunk.js.map",
+    "static/js/2.e691cde3.chunk.js": "./static/js/2.e691cde3.chunk.js",
+    "static/js/2.e691cde3.chunk.js.map": "./static/js/2.e691cde3.chunk.js.map",
     "index.html": "./index.html",
     "static/css/2.a2ab3232.chunk.css.map": "./static/css/2.a2ab3232.chunk.css.map",
     "static/css/main.85e1fce8.chunk.css.map": "./static/css/main.85e1fce8.chunk.css.map",
-    "static/js/2.fc30d302.chunk.js.LICENSE.txt": "./static/js/2.fc30d302.chunk.js.LICENSE.txt",
+    "static/js/2.e691cde3.chunk.js.LICENSE.txt": "./static/js/2.e691cde3.chunk.js.LICENSE.txt",
     "static/media/IQAir_logo.60893679.svg": "./static/media/IQAir_logo.60893679.svg",
     "static/media/App.css": "./static/media/SF-Pro-Rounded-Semibold.af98bf89.ttf",
     "static/media/bg_bad.fcfcaf41.jpg": "./static/media/bg_bad.fcfcaf41.jpg",
@@ -27,8 +27,8 @@
   "entrypoints": [
     "static/js/runtime-main.05501d59.js",
     "static/css/2.a2ab3232.chunk.css",
-    "static/js/2.fc30d302.chunk.js",
+    "static/js/2.e691cde3.chunk.js",
     "static/css/main.85e1fce8.chunk.css",
-    "static/js/main.8d23a9a5.chunk.js"
+    "static/js/main.3b925fa6.chunk.js"
   ]
 }
