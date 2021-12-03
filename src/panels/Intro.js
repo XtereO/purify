@@ -56,15 +56,16 @@ export const Intro=({id,bgApp,handlerClose,checkInfo,requestPermissionLocation})
                   Разрешить доступ к местоположению  
                 </Button>
             </Div>
-            <Div
+            <div
             onClick={()=>{
                 checkInfo()
             }}
+            style={{marginTop:15}}
             className='w-100 highlight_on_touch center__x text__gray'
             >
                 Пропустить
-            </Div>
-            <Spacing size={32}/>
+            </div>
+            <Spacing size={64}/>
         </Fragment>
         </div>
     </ModalPage>

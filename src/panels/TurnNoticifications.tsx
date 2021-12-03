@@ -25,7 +25,7 @@ export const TurnNoticifications:React.FC<PropsType>=({id, subscribeNoticificati
               Мы будем уведомлять вас об актуальном качестве воздуха
               раз в неделю, а также:
               <div style={{marginTop:10}}>
-                 - Если качество воздуха станет не приемлимым
+                 - Если качество воздуха станет неприемлимым
               </div>
               <div style={{marginTop:5}}>
                  - О резких скачках колличества загрязнителей

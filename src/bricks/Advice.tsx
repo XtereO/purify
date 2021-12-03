@@ -56,17 +56,18 @@ export const Advice:React.FC<PropsType> = ({isGoodWind,pollution,bgApp, doStory}
                <img src={windowSVG} />
                </div>
            </ListItem></>}
-           {(pollution.exercice.value!=='hidden') && <><Spacing size={32} separator />
+           {(pollution.exercice.value!=='hidden') && <><Spacing size={32} className="spacing" separator />
            <ListItem bgApp={bgApp} description={pollution.exercice.value!=='green' ? 'Избегайте нагрузок на улице.' : 'Хорошее время для тренировки.'}>
                <Icon28LikeOutline fill={LIGHT_BLUE} />
            </ListItem></>}
-           <Spacing size={32} separator className="spacing" />
+           <>
+           <Spacing className="spacing" size={32} separator />
            <ListItem
            onClick={doStory}
            bgApp={bgApp} description={<div style={{color:LIGHT_BLUE}}><div>Сообщите друзьям и близким</div><div>Поделитесь историей</div></div>}>
                 <Icon28StoryOutline fill={LIGHT_BLUE} />
             </ListItem>
-
+            </>
        </div>
 </Card>
 }

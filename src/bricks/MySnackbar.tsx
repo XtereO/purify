@@ -13,7 +13,7 @@ type PropsType = {
 
 export const MySnackbar:React.FC<PropsType> = ({text,resultOperation,closeHandler}) =>{
     return<Snackbar
-    onClose={closeHandler}
+    onClose={closeHandler ? closeHandler : ()=>{}}
     before={<img src={resultOperation ? success_img : failed_img} />}
     >
         <div 

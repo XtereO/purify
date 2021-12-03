@@ -74,7 +74,9 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
     stationName={c.name}
     key={`${index}${c.name}`}
     value={c.aqi} mode={c.aqi > 100 ? 'danger' : ((c.aqi>50) ? 'okay' : 'good')} />
-    {(index+1)!==stations.length && <Spacing className="spacing" separator size={16} />}
+    {(index+1)!==stations.length && <Spacing
+    key={`station_spacing${index}`}
+    className="spacing" separator size={16} />}
 </>) : []
 
     const pollutantsJSX = city ? city.current.pollutants.map((p,index)=><>
@@ -88,6 +90,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
     bar={p.aqi>100 ? 'bad_bar' : p.aqi>50 ? 'okay_bar' : 'good_bar'}
     /> 
     {(index+1)!==city.current.pollutants.length && <Spacing 
+    key={`pollutant_spacing${index}`}
     className="spacing"
     separator size={32} />}
     </>) : []
@@ -98,8 +101,11 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
         key={`${index}-${c.temperature}${c.aqi}`}
         onClick={goToForecastPollutionForTheDay}
         day={currentDay+index+1} value={c.aqi} mode={c.aqi > 100 ? 'danger' : ((c.aqi>50) ? 'okay' : 'good')} />
-        {(index+1)!==city.forecasts.daily.length && <Spacing className="spacing" separator size={16} />}
+        {(index+1)!==city.forecasts.daily.length && <Spacing 
+        key={`weather_spacing${index}`}
+        className="spacing" separator size={16} />}
     </>) : []
+    
 
     return <Panel id={id}>
         <Group
@@ -140,8 +146,8 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
                     </div>
                     {((!isInit) && city) && city.name}
                 </div>
-                <div
-                    className='mt-4 home__main__bottom__side'>
+                <div>
+                    <div className='mt-4 home__main__bottom__side'>
                     <div>
                         <div 
                         className='home__search__cell__rounded home__search__cell__rounded_active'
@@ -179,6 +185,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
                             {(!isInit) && <Icon28StoryOutline fill='#000' />}
                         </Avatar>
                         </div>
+                    </div>
                     </div>
                 </div>
             </Div>
@@ -228,7 +235,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
                         <div style={{width:24,height:24,display:'flex',justifyContent:'end'}}
                         className='bg__init'>
                         </div></div>
-                        {c!==0 && <Spacing separator size={32}/>}</>)} 
+                        {c!==0 && <Spacing key={`pollutant_key${c}`} className="spacing" separator size={32}/>}</>)} 
                     {(!isInit) && [...pollutantsJSX].slice(0,4)}
                     {((!isShowMore) && (pollutantsJSX.length>4)) && <Cell onClick={()=>setShowMore(true)}><ListItem bgApp={bgApp} description={<Link>Показать все</Link>}>
                         <Icon24Dropdown fill={LIGHT_BLUE}/>
@@ -264,7 +271,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
                         <div style={{width:52,height:24,display:'flex',justifyContent:'end'}}
                         className='bg__init'>
                         </div>
-                    </div>{c!==10 && <Spacing separator size={16} />}</>)}
+                    </div>{c!==10 && <Spacing key={`weather_spacing${c}`} className="spacing" separator size={16} />}</>)}
                         {(!isInit) && forecastsJSX}
                     </div>
                 </Card>
@@ -272,7 +279,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
             {stations.length!==0 && <Div>
                 <Header className='text__SF-Pro-Rounded-Semibold'>
                     {(!isInit) ? <span className='text__gray'>
-                        Станции
+                        СТАНЦИИ
                     </span> : <div
                     style={{height:12, width:85}}
                     className='bg__init'>
@@ -296,7 +303,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
                         <div style={{width:52,height:24,display:'flex',justifyContent:'end'}}
                         className='bg__init'>
                         </div>
-                    </div>{c!==10 && <Spacing separator size={16} />}</>)}
+                    </div>{c!==10 && <Spacing key={`station_spacing${c}}`} separator className="spacing" size={16} />}</>)}
                         {(!isInit) && stationsJSX}
                     </div>
                 </Card>

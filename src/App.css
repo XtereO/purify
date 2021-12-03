@@ -322,7 +322,8 @@ background: linear-gradient(-180deg, #B3FF86 0%, #EEFFC8 100%);
 }
 .home__main__bottom__right__side{
     display: flex;
-    justify-content: end;
+    position: relative;
+    left: calc(100% - 110px);
 }
 
  

@@ -12,13 +12,14 @@ import { getCityByCoordinate, getEcologyCity, getEcologyCountry,
 import { MyCities } from './panels/MyCities';
 import { MyCanvas } from './bricks/MyCanvas';
 import { MySnackbar } from './bricks/MySnackbar';
-import { Layer, Stage, Image, Text, Rect } from "react-konva";
-import placePNG from "./media/place.png";
+import { Layer, Stage, Image, Text, Rect, FastLayer } from "react-konva";
+import placePNG from "./media/place.svg";
 import useImage from 'use-image';
 import bg_okay from './media/bg_okay.jpg'
 import bg_good from './media/bg_good.jpg'
+import bg_good_svg from './media/bg_good.svg'
 import bg_bad from './media/bg_bad.jpg'
-import chevron_right from "./media/chevron_right.png";
+import chevron_right from "./media/chevron_right.svg";
 import { TurnNoticifications } from './panels/TurnNoticifications';
 import { useSelector } from 'react-redux';
 import { bgAppSelector, platformSelector } from './bll/Selectors/initialSelector';
@@ -542,7 +543,7 @@ const App = () => {
 					
 				</View>
 			</AppRoot>
-			<div id='canvas' style={{width:0,height:0,opacity:0}}>
+			<div id='canvas' style={{width:0,height:0,opacity:0,overflow:'hidden'}}>
 			<Stage
 			width={253}
 			height={250}
@@ -558,71 +559,72 @@ const App = () => {
 			</Stage>
 			<Stage
     ref={ref}
-        style={{ width: 253, height: 250, borderRadius: 20 }}
-        width={253} height={250}
+        width={1362} height={1427}
     >
 
         <Layer>
 			<Rect
 			fillLinearGradientStartPoint={{ x: 0, y: -100 }}
-			fillLinearGradientEndPoint={{ x: 120, y: 220 }}
+			fillLinearGradientEndPoint={{ x: 670, y: 1200 }}
 			fillLinearGradientColorStops={(state.ecoCity && state.ecoCity.current.aqi>100) ?
 				[0,'rgba(255,153,182,1)',1,'rgba(204,183,254,1)'] 
 				: (state.ecoCity && state.ecoCity.current.aqi>50) ? [0,'#FDCFB2',1,'#BF8FF5']
 				: [0,'#B3FF86',1,'#EEFFC8']}
-			width={253}
-			height={250}
-			cornerRadius={20}
+			width={1362}
+			height={1427}
+			cornerRadius={118.56}
 			/>
+		</Layer>
+		<Layer>
             <Text
                 fontFamily={'SF-Pro-Rounded-Heavy'}
                 text="Качество воздуха:"
-                x={55}
-                fontSize={15}
-                y={52}
+				x={254.58}
+                fontSize={96}
+                y={286.71}
                 fill='rgba(0, 0, 0, 0.5)'
-                width={150}
-                height={30}
+                width={860}
+                height={115}
             />
-            <Text
+			<Text
                 fontFamily={'SF-Pro-Rounded-Heavy'}
                 text={(state.ecoCity && state.ecoCity.current.aqi > 100) ? "Плохое" : (state.ecoCity && state.ecoCity.current.aqi > 50) ? 'Неплохое' : "Хорошее"}
-                x={(state.ecoCity && state.ecoCity.current.aqi>100) ? 66 : (state.ecoCity && state.ecoCity.current.aqi>50) ? 48 : 53.5 } //53.5
-                fontSize={32}
-                y={76}
+                x={(state.ecoCity && state.ecoCity.current.aqi>100) ? 340 : (state.ecoCity && state.ecoCity.current.aqi>50) ? 240 : 269.58 } //53.5
+                fontSize={188}
+                y={421.71}
                 fill='rgba(0, 0, 0, 0.5)'
-                width={(state.ecoCity && state.ecoCity.current.aqi>100) ? 161 : 176}//146
-                height={38}
+                width={1000}//146
+                height={224}
             />
             <Text
                 fontFamily={'SF-Pro-Rounded-Regular'}
                 text={(state.ecoCity ? state.ecoCity.name : 'SPb')}
-                x={(253-(state.ecoCity ? state.ecoCity.name.length*8 : 10))/2}
-                fontSize={17}
-                y={130}
+                x={(1362-(state.ecoCity ? (state.ecoCity.name.length*45) : 10))/2}
+                fontSize={99}
+                y={755}
                 fill='rgba(0, 0, 0, 0.5)'
-                width={200}
+                width={1000}
                 height={100}
             />
 			<Rect
-			x={42}
-			y={191}
-			width={169}
-			fill={'rgba(255,255,255,0.5)'}
-			height={39}
-			cornerRadius={28}
+			x={231}
+			y={1084}
+			width={901}
+			fill={'rgba(255,255,255,0.45)'}
+			height={220}
+			cornerRadius={165.98}
 			/>
 			<Text
 			text={'Узнать больше'}
-			width={200}
-			height={39}
-			x={56}
-			fontSize={18}
+			width={631}
+			height={102}
+			x={311}
+			fontSize={84}
 			fontFamily={'SF-Pro-Rounded-Regular'}
 			fill='rgba(0, 0, 0, 0.5)'
-			y={201}
+			y={1153}
 			/>
-            <PlaceImage x={(253-(state.ecoCity ? state.ecoCity.name.length*8 : 10)-30)/2}/>
+            <PlaceImage x={(1362-(state.ecoCity ? state.ecoCity.name.length*45 : 10)-140)/2}/>
 			<ChevronRight />
 		</Layer>
 
@@ -632,19 +634,27 @@ const App = () => {
 	);
 }
 
+const BgGood = () =>{
+	const [image] = useImage(bg_good_svg);
+    return <Image
+		width={253}
+		height={250}
+        image={image} />;
+}
+
 const PlaceImage = ({x}) => {
     const [image] = useImage(placePNG);
     return <Image
         x={x}
-        y={130}
+        y={762.15}
         image={image} />;
 };
 
 const ChevronRight = () =>{
     const [image] = useImage(chevron_right);
     return <Image
-        x={188.6}
-        y={205.6}
+        x={1005.8}
+        y={1167.05}
         image={image} />;
 }
 

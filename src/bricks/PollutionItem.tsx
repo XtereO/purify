@@ -28,7 +28,7 @@ export const PollutionItem: React.FC<PropsType> = memo(({ title, value, tooltipD
     return <div
         style={{paddingRight:4,paddingLeft:4, color:bgApp==='bg__app__light' ? '#454545' : 'white'}}
         className='w-100 pollution__item'>
-        <div style={{fontSize:16}} >
+        <div style={{fontSize:16,overflow:'hidden'}} >
             {title}
         </div>
         <div className='center__y'>

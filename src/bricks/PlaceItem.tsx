@@ -1,5 +1,6 @@
 import { Cell } from '@vkontakte/vkui'
 import { useEffect, useState } from 'react'
+import { isKrym } from '../utils/isKrym'
 import { Badge } from './Badge'
 
 
@@ -13,7 +14,7 @@ type PropsType = {
 }
 
 
-export const PlaceItem: React.FC<PropsType> = ({ city, country, value, onClick }) => {
+export const PlaceItem: React.FC<PropsType> = ({ city, country, value, onClick, id }) => {
 
     let [bg, setBG] = useState('bg__good')
     useEffect(() => {
@@ -30,8 +31,12 @@ export const PlaceItem: React.FC<PropsType> = ({ city, country, value, onClick }
 
     return <div
     onClick={onClick}
-    className='highlight_on_touch'
+    className='highlight_on_touch text__Inter-Regular'
     style={{
+        paddingLeft:16,
+        paddingRight:16,
+        paddingBottom:4,
+        paddingTop:4,
         display: 'grid',
         gridTemplateColumns: '1fr 50px'
     }}>
@@ -39,14 +44,14 @@ export const PlaceItem: React.FC<PropsType> = ({ city, country, value, onClick }
             <div style={{fontSize:16}}>
                 {city}
             </div>
-            <div style={{fontSize:15,color:'#606060'}}>
-                {country}
+            <div style={{marginTop:6,fontSize:15,color:'#606060'}}>
+                {isKrym(id) ? 'Россия' : country}
             </div>
         </div>
-        {value && <div >
+        {value && <div className='center__y' >
             <Badge color={bg} value={value} >
                 {value}
-            </Badge>
+            </Badge> 
         </div>}
     </div>
 }
