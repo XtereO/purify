@@ -3,7 +3,7 @@ import { EcoCityData, EcoCityRank, EcoSearchData, UserEcoSubs } from "../types/E
 
 
 const instance = axios.create({
-    baseURL:'https://vk-showtime.herokuapp.com/api/ecology/'
+    baseURL:'https://showtime.app-dich.com/api/ecology/'
 })
 
 export const getEcoSearchData = (searchQ?:string) =>{

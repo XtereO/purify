@@ -28,7 +28,7 @@ export const TurnNoticifications:React.FC<PropsType>=({id, subscribeNoticificati
                  - Если качество воздуха станет неприемлимым
               </div>
               <div style={{marginTop:5}}>
-                 - О резких скачках колличества загрязнителей
+                 - О резких скачках количества загрязнителей
               </div>
             </div>}
           actions={

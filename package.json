@@ -14,7 +14,6 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@vkontakte/vk-miniapps-deploy": "^0.0.25",
     "cross-env": "^7.0.3",
     "react-hot-loader": "^4.13.0",
     "react-scripts": "^4.0.3"
@@ -22,6 +21,7 @@
   "dependencies": {
     "@vkontakte/icons": "^1.92.0",
     "@vkontakte/vk-bridge": "^2.4.8",
+    "@vkontakte/vk-miniapps-deploy": "^0.0.25",
     "@vkontakte/vkjs": "^0.22.1",
     "@vkontakte/vkui": "^4.5.0",
     "axios": "^0.24.0",
