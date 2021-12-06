@@ -4,12 +4,12 @@ import { Appearance, platform } from "@vkontakte/vkui"
 const SET_PLATFORM:'initialReducer/SET_PLATFORM'='initialReducer/SET_PLATFORM'
 const SET_BG_APP:'initialReducer/SET_BG_APP'='initialReducer/SET_BG_APP'
 
-type PlatformType = 'mobile' | 'pc'
+type PlatformType = 'mobile' | 'pc' 
 type BgAppType = 'bg__app__light' | 'bg__app__dark'
 
 const initialState = {
     platform: 'mobile',
-    bgApp: 'bg__app__light',
+    bgApp: 'bg__app__light'
 }
 type InitialStateType = typeof initialState
 

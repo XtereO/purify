@@ -14,20 +14,22 @@ export const subscribeVkBridge = async () => {
             schemeAttribute.value = data.scheme ? data.scheme : 'client_light';
             const title = new RegExp('light')				
             //@ts-ignore
-            if((data.scheme.match(new RegExp('vkcom'))) || (data.scheme.match(title))){
+            if((data.scheme.match(title)) || data.scheme.match(new RegExp('vkcom'))){
                 dispatch(setBgApp('bg__app__light'))
                 //@ts-ignore
-                if(data.scheme.match(new RegExp('vkcom'))){
-                    dispatch(setPlatform('pc'))
-                }else{	
-                    dispatch(setPlatform('mobile'))
-                }
                 bridge.send("VKWebAppSetViewSettings", {"status_bar_style": "light", "action_bar_color": "#F5F5F5"})
             }else{
                 dispatch(setBgApp('bg__app__dark'))
                 bridge.send("VKWebAppSetViewSettings", {"status_bar_style": "dark", "action_bar_color": "#373737"})
             }
-            
+
+            //@ts-ignore
+            if(window.location.href.match(new RegExp('m.vk.com')) || data.scheme.match(new RegExp('vkcom'))){
+                dispatch(setPlatform('pc'))
+            }else{
+                dispatch(setPlatform('mobile'))
+            }
+
             document.body.attributes.setNamedItem(schemeAttribute);
         }
     })}
