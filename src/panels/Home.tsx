@@ -57,7 +57,6 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
         }
     },[city])
 
-
     const handlerOpenImage=()=>{
         setShowBigImage(true)
     }

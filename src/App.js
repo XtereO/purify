@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import bridge from '@vkontakte/vk-bridge';
-import { View, Panel, ScreenSpinner, AdaptivityProvider, AppRoot, ModalRoot, ConfigProvider, usePlatform } from '@vkontakte/vkui';
+import { View, Panel, ScreenSpinner, AdaptivityProvider, AppRoot, ModalRoot, ConfigProvider, usePlatform, Snackbar } from '@vkontakte/vkui';
 import '@vkontakte/vkui/dist/vkui.css';
 import { Intro } from './panels/Intro';
 import { Home } from './panels/Home';
@@ -21,8 +21,13 @@ import bg_good_svg from './media/bg_good.svg'
 import bg_bad from './media/bg_bad.jpg'
 import chevron_right from "./media/chevron_right.svg";
 import { TurnNoticifications } from './panels/TurnNoticifications';
-import { useSelector } from 'react-redux';
-import { bgAppSelector, platformSelector } from './bll/Selectors/initialSelector';
+import { useDispatch, useSelector } from 'react-redux';
+import { activeModalSelector, activePanelSelector, bgAppSelector, platformSelector } from './bll/Selectors/initialSelector';
+import { NotConnection } from './panels/NotConnection';
+import { setActiveModalState, setActivePanelState } from './bll/Reducers/initialReducer';
+import wifiImage from './media/wifi_outline_56.svg'
+import { retry } from "./utils/forImage";
+import failed_img from './media/score_high.svg'
 
 
 
@@ -32,7 +37,8 @@ const ROUTES = {
 	HOME: 'HOME',
 	FORECAST_POLLUTION_FOR_THE_DAY: 'FORECAST_POLLUTION_FOR_THE_DAY',
 	MY_CITIES: 'MY_CITIES',
-	TURN_NOTICIFICATIONS: 'TURN_NOTICIFICATIONS'
+	TURN_NOTICIFICATIONS: 'TURN_NOTICIFICATIONS',
+	OFFLINE: 'OFFLINE'
 }
 const STATE_KEYS = {
 	IS_CHECK_INFO: 'IS_CHECK_INFO',
@@ -47,12 +53,20 @@ const DEFAULT_COUNTRY_NAME = 'Россия'
 
 const App = () => {
 	
+	const dispatch = useDispatch()
 	const [isInit, setInit] = useState(false)
-	const [activePanel, setActivePanel] = useState(ROUTES.HOME);
+	const activePanel = useSelector(activePanelSelector)
 	const [fetchedUser, setUser] = useState(null);
 	const [popout, setPopout] = useState(<ScreenSpinner size='large' />);
-	const [activeModal, setActiveModal] = useState(null)
+	const activeModal = useSelector(activeModalSelector)
 	const [snackbar, setSnackbar] = useState(null)
+
+	const setActivePanel = (panel)=>{
+		dispatch(setActivePanelState(panel ? panel : ''))
+	}
+	const setActiveModal = (modal)=>{
+		dispatch(setActiveModalState(modal ? modal : ''))
+	}
 	const [state, setState] = useState({
 		isCheckInfo: false,
 		isAllowedPlace: false,
@@ -63,6 +77,7 @@ const App = () => {
 		subscribedCities: [],
 		defaultCountryName: DEFAULT_COUNTRY_NAME
 	})
+
 	
 	const handlerCloseModal = () => {
 		setActiveModal(null)
@@ -279,7 +294,7 @@ const App = () => {
 			}
 		}
 		setInit(false)
-	}, [state.defaultCityId])
+	}, [state.defaultCityId,activePanel])
 	
 	const handlerLocationHashChange = async ()=>{
 		if(window.location.hash.slice(1,)){
@@ -470,7 +485,7 @@ const App = () => {
 		}
 	}
 
-
+	
 	const modal = (
 		<ModalRoot onClose={handlerCloseModal} activeModal={activeModal}>
 			{<MyCities
@@ -524,8 +539,11 @@ const App = () => {
 
 	return (
 		<AdaptivityProvider>
-			<AppRoot activePanel={activePanel} popout={popout}>
-				<View activePanel={ROUTES.HOME} modal={modal}>
+			<AppRoot popout={popout}>
+			<View activePanel={activePanel} modal={modal}>
+				<NotConnection 
+					image={wifiImage}
+					id={ROUTES.OFFLINE}/>
 					<Home
 					snackbar={snackbar}
 					subscribeNoticification={()=>setActiveModal(ROUTES.TURN_NOTICIFICATIONS)}
@@ -540,10 +558,19 @@ const App = () => {
 						id={ROUTES.HOME} isGoodWind={
 							(state.ecoCity && state.ecoCity.current) ? (state.ecoCity.current.aqi<=50) : true  
 						} />
-					
 				</View>
 			</AppRoot>
 			<div id='canvas' style={{width:0,height:0,opacity:0,overflow:'hidden'}}>
+			<img src={wifiImage} />
+			<img src={failed_img}/>
+			<div className='text__Inter-SemiBold'>
+				Inter-Semibold
+			</div>
+			<div className='text__Inter-Regular'>
+				Inter-Regular
+			</div>
+			<div className='text__SF-Pro-Rounded-Regular'>
+			</div>
 			<Stage
 			width={253}
 			height={250}

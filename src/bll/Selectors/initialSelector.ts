@@ -10,3 +10,11 @@ export const bgAppSelector = (state: AppReducerType) =>{
 export const platformSelector = (state: AppReducerType) =>{
     return state.initial.platform
 }
+
+export const activePanelSelector = (state: AppReducerType) =>{
+    return state.initial.activePanel
+}
+
+export const activeModalSelector = (state: AppReducerType) =>{
+    return state.initial.activeModal
+}

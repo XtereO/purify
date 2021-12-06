@@ -3,17 +3,21 @@ import { Appearance, platform } from "@vkontakte/vkui"
 
 const SET_PLATFORM:'initialReducer/SET_PLATFORM'='initialReducer/SET_PLATFORM'
 const SET_BG_APP:'initialReducer/SET_BG_APP'='initialReducer/SET_BG_APP'
+const SET_ACTIVE_PANEL:'initialReducer/SET_ACTIVE_PANEL'='initialReducer/SET_ACTIVE_PANEL'
+const SET_ACTIVE_MODAL:'initialReducer/SET_ACTIVE_MODAL'='initialReducer/SET_ACTIVE_MODAL'
 
 type PlatformType = 'mobile' | 'pc' 
 type BgAppType = 'bg__app__light' | 'bg__app__dark'
 
 const initialState = {
     platform: 'mobile',
-    bgApp: 'bg__app__light'
+    bgApp: 'bg__app__light',
+    activeModal: '',
+    activePanel: 'HOME'
 }
 type InitialStateType = typeof initialState
 
-type ActionType = SetBgAppType | SetPlatformType
+type ActionType = (SetBgAppType | SetPlatformType | SetActiveModalType | SetActivePanelType)
 
 export const initialReducer = (state=initialState,action:ActionType):InitialStateType=>{
     switch(action.type){
@@ -27,8 +31,40 @@ export const initialReducer = (state=initialState,action:ActionType):InitialStat
                 ...state,
                 bgApp: action.bgApp
             }
+        case SET_ACTIVE_MODAL:
+            return{
+                ...state,
+                activeModal: action.activeModal
+            }
+        case SET_ACTIVE_PANEL:
+            return{
+                ...state,
+                activePanel: action.activePanel
+            }
         default:
             return state
+    }
+}
+
+type SetActivePanelType = {
+    type: typeof SET_ACTIVE_PANEL,
+    activePanel: string
+}
+export const setActivePanelState = (activePanel:string):SetActivePanelType=>{
+    return{
+        type: SET_ACTIVE_PANEL,
+        activePanel
+    }
+}
+
+type SetActiveModalType = {
+    type: typeof SET_ACTIVE_MODAL,
+    activeModal: string
+}
+export const setActiveModalState = (activeModal:string):SetActiveModalType => {
+    return{
+        type: SET_ACTIVE_MODAL,
+        activeModal
     }
 }
 

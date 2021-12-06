@@ -5,10 +5,17 @@ import App from "./App";
 import { Provider } from "react-redux";
 import { store } from "./bll/store";
 import { subscribeVkBridge } from "./utils/initialVkBridge";
-
+import { toOffline, toOnline } from "./utils/internetConnection";
+import wifiImage from './media/wifi_outline_56.svg'
+import { retry } from "./utils/forImage";
+ 
 // Init VK  Mini App
 subscribeVkBridge()
 bridge.send("VKWebAppInit");
+
+//Check internet connection
+window.addEventListener('offline',toOffline)
+window.addEventListener('online',toOnline)
 
 
 const AppContainer = () =>{
