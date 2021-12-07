@@ -60,12 +60,12 @@ export const Intro=({id,bgApp,handlerClose,checkInfo,requestPermissionLocation})
             onClick={()=>{
                 checkInfo()
             }}
-            style={{marginTop:15}}
+            style={{paddingTop:15,paddingBottom:15}}
             className='w-100 highlight_on_touch center__x text__gray'
             >
                 Пропустить
             </div>
-            <Spacing size={64}/>
+            <Spacing size={80}/>
         </Fragment>
         </div>
     </ModalPage>

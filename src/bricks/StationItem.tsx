@@ -5,7 +5,7 @@ import {Badge} from './Badge'
 //@ts-ignore
 import stationPNG from '../media/station.svg'
 import { Icon12ErrorCircle } from '@vkontakte/icons';
-
+import './StationItem.css'
 
 type PropsType={
     stationName: string,
@@ -36,11 +36,12 @@ export const StationItem:React.FC<PropsType>=memo(({value, mode, stationName, di
             <div className="text__gray">
                 
                 {distance>10 && <div
-                className='d-flex'><div style={{height:18,marginRight:5}} className='center__y'>
+                className='d-flex' ><div style={{height:18,marginRight:5}} className='center__y'>
                     <Icon12ErrorCircle fill='C1C1C1'/>
                 </div><div 
-                className='center__y'
-                style={{fontSize:15,height:18}}>Может быть неточной</div></div>}
+                className='station__warning'
+                style={{fontSize:15,width:window.innerWidth-196}}>
+                    Может быть неточной</div></div>}
             </div>
             </div>
         </div>

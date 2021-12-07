@@ -1,4 +1,4 @@
-import { Icon24Dismiss, Icon32PlaceOutline } from "@vkontakte/icons"
+import { Icon12ErrorCircle, Icon24Dismiss, Icon32PlaceOutline } from "@vkontakte/icons"
 import { Card, Cell, Div, Group, Header, Input, ModalPage, ModalPageHeader, PanelHeaderButton, Search, Spacing } from "@vkontakte/vkui"
 import React, { ChangeEvent, Fragment, useEffect, useState } from "react"
 import { Icon20Search } from '@vkontakte/icons';
@@ -76,8 +76,8 @@ export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, han
 
 
 
-    const citiesJSX = cities.length>0 ? cities.map((c, index) => <><div
-    key={c.id} className=''>
+    const citiesJSX = cities.length > 0 ? cities.map((c, index) => <><div
+        key={c.id} className=''>
         <PlaceItem
             onClick={() => {
                 setDefaultCity(c.id)
@@ -85,8 +85,8 @@ export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, han
             }}
             city={c.name} {...c} />
     </div>{(index + 1) !== cities.length && <Spacing separator className="spacing" size={8} />}</>) : <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                Городов не найдено.</div> 
-    const clearestCitiesJSX = clearestCities.length>0 ? clearestCities.map((c, index) => <><div key={c.id} className=''>
+        Городов не найдено.</div>
+    const clearestCitiesJSX = clearestCities.length > 0 ? clearestCities.map((c, index) => <><div key={c.id} className=''>
         <PlaceItem
             value={c.aqi ? c.aqi : 10}
             onClick={() => {
@@ -95,7 +95,7 @@ export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, han
             }}
             city={c.name} {...c} country={countryName} />
     </div>{(index + 1) !== cities.length && <Spacing className="spacing" separator size={8} />}</>) : <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                Городов не найдено.</div> 
+        Городов не найдено.</div>
 
 
 
@@ -112,7 +112,8 @@ export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, han
             <div>
                 <Search
                     value={title} onChange={handleChange}
-                    className={bgApp} />
+                    className={bgApp}
+                />
             </div>
             <Div>
                 <Card
@@ -135,7 +136,19 @@ export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, han
                                     {myCity}
                                 </div>
                                     <div style={{ fontSize: 15 }} className='text__gray'>
-                                        Текущее местоположение
+                                        <div>Текущее местоположение</div>
+                                        <div className="text__gray">
+
+                                            <div className='d-flex'>
+                                                <div style={{ height: 18, marginRight: 5 }} className='center__y'>
+                                                    <Icon12ErrorCircle fill='C1C1C1' />
+                                                </div>
+                                                    <div
+                                                    style={{ fontSize: 15 }}>
+                                                        Может быть неточным
+                                                    </div>
+                                                </div>
+                                        </div>
                                     </div> </> : <div
                                         style={{ color: '#4475F1', fontSize: 16 }}>
                                     <div>Разрешить доступ</div>
@@ -168,7 +181,7 @@ export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, han
             <Div>
                 <Header className='text__SF-Pro-Rounded-Semibold'>
                     {(!isFetching) ? <span className='text__gray'>
-                    {title.length>0 ? "ВСЕ" : "С НИЗКИМИ ПОКАЗАТЕЛЯМИ"}
+                        {title.length > 0 ? "ВСЕ" : "С НИЗКИМ AQI ЗА ДЕНЬ"}
                     </span> : <div
                         className='bg__init' style={{ width: 85, height: 12 }}
                     ></div>}
@@ -177,7 +190,7 @@ export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, han
                     mode='shadow'
                     className='card__app'>
                     <Group>
-                        {(isFetching) ? (title.length>0 ? <BgInitCities/> : <BgInitClearestCities />) : <></>}
+                        {(isFetching) ? (title.length > 0 ? <BgInitCities /> : <BgInitClearestCities />) : <></>}
                         {(!isFetching) ? ((title.length > 0) ? citiesJSX : clearestCitiesJSX) : <></>}
                     </Group>
                 </Card>
@@ -185,7 +198,7 @@ export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, han
             <Div>
                 <Header className='text__SF-Pro-Rounded-Semibold'>
                     {(!isFetching) ? <span className='text__gray'>
-                        {title.length>0 ? "С НИЗКИМИ ПОКАЗАТЕЛЯМИ" : "ВСЕ"}
+                        {title.length > 0 ? "С НИЗКИМ AQI ЗА ДЕНЬ" : "ВСЕ"}
                     </span> : <div
                         className='bg__init' style={{ width: 85, height: 12 }}>
                     </div>}
@@ -195,8 +208,8 @@ export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, han
                     className='card__app'>
                     <Group>
                         <Group className=''>
-                            {(isFetching) ? (title.length>0 ? <BgInitClearestCities/> : <BgInitCities/>) : <></>  }
-                            {(!isFetching) ? ((title.length > 0) ? clearestCitiesJSX : citiesJSX) : <></> }
+                            {(isFetching) ? (title.length > 0 ? <BgInitClearestCities /> : <BgInitCities />) : <></>}
+                            {(!isFetching) ? ((title.length > 0) ? clearestCitiesJSX : citiesJSX) : <></>}
                         </Group>
                     </Group>
                 </Card>

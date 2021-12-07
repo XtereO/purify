@@ -31,7 +31,7 @@ export const PlaceItem: React.FC<PropsType> = ({ city, country, value, onClick, 
 
     return <div
     onClick={onClick}
-    className='highlight_on_touch text__Inter-Regular'
+    className='highlight_on_touch text__Inter-Regular' 
     style={{
         paddingLeft:16,
         paddingRight:16,

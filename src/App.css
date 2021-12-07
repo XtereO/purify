@@ -54,23 +54,26 @@
 .text__SF-Pro-Rounded-Heavy{
     font-family: 'SF-Pro-Rounded-Heavy';
 }
+.vkuiSearch__after-in{
+    background-color: #343434 !important;
+}
 .bg__app__light{
     background-color: #F5F5F5;
     font-family: 'Inter-Regular';
 }
 .bg__app__dark{
-    background-color: #373737;
+    background-color: #343434;
     font-family: 'Inter-Regular';
 }
 .modal__app__light{
     background-color: #F5F5F5;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 .modal__app__dark{
-    background-color: #373737;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 20px;
+    background-color: #343434;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 Spacing{
     opacity: 0.25;
@@ -118,7 +121,7 @@ Spacing{
     width: 100%;
 }
 .highlight_on_touch:active{
-    background-color: rgb(228, 228, 228);
+    background-color: rgb(192, 192, 192);
     transition: 0.1s all linear;
 }
 .pollution__item{

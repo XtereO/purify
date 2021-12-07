@@ -2,8 +2,10 @@ import { CardGrid, Group, Panel, Div, Avatar, Card, Cell, Spacing, Header, Progr
 import React, { ReactElement, useEffect,useRef,useState} from "react"
 import './Home.css'
 import { Icon16Place, Icon24Search } from '@vkontakte/icons';
-import { Icon28Notifications } from '@vkontakte/icons';
+import { Icon24NotificationOutline } from '@vkontakte/icons';
 import { Icon28StoryOutline } from '@vkontakte/icons';
+import { Icon24StoryOutline } from '@vkontakte/icons';
+import { Icon24NotificationCheckOutline } from '@vkontakte/icons';
 //@ts-ignore
 import logo from '../media/IQAir_logo.svg'
 import { Icon24Dropdown } from '@vkontakte/icons';
@@ -141,7 +143,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
                     <div 
                     style={{fontSize:17}}
                     className='center__y'>
-                    {(city && nativeCityId!==city.id && (!isInit)) && <Icon16Place fill='rgba(0,0,0,0.5)' style={{marginRight:3}} />}
+                    {(city && nativeCityId===city.id && (!isInit)) && <Icon16Place fill='rgba(0,0,0,0.5)' style={{marginRight:3}} />}
                     </div>
                     {((!isInit) && city) && city.name}
                 </div>
@@ -169,7 +171,8 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
                         <Avatar 
                         style={{backgroundColor:'rgba(255, 255, 255, 0.35)'}}
                         shadow={false}>
-                            {(!isInit) && <Icon28Notifications fill='#000' />}
+                            {(!isInit) && (!isCitySubscribed) && <Icon24NotificationOutline fill='#000' />}
+                            {(!isInit) && (isCitySubscribed) && <Icon24NotificationCheckOutline fill='#000' />}
                         </Avatar>
                         </div>
                         <div
@@ -181,7 +184,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
                         className='home__search__cell__rounded home__search__cell__rounded_active' 
                         style={{backgroundColor:'rgba(255, 255, 255, 0.35)'}}
                         shadow={false}>
-                            {(!isInit) && <Icon28StoryOutline fill='#000' />}
+                            {(!isInit) && <Icon24StoryOutline fill='#000' />}
                         </Avatar>
                         </div>
                     </div>

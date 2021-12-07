@@ -20,11 +20,11 @@ export const subscribeVkBridge = async () => {
                 bridge.send("VKWebAppSetViewSettings", {"status_bar_style": "light", "action_bar_color": "#F5F5F5"})
             }else{
                 dispatch(setBgApp('bg__app__dark'))
-                bridge.send("VKWebAppSetViewSettings", {"status_bar_style": "dark", "action_bar_color": "#373737"})
+                bridge.send("VKWebAppSetViewSettings", {"status_bar_style": "dark", "action_bar_color": "#343434"})
             }
 
             //@ts-ignore
-            if(window.location.href.match(new RegExp('m.vk.com')) || data.scheme.match(new RegExp('vkcom'))){
+            if(window.location.href.match(new RegExp('vk_platform=mobile_web')) || data.scheme.match(new RegExp('vkcom'))){
                 dispatch(setPlatform('pc'))
             }else{
                 dispatch(setPlatform('mobile'))

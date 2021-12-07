@@ -42,10 +42,12 @@ export const Advice:React.FC<PropsType> = ({isGoodWind,pollution,bgApp, doStory}
     mode="shadow"
     className='card__app'>
        <div>
-
+            <div style={{marginLeft:3.5}}>
            <ListItem bgApp={bgApp} description={isGoodWind ? 'Качество воздуха хорошее и соответствует требованиям ООН. Наслаждайтесь.' : <span>Качество воздуха плохое и превышает требования ООН.</span>}>
-               {isGoodWind ? <img src={score_low} /> : <img src={score_high} />}
+               {isGoodWind ? <img src={score_low} /> : 
+               <img src={score_high} />}
            </ListItem>
+            </div>
            {(pollution.mask.value!=='green' && pollution.mask.value!=='hidden') && <><Spacing className="spacing" size={32} separator />
             <ListItem bgApp={bgApp} description={'Носите маску на улице.'}>
                <img src={mask} />

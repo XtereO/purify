@@ -1,6 +1,6 @@
 import { Icon20Info } from "@vkontakte/icons"
 import {Tooltip} from './Tooltip'
-import React, { memo, useState } from "react"
+import React, { memo, useEffect, useState } from "react"
 
 
 
@@ -15,15 +15,28 @@ type PropsType = {
 
 export const PollutionItem: React.FC<PropsType> = memo(({ title, value, tooltipDescription, bar, aqi, bgApp }) => {
 
-    let [show, setShow] = useState(false)
-
+    let [isOpen, setOpen] = useState(false)
+    let [isClosed, setClosed] = useState(false)
 
     const showTooltip = () => {
-        setShow(true)
-        setTimeout(() => {
+        setOpen(true)
+        /*setTimeout(() => {
             setShow(false)
-        }, 4000)
+        }, 4000)*/
     }
+    useEffect(()=>{
+        if(isOpen){
+            setTimeout(()=>{
+                setClosed(true)
+                setOpen(false)
+                setClosed(false)
+            },3000)
+        }
+        return()=>{
+            setClosed(true)
+            setClosed(false)
+        }
+    },[isOpen])
 
     return <div
         style={{paddingRight:4,paddingLeft:4, color:bgApp==='bg__app__light' ? '#454545' : 'white'}}
@@ -38,10 +51,13 @@ export const PollutionItem: React.FC<PropsType> = memo(({ title, value, tooltipD
             <div className='text__gray' style={{fontSize:14,height:20,overflow:'hidden'}}>
                 {value}  μm<sup>3</sup>
             </div>
-            <div style={{marginLeft:3}}>
-                <Tooltip tooltipDescription={tooltipDescription}>
+            <div onClick={(!isClosed) ? showTooltip : ()=>{}} style={{marginLeft:3}}>
+                {(!isClosed) && <Tooltip tooltipDescription={tooltipDescription}>
                     <Icon20Info fill='#C1C1C1' />
-                </Tooltip>
+                </Tooltip>}
+                {(isClosed) && <Tooltip tooltipDescription={tooltipDescription}>
+                <Icon20Info fill='#C1C1C1' />
+                    </Tooltip>}
             </div>
         </div>
     </div>

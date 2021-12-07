@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "./static/css/main.90e7c90b.chunk.css",
-    "main.js": "./static/js/main.7c9c172a.chunk.js",
-    "main.js.map": "./static/js/main.7c9c172a.chunk.js.map",
+    "main.css": "./static/css/main.e7040bf5.chunk.css",
+    "main.js": "./static/js/main.cea55617.chunk.js",
+    "main.js.map": "./static/js/main.cea55617.chunk.js.map",
     "runtime-main.js": "./static/js/runtime-main.c1841d48.js",
     "runtime-main.js.map": "./static/js/runtime-main.c1841d48.js.map",
     "static/css/2.71dad8c4.chunk.css": "./static/css/2.71dad8c4.chunk.css",
-    "static/js/2.cd072d78.chunk.js": "./static/js/2.cd072d78.chunk.js",
-    "static/js/2.cd072d78.chunk.js.map": "./static/js/2.cd072d78.chunk.js.map",
+    "static/js/2.66b1e21d.chunk.js": "./static/js/2.66b1e21d.chunk.js",
+    "static/js/2.66b1e21d.chunk.js.map": "./static/js/2.66b1e21d.chunk.js.map",
     "index.html": "./index.html",
     "static/css/2.71dad8c4.chunk.css.map": "./static/css/2.71dad8c4.chunk.css.map",
-    "static/css/main.90e7c90b.chunk.css.map": "./static/css/main.90e7c90b.chunk.css.map",
-    "static/js/2.cd072d78.chunk.js.LICENSE.txt": "./static/js/2.cd072d78.chunk.js.LICENSE.txt",
+    "static/css/main.e7040bf5.chunk.css.map": "./static/css/main.e7040bf5.chunk.css.map",
+    "static/js/2.66b1e21d.chunk.js.LICENSE.txt": "./static/js/2.66b1e21d.chunk.js.LICENSE.txt",
     "static/media/IQAir_logo.60893679.svg": "./static/media/IQAir_logo.60893679.svg",
     "static/media/App.css": "./static/media/SF-Pro-Rounded-Semibold.af98bf89.ttf",
     "static/media/bg_bad.fcfcaf41.jpg": "./static/media/bg_bad.fcfcaf41.jpg",
@@ -31,8 +31,8 @@
   "entrypoints": [
     "static/js/runtime-main.c1841d48.js",
     "static/css/2.71dad8c4.chunk.css",
-    "static/js/2.cd072d78.chunk.js",
-    "static/css/main.90e7c90b.chunk.css",
-    "static/js/main.7c9c172a.chunk.js"
+    "static/js/2.66b1e21d.chunk.js",
+    "static/css/main.e7040bf5.chunk.css",
+    "static/js/main.cea55617.chunk.js"
   ]
 }
