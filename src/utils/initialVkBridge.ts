@@ -17,10 +17,10 @@ export const subscribeVkBridge = async () => {
             if((data.scheme.match(title)) || data.scheme.match(new RegExp('vkcom'))){
                 dispatch(setBgApp('bg__app__light'))
                 //@ts-ignore
-                bridge.send("VKWebAppSetViewSettings", {"status_bar_style": "light", "action_bar_color": "#F5F5F5"})
+                bridge.send("VKWebAppSetViewSettings", {"status_bar_style": "dark", "action_bar_color": "#F5F5F5"})
             }else{
                 dispatch(setBgApp('bg__app__dark'))
-                bridge.send("VKWebAppSetViewSettings", {"status_bar_style": "dark", "action_bar_color": "#343434"})
+                bridge.send("VKWebAppSetViewSettings", {"status_bar_style": "light", "action_bar_color": "#343434"})
             }
 
             //@ts-ignore

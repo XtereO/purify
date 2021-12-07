@@ -214,7 +214,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
             </Div>  
             <Div>
                 <Header className='text__SF-Pro-Rounded-Semibold'>
-                    {(!isInit) ? <span className="text__gray">
+                    {(!isInit) ? <span className="text__gray unselectable">
                     ЗАГРЯЗНИТЕЛИ
                     </span> : <div
                     style={{height:12, width:85}}
@@ -248,7 +248,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
             </Div>
             <Div>
                 <Header className='text__SF-Pro-Rounded-Semibold'>
-                    {(!isInit) ? <span className='text__gray'>
+                    {(!isInit) ? <span className='text__gray unselectable'>
                         ПРОГНОЗ НА НЕДЕЛЮ
                     </span> : <div
                     style={{height:12, width:85}}
