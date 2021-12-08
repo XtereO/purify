@@ -30,7 +30,7 @@ export const StationItem:React.FC<PropsType>=memo(({value, mode, stationName, di
                 <img src={stationPNG} style={{marginRight:16}} />
             </div>
             <div>
-            <div style={{fontSize:16,width:200,overflowX:'scroll'}}>
+            <div style={{fontSize:16,width:200,overflowX:'auto'}}>
                 {stationName}
             </div>
             <div className="text__gray">

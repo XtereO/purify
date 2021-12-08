@@ -1,4 +1,4 @@
-import { CardGrid, Group, Panel, Div, Avatar, Card, Cell, Spacing, Header, Progress, Link, Footer, FixedLayout } from "@vkontakte/vkui"
+import { CardGrid, Group, Panel, Div, Avatar, Card, Cell, Spacing, Header, Progress, Link, Footer, FixedLayout, PanelHeader } from "@vkontakte/vkui"
 import React, { ReactElement, useEffect,useRef,useState} from "react"
 import './Home.css'
 import { Icon16Place, Icon24Search } from '@vkontakte/icons';
@@ -108,10 +108,17 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
     </>) : []
     
 
-    return <Panel id={id}>
+    return <Panel 
+    id={id}>
         <div style={{width:'100%'}}>
+        <div className={bgApp}>
+        <PanelHeader
+        separator={false}
+        >
+        </PanelHeader>
+        </div>
         <Group
-        style={{paddingTop:42}}
+        style={{paddingTop:0}}
         className={bgApp}
         >
             {isShowBigImage && 

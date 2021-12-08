@@ -67,6 +67,26 @@ body{
 .bg__app__light .vkuiSearch__after-in{
     background-color: #F5F5F5 !important;
 }
+.bg__app__dark .vkuiPanelHeader__in{
+    overflow: visible !important;
+    padding:0 !important;
+    background-color: #343434 !important;
+}
+.bg__app__dark .PanelHeader__in{
+    overflow: visible !important;
+    padding: 0 !important;
+    background-color: #343434 !important;
+}
+.bg__app__light .vkuiPanelHeader__in{
+    overflow: visible !important;
+    padding:0 !important;
+    background-color: #F5F5F5 !important;
+}
+.bg__app__light .PanelHeader__in{
+    overflow: visible !important;
+    padding: 0 !important;
+    background-color: #F5F5F5 !important;
+}
 .bg__app__light{
     background-color: #F5F5F5;
     font-family: 'Inter-Regular';
