@@ -109,6 +109,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
     
 
     return <Panel id={id}>
+        <div style={{width:'100%'}}>
         <Group
         style={{paddingTop:42}}
         className={bgApp}
@@ -341,6 +342,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
                 {snackbar}
             </FixedLayout>
         </Group>
+        </div>
     </Panel>
 }
 
