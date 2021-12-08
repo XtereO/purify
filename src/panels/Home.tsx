@@ -111,7 +111,8 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
     return <Panel id={id}>
         <Group
         style={{paddingTop:42}}
-        className={bgApp}>
+        className={bgApp}
+        >
             {isShowBigImage && 
             <div 
             onClick={handlerCloseImage}

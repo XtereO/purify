@@ -1,3 +1,10 @@
+body{
+    width:100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
 @font-face {
     font-family: 'Inter-Medium';
     src: url(./fonts/Inter-Medium.ttf);
@@ -54,8 +61,11 @@
 .text__SF-Pro-Rounded-Heavy{
     font-family: 'SF-Pro-Rounded-Heavy';
 }
-.vkuiSearch__after-in{
+.bg__app__dark .vkuiSearch__after-in{
     background-color: #343434 !important;
+}
+.bg__app__light .vkuiSearch__after-in{
+    background-color: #F5F5F5 !important;
 }
 .bg__app__light{
     background-color: #F5F5F5;
@@ -68,7 +78,6 @@
     user-select: none;           /* Non-prefixed version, currently
                                     not supported by any browser */
     overflow-x: hidden;
-    width: 100%;
 }
 .unselectable{
     -webkit-touch-callout: none; /* iOS Safari */
@@ -90,7 +99,6 @@
     user-select: none;           /* Non-prefixed version, currently
                                     not supported by any browser */
     overflow-x: hidden;
-    width: 100%;
 }
 .modal__app__light{
     background-color: #F5F5F5;
