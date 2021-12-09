@@ -85,7 +85,7 @@ export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, han
             }}
             city={c.name} {...c} />
     </div>{(index + 1) !== cities.length && <Spacing separator className="spacing" size={8} />}</>) : <div style={{ display: 'flex', justifyContent: 'center' }}>
-        Городов не найдено.</div>
+    Ничего не найдено</div>
     const clearestCitiesJSX = clearestCities.length > 0 ? clearestCities.map((c, index) => <><div key={c.id} className=''>
         <PlaceItem
             value={c.aqi ? c.aqi : 10}
@@ -95,7 +95,7 @@ export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, han
             }}
             city={c.name} {...c} country={countryName} />
     </div>{(index + 1) !== cities.length && <Spacing className="spacing" separator size={8} />}</>) : <div style={{ display: 'flex', justifyContent: 'center' }}>
-        Городов не найдено.</div>
+        Ничего не найдено</div>
 
 
 
