@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "./static/css/main.0550c122.chunk.css",
+    "main.css": "./static/css/main.78017219.chunk.css",
     "main.js": "./static/js/main.a0f9a539.chunk.js",
     "main.js.map": "./static/js/main.a0f9a539.chunk.js.map",
     "runtime-main.js": "./static/js/runtime-main.c1841d48.js",
@@ -10,7 +10,7 @@
     "static/js/2.b22eb02a.chunk.js.map": "./static/js/2.b22eb02a.chunk.js.map",
     "index.html": "./index.html",
     "static/css/2.71dad8c4.chunk.css.map": "./static/css/2.71dad8c4.chunk.css.map",
-    "static/css/main.0550c122.chunk.css.map": "./static/css/main.0550c122.chunk.css.map",
+    "static/css/main.78017219.chunk.css.map": "./static/css/main.78017219.chunk.css.map",
     "static/js/2.b22eb02a.chunk.js.LICENSE.txt": "./static/js/2.b22eb02a.chunk.js.LICENSE.txt",
     "static/media/IQAir_logo.60893679.svg": "./static/media/IQAir_logo.60893679.svg",
     "static/media/App.css": "./static/media/SF-Pro-Rounded-Semibold.af98bf89.ttf",
@@ -32,7 +32,7 @@
     "static/js/runtime-main.c1841d48.js",
     "static/css/2.71dad8c4.chunk.css",
     "static/js/2.b22eb02a.chunk.js",
-    "static/css/main.0550c122.chunk.css",
+    "static/css/main.78017219.chunk.css",
     "static/js/main.a0f9a539.chunk.js"
   ]
 }
