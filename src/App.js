@@ -72,7 +72,7 @@ const App = () => {
 	const [state, setState] = useState({
 		isCheckInfo: false,
 		isAllowedPlace: false,
-		defaultCityId: DEFAULT_CITY_ID,
+		defaultCityId: null,
 		defaultCountryId: DEFAULT_COUNTRY_ID,
 		ecoCity: null,
 		nativeCity: null,
@@ -147,7 +147,14 @@ const App = () => {
 							})
 						}
 					case STATE_KEYS.DEFAULT_CITY_ID:
-						if (value) {
+						if (value && (!state.defaultCityId)) {
+							setState(prev => {
+								return {
+									...prev,
+									defaultCityId: s.value
+								}
+							})
+						} else if ((!value) && (!state.defaultCityId)) {
 							setState(prev => {
 								return {
 									...prev,
@@ -173,8 +180,16 @@ const App = () => {
 		}
 		fetchData()
 	}, []);
+	useEffect(()=>{
+		window.addEventListener('hashchange',(e)=>{
+			if(!window.location.hash.slice(1,)){
+				setActiveModal(window.location.hash.slice(1,))
+			}
+		})
+	},[])
 	const go = (modal) => {
 		setActiveModal(modal)
+		window.location.assign('#'+(modal ? modal : ''))
 	}
 	const checkInfo = () => {
 		try {
@@ -230,7 +245,7 @@ const App = () => {
 				setState(prev => {
 					return {
 						...prev,
-						defaultCountryId: defaultNameCountry
+						defaultCountryId: idCountry
 					}
 				})
 
@@ -251,13 +266,14 @@ const App = () => {
 						key: STATE_KEYS.DEFAULT_CITY_ID,
 						value: id
 					})
-				setState(prev => {
-					return {
-						...prev,
-						defaultCityId: id
-					}
-				})
-
+				if (!state.defaultCityId) {
+					setState(prev => {
+						return {
+							...prev,
+							defaultCityId: id
+						}
+					})
+				}
 				setState(prev => {
 					return {
 						...prev,
@@ -294,6 +310,13 @@ const App = () => {
 					}
 				})
 			}
+		}else{
+			setState(prev=>{
+				return{
+					...prev,
+					defaultCityId: DEFAULT_CITY_ID
+				}
+			})
 		}
 		setInit(false)
 	}, [state.defaultCityId, activePanel])
@@ -301,15 +324,12 @@ const App = () => {
 	const handlerLocationHashChange = async () => {
 		if (window.location.hash.slice(1,)) {
 			setInit(true)
-			const data = (await getEcologyCity(window.location.hash.slice(1,))).data
-			if (data) {
-				setState(prev => {
-					return {
-						...prev,
-						ecoCity: data
-					}
-				})
-			}
+			setState(prev => {
+				return {
+					...prev,
+					defaultCityId: window.location.hash.slice(1,)
+				}
+			})
 			setInit(false)
 		}
 	}
@@ -548,7 +568,7 @@ const App = () => {
 						id={ROUTES.OFFLINE} />
 					<Home
 						snackbar={snackbar}
-						subscribeNoticification={() => setActiveModal(ROUTES.TURN_NOTICIFICATIONS)}
+						subscribeNoticification={() => go(ROUTES.TURN_NOTICIFICATIONS)}
 						unsubsubscribeNoticification={unsubsubscribeNoticificationForButton}
 						isCitySubscribed={state.ecoCity ? state.subscribedCities.some(s => s.cityId === state.ecoCity.id) : false}
 						bgApp={bgApp}

@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "./static/css/main.0550c122.chunk.css",
-    "main.js": "./static/js/main.17e4446c.chunk.js",
-    "main.js.map": "./static/js/main.17e4446c.chunk.js.map",
+    "main.js": "./static/js/main.a0f9a539.chunk.js",
+    "main.js.map": "./static/js/main.a0f9a539.chunk.js.map",
     "runtime-main.js": "./static/js/runtime-main.c1841d48.js",
     "runtime-main.js.map": "./static/js/runtime-main.c1841d48.js.map",
     "static/css/2.71dad8c4.chunk.css": "./static/css/2.71dad8c4.chunk.css",
@@ -15,17 +15,17 @@
     "static/media/IQAir_logo.60893679.svg": "./static/media/IQAir_logo.60893679.svg",
     "static/media/App.css": "./static/media/SF-Pro-Rounded-Semibold.af98bf89.ttf",
     "static/media/bg_bad.fcfcaf41.jpg": "./static/media/bg_bad.fcfcaf41.jpg",
-    "static/media/bg_good.3ae58033.svg": "./static/media/bg_good.3ae58033.svg",
     "static/media/bg_good.78cdbf75.jpg": "./static/media/bg_good.78cdbf75.jpg",
+    "static/media/bg_good.c1892506.svg": "./static/media/bg_good.c1892506.svg",
     "static/media/bg_okay.deb781bc.jpg": "./static/media/bg_okay.deb781bc.jpg",
-    "static/media/chevron_right.41330dfc.svg": "./static/media/chevron_right.41330dfc.svg",
+    "static/media/chevron_right.f01bceac.svg": "./static/media/chevron_right.f01bceac.svg",
     "static/media/loader.4eb6b9ea.gif": "./static/media/loader.4eb6b9ea.gif",
     "static/media/mask.ca4eeaf1.svg": "./static/media/mask.ca4eeaf1.svg",
-    "static/media/place.7859cca4.svg": "./static/media/place.7859cca4.svg",
+    "static/media/place.1a9be207.svg": "./static/media/place.1a9be207.svg",
     "static/media/score_high.8b2dd071.svg": "./static/media/score_high.8b2dd071.svg",
     "static/media/score_low.272815f5.svg": "./static/media/score_low.272815f5.svg",
     "static/media/station.933949ec.svg": "./static/media/station.933949ec.svg",
-    "static/media/wifi_outline_56.a0f4acf2.svg": "./static/media/wifi_outline_56.a0f4acf2.svg",
+    "static/media/wifi_outline_56.e7641413.svg": "./static/media/wifi_outline_56.e7641413.svg",
     "static/media/window.a4f0a59c.svg": "./static/media/window.a4f0a59c.svg"
   },
   "entrypoints": [
@@ -33,6 +33,6 @@
     "static/css/2.71dad8c4.chunk.css",
     "static/js/2.b22eb02a.chunk.js",
     "static/css/main.0550c122.chunk.css",
-    "static/js/main.17e4446c.chunk.js"
+    "static/js/main.a0f9a539.chunk.js"
   ]
 }
