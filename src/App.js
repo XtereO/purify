@@ -322,7 +322,8 @@ const App = () => {
 	}, [state.defaultCityId, activePanel])
 
 	const handlerLocationHashChange = async () => {
-		if (window.location.hash.slice(1,)) {
+		const routes = [ROUTES.POLLUTION_CITIES,ROUTES.TURN_NOTICIFICATIONS]
+		if (window.location.hash.slice(1,) &&  (!routes.some(r=>r===window.location.hash.slice(1,))) ) {
 			setInit(true)
 			setState(prev => {
 				return {
