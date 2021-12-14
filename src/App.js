@@ -616,9 +616,9 @@ const App = () => {
 						<Rect
 							fillLinearGradientStartPoint={{ x: 0, y: -100 }}
 							fillLinearGradientEndPoint={{ x: 670, y: 1200 }}
-							fillLinearGradientColorStops={(state.ecoCity && state.ecoCity.current.aqi > 100) ?
+							fillLinearGradientColorStops={(state.ecoCity && state.ecoCity.current.aqi >= 100) ?
 								[0, 'rgba(255,153,182,1)', 1, 'rgba(204,183,254,1)']
-								: (state.ecoCity && state.ecoCity.current.aqi > 50) ? [0, '#FDCFB2', 1, '#BF8FF5']
+								: (state.ecoCity && state.ecoCity.current.aqi >= 50) ? [0, '#FDCFB2', 1, '#BF8FF5']
 									: [0, '#B3FF86', 1, '#EEFFC8']}
 							width={1362}
 							height={1427}
@@ -638,8 +638,8 @@ const App = () => {
 						/>
 						<Text
 							fontFamily={'SF-Pro-Rounded-Heavy'}
-							text={(state.ecoCity && state.ecoCity.current.aqi > 100) ? "Плохое" : (state.ecoCity && state.ecoCity.current.aqi > 50) ? 'Неплохое' : "Хорошее"}
-							x={(state.ecoCity && state.ecoCity.current.aqi > 100) ? 340 : (state.ecoCity && state.ecoCity.current.aqi > 50) ? 240 : 269.58} //53.5
+							text={(state.ecoCity && state.ecoCity.current.aqi >= 100) ? "Плохое" : (state.ecoCity && state.ecoCity.current.aqi >= 50) ? 'Неплохое' : "Хорошее"}
+							x={(state.ecoCity && state.ecoCity.current.aqi >= 100) ? 340 : (state.ecoCity && state.ecoCity.current.aqi >= 50) ? 240 : 269.58} //53.5
 							fontSize={188}
 							y={421.71}
 							fill='rgba(0, 0, 0, 0.5)'

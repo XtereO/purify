@@ -74,7 +74,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
     distance={getDistance({point1:c.coordinates,point2:city.coordinates})}
     stationName={c.name}
     key={`${index}${c.name}`}
-    value={c.aqi} mode={c.aqi > 100 ? 'danger' : ((c.aqi>50) ? 'okay' : 'good')} />
+    value={c.aqi} mode={c.aqi >= 100 ? 'danger' : ((c.aqi>=50) ? 'okay' : 'good')} />
     {(index+1)!==stations.length && <Spacing
     key={`station_spacing${index}`}
     className="spacing" separator size={16} />}
@@ -88,7 +88,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
     value={p.concentration}
     aqi={p.aqi}
     tooltipDescription={getDescriptionPollutant(p.pollutantName)}
-    bar={p.aqi>100 ? 'bad_bar' : p.aqi>50 ? 'okay_bar' : 'good_bar'}
+    bar={p.aqi>=100 ? 'bad_bar' : p.aqi>=50 ? 'okay_bar' : 'good_bar'}
     /> 
     {(index+1)!==city.current.pollutants.length && <Spacing 
     key={`pollutant_spacing${index}`}
@@ -101,7 +101,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
         <WeatherItem 
         key={`${index}-${c.temperature}${c.aqi}`}
         onClick={goToForecastPollutionForTheDay}
-        day={currentDay+index+1} value={c.aqi} mode={c.aqi > 100 ? 'danger' : ((c.aqi>50) ? 'okay' : 'good')} />
+        day={currentDay+index+1} value={c.aqi} mode={c.aqi >= 100 ? 'danger' : ((c.aqi>=50) ? 'okay' : 'good')} />
         {(index+1)!==city.forecasts.daily.length && <Spacing 
         key={`weather_spacing${index}`}
         className="spacing" separator size={16} />}
@@ -137,7 +137,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
             </div>
             }
             <Div
-                className={(isInit ? 'bg__init card' : 'card' + ' ' + ((city && city.current.aqi<=50) ? 'home__good__weather' : (city && city.current.aqi<=100) ? 'home__okay__weather' : 'home__bad__weather'))}>
+                className={(isInit ? 'bg__init card' : 'card' + ' ' + ((city && city.current.aqi<50) ? 'home__good__weather' : (city && city.current.aqi<100) ? 'home__okay__weather' : 'home__bad__weather'))}>
                 <div className='home__main__title'>
                     {isInit ?  <div
                     style={{height:24,width:61}}
