@@ -1,4 +1,5 @@
 import { Cell } from '@vkontakte/vkui'
+import { number } from 'prop-types'
 import { useEffect, useState } from 'react'
 import { isKrym } from '../utils/isKrym'
 import { Badge } from './Badge'
@@ -18,7 +19,7 @@ export const PlaceItem: React.FC<PropsType> = ({ city, country, value, onClick, 
 
     let [bg, setBG] = useState('bg__good')
     useEffect(() => {
-        if (value) {
+        if (typeof value === 'number') {
             if (value >= 100) {
                 setBG('bg__danger')
             } else if (value >= 50) {
@@ -49,8 +50,7 @@ export const PlaceItem: React.FC<PropsType> = ({ city, country, value, onClick, 
             </div>
         </div>
         {value && <div className='center__y' >
-            <Badge color={bg} value={value} >
-                {value}
+            <Badge color={bg} value={value===-1 ? 0 : value} >
             </Badge> 
         </div>}
     </div>

@@ -88,7 +88,7 @@ export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, han
     Ничего не найдено</div>
     const clearestCitiesJSX = clearestCities.length > 0 ? clearestCities.map((c, index) => <><div key={c.id} className=''>
         <PlaceItem
-            value={c.aqi}
+            value={c.aqi ? c.aqi : -1}
             onClick={() => {
                 setDefaultCity(c.id)
                 handlerClose()

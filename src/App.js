@@ -12,15 +12,10 @@ import {
 	getEcoSearchData, getSubscribes, subscribeNoticification, unsubscribeNoticification
 } from './dal/api';
 import { MyCities } from './panels/MyCities';
-import { MyCanvas } from './bricks/MyCanvas';
 import { MySnackbar } from './bricks/MySnackbar';
 import { Layer, Stage, Image, Text, Rect, FastLayer } from "react-konva";
 import placePNG from "./media/place.svg";
 import useImage from 'use-image';
-import bg_okay from './media/bg_okay.jpg'
-import bg_good from './media/bg_good.jpg'
-import bg_good_svg from './media/bg_good.svg'
-import bg_bad from './media/bg_bad.jpg'
 import chevron_right from "./media/chevron_right.svg";
 import { TurnNoticifications } from './panels/TurnNoticifications';
 import { useDispatch, useSelector } from 'react-redux';
@@ -28,7 +23,6 @@ import { activeModalSelector, activePanelSelector, bgAppSelector, platformSelect
 import { NotConnection } from './panels/NotConnection';
 import { setActiveModalState, setActivePanelState } from './bll/Reducers/initialReducer';
 import wifiImage from './media/wifi_outline_56.svg'
-import { retry } from "./utils/forImage";
 import failed_img from './media/score_high.svg'
 
 

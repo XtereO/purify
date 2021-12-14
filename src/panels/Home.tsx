@@ -110,7 +110,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
 
     return <Panel 
     id={id}>
-        <div style={{width:'100%'}}>
+        <div style={{width:'100%',overflow:'hidden'}}>
         <div className={bgApp}>
         <PanelHeader
         separator={false}
@@ -270,7 +270,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
                     <div className=''>
                     {(isInit) && [5,6,7,8,9,4,10].map((c)=><><div 
                     key={`weather${c}`}
-                    style={{display:'grid',gridTemplateColumns:'24px 1fr 50px', gridGap:'10px'}}>
+                    style={{display:'grid',gridTemplateColumns:'24px 1fr 60px', gridGap:'10px'}}>
                         <div 
                         style={{width:24,height:24}}
                         className='bg__init'>
@@ -302,7 +302,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
                     <div className=''>
                     {(isInit) && [5,6,7,8,9,4,10].map((c)=><><div 
                     key={`station${c}`}
-                    style={{display:'grid',gridTemplateColumns:'24px 1fr 50px', gridGap:'10px'}}>
+                    style={{display:'grid',gridTemplateColumns:'24px 1fr 60px', gridGap:'10px'}}>
                         <div 
                         style={{width:24,height:24}}
                         className='bg__init'>
