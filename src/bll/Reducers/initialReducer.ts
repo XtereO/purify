@@ -1,4 +1,3 @@
-import { Appearance, platform } from "@vkontakte/vkui"
 
 
 const SET_PLATFORM:'initialReducer/SET_PLATFORM'='initialReducer/SET_PLATFORM'
@@ -10,16 +9,16 @@ type PlatformType = 'mobile' | 'pc'
 type BgAppType = 'bg__app__light' | 'bg__app__dark'
 
 const initialState = {
-    platform: 'mobile',
-    bgApp: 'bg__app__light',
-    activeModal: '',
-    activePanel: 'HOME'
+    platform: 'mobile' as PlatformType,
+    bgApp: 'bg__app__light' as BgAppType,
+    activeModal: null as string | null,
+    activePanel: 'HOME' as string | null,
 }
-type InitialStateType = typeof initialState
+type InitialState = typeof initialState
 
-type ActionType = (SetBgAppType | SetPlatformType | SetActiveModalType | SetActivePanelType)
+type Action = (SetBgApp | SetPlatform | SetActiveModal | SetActivePanel)
 
-export const initialReducer = (state=initialState,action:ActionType):InitialStateType=>{
+export const initialReducer = (state=initialState,action:Action):InitialState=>{
     switch(action.type){
         case SET_PLATFORM:
             return{
@@ -46,44 +45,44 @@ export const initialReducer = (state=initialState,action:ActionType):InitialStat
     }
 }
 
-type SetActivePanelType = {
-    type: typeof SET_ACTIVE_PANEL,
+type SetActivePanel = {
+    type: typeof SET_ACTIVE_PANEL
     activePanel: string
 }
-export const setActivePanelState = (activePanel:string):SetActivePanelType=>{
+export const setActivePanelState = (activePanel:string):SetActivePanel=>{
     return{
         type: SET_ACTIVE_PANEL,
         activePanel
     }
 }
 
-type SetActiveModalType = {
-    type: typeof SET_ACTIVE_MODAL,
+type SetActiveModal = {
+    type: typeof SET_ACTIVE_MODAL
     activeModal: string
 }
-export const setActiveModalState = (activeModal:string):SetActiveModalType => {
+export const setActiveModalState = (activeModal:string):SetActiveModal => {
     return{
         type: SET_ACTIVE_MODAL,
         activeModal
     }
 }
 
-type SetPlatformType = {
-    type: typeof SET_PLATFORM,
+type SetPlatform = {
+    type: typeof SET_PLATFORM
     platform: PlatformType
 }
-export const  setPlatform = (platform:PlatformType):SetPlatformType =>{
+export const  setPlatform = (platform:PlatformType):SetPlatform =>{
     return{
         type: SET_PLATFORM,
         platform
     }
 }
 
-type SetBgAppType = {
-    type: typeof SET_BG_APP,
+type SetBgApp = {
+    type: typeof SET_BG_APP
     bgApp: BgAppType
 }
-export const setBgApp = (bgApp:BgAppType):SetBgAppType =>{
+export const setBgApp = (bgApp:BgAppType):SetBgApp =>{
     return{
         type: SET_BG_APP,
         bgApp

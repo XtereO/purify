@@ -24,36 +24,16 @@ import { NotConnection } from './panels/NotConnection';
 import { setActiveModalState, setActivePanelState } from './bll/Reducers/initialReducer';
 import wifiImage from './media/wifi_outline_56.svg'
 import failed_img from './media/score_high.svg'
+import { ROUTES } from './consts/ROUTES';
+import { STATE_KEYS } from './consts/STATE_KEYS';
+import { DEFAULT_CITY_ID, DEFAULT_COUNTRY_NAME, DEFAULT_COUNTRY_ID } from './consts/DEFAULT_VALUES';
 
-
-
-const ROUTES = {
-	INFO: 'INFO',
-	POLLUTION_CITIES: 'POLLUTION_CITIES',
-	HOME: 'HOME',
-	FORECAST_POLLUTION_FOR_THE_DAY: 'FORECAST_POLLUTION_FOR_THE_DAY',
-	MY_CITIES: 'MY_CITIES',
-	TURN_NOTICIFICATIONS: 'TURN_NOTICIFICATIONS',
-	OFFLINE: 'OFFLINE'
-}
-const STATE_KEYS = {
-	IS_CHECK_INFO: 'IS_CHECK_INFO',
-	IS_ALLOWED_PLACE: 'IS_ALLOWED_PLACE',
-	DEFAULT_CITY_ID: 'DEFAULT_CITY_ID',
-	DEFAULT_COUNTRY_NAME: 'DEFAULT_COUNTRY_NAME',
-	DEFAULT_COUNTRY_ID: 'DEFAULT_COUNTRY_ID'
-}
-const DEFAULT_CITY_ID = '5b163b6f7fa2b15e076ad2a6'
-const DEFAULT_COUNTRY_ID = 'qNvxAidZLbwhRmQXR'
-const DEFAULT_COUNTRY_NAME = 'Россия'
 
 const App = () => {
 
 	const dispatch = useDispatch()
 	const [isInit, setInit] = useState(false)
 	const activePanel = useSelector(activePanelSelector)
-	const [fetchedUser, setUser] = useState(null);
-	const [popout, setPopout] = useState(<ScreenSpinner size='large' />);
 	const activeModal = useSelector(activeModalSelector)
 	const [snackbar, setSnackbar] = useState(null)
 
@@ -81,27 +61,6 @@ const App = () => {
 	const platform = useSelector(platformSelector)
 	const bgApp = useSelector(bgAppSelector)
 	useEffect(async () => {
-		/*bridge.subscribe(({ detail: { type, data } }) => {
-			if (type === 'VKWebAppUpdateConfig') {
-				const schemeAttribute = document.createAttribute('scheme');
-				schemeAttribute.value = data.scheme ? data.scheme : 'client_light';
-				const title = new RegExp('light')				
-				if((data.scheme==='vkcom') || (data.scheme.match(title))){
-					setBgApp('bg__app__light')
-					if(data.scheme==='vkcom'){
-						setPlatform('pc')
-					}else{	
-						setPlatform('mobile')
-					}
-					bridge.send("VKWebAppSetViewSettings", {"status_bar_style": "light", "action_bar_color": "#F5F5F5"})
-				}else{
-					setBgApp('bg__app__dark')
-					bridge.send("VKWebAppSetViewSettings", {"status_bar_style": "dark", "action_bar_color": "#373737"})
-				}
-				
-				document.body.attributes.setNamedItem(schemeAttribute);
-			}
-		});*/
 		async function fetchData() {
 			const res = (await bridge.send('VKWebAppStorageGet', { keys: Object.values(STATE_KEYS) }))
 
@@ -556,7 +515,7 @@ const App = () => {
 
 	return (
 		<AdaptivityProvider>
-			<AppRoot popout={popout}>
+			<AppRoot>
 				<View activePanel={activePanel} modal={modal}>
 					<NotConnection
 						image={wifiImage}

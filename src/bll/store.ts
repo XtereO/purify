@@ -1,6 +1,6 @@
-import { combineReducers, createStore } from "redux";
+import { combineReducers, createStore, applyMiddleware } from "redux";
 import { initialReducer } from "./Reducers/initialReducer";
-
+import  ThunkMiddleware from "redux-thunk";
 
 
 
@@ -9,9 +9,9 @@ const reducers = combineReducers({
     initial: initialReducer
 })
 
-type ReducersType = typeof reducers
-export type AppReducerType = ReturnType<ReducersType>
+type Reducers = typeof reducers
+export type AppState = ReturnType<Reducers>
 
-export const store = createStore(reducers)
+export const store = createStore(reducers, applyMiddleware(ThunkMiddleware))
 
 

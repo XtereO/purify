@@ -1,20 +1,20 @@
-import { AppReducerType } from "../store";
+import { AppState } from "../store";
 
 
 
 
-export const bgAppSelector = (state: AppReducerType) =>{
+export const bgAppSelector = (state: AppState) =>{
     return state.initial.bgApp
 }
 
-export const platformSelector = (state: AppReducerType) =>{
+export const platformSelector = (state: AppState) =>{
     return state.initial.platform
 }
 
-export const activePanelSelector = (state: AppReducerType) =>{
+export const activePanelSelector = (state: AppState) =>{
     return state.initial.activePanel
 }
 
-export const activeModalSelector = (state: AppReducerType) =>{
+export const activeModalSelector = (state: AppState) =>{
     return state.initial.activeModal
 }
