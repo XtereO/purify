@@ -1,10 +1,13 @@
 import bridge from "@vkontakte/vk-bridge"
+import { ReactElement } from "react"
 import { Dispatch } from "redux"
 import { ThunkAction } from "redux-thunk"
+import { MySnackbar } from "../../bricks/MySnackbar"
 import { DEFAULT_CITY_ID, DEFAULT_COUNTRY_ID, DEFAULT_COUNTRY_NAME } from "../../consts/DEFAULT_VALUES"
 import { STATE_KEYS } from "../../consts/STATE_KEYS"
-import { getCityByCoordinate, getEcoSearchData } from "../../dal/api"
+import { getCityByCoordinate, getEcologyCity, getEcoSearchData, subscribeNoticification, unsubscribeNoticification } from "../../dal/api"
 import { EcoCityData, UserEcoSubs } from "../../types/EcoTypes"
+import { setValueByKeyStorageVKBridge } from "../../utils/setAndGetVkBridge"
 import { AppState } from "../store"
 
 type Thunk=ThunkAction<Promise<void>, AppState, unknown, Action>
@@ -18,6 +21,9 @@ const SET_CITY_ID:'homeReducer/SET_CITY_ID'='homeReducer/SET_CITY_ID'
 const SET_COUNTRY_ID:'homeReducer/SET_COUNTRY_ID'='homeReducer/SET_COUNTRY_ID'
 const SET_COUNTRY_NAME:'homeReducer/SET_COUNTRY_NAME'='homeReducer/SET_COUNTRY_NAME'
 const SET_FETCHING:'homeReducer/SET_FETCHING'='homeReducer/SET_FETCHING'
+const SET_SNACKBAR:'homeReducer/SET_SNACKBAR'='homeReducer/SET_SNACKBAR'
+const ADD_SUBSCRIBED_CITIES:'homeReducer/ADD_LIST_TO_SUBSCRIBED_CITIES'='homeReducer/ADD_LIST_TO_SUBSCRIBED_CITIES'
+const REMOVE_SUBSCRIBED_CITIES:'homeReducer/REMOVE_SUBSCRIBED_CITIES'='homeReducer/REMOVE_SUBSCRIBED_CITIES'
 
 
 const initialState = {
@@ -31,15 +37,17 @@ const initialState = {
     cityId: null as null | string,
     countryId: DEFAULT_COUNTRY_ID,
     countryName: DEFAULT_COUNTRY_NAME,
-    isFetching: false as boolean
+    isFetching: false as boolean,
+    snackbar: null as null | ReactElement<any,any>
 }
 type InitialState = typeof initialState
 
 type Action = ( SetNativeCity | SetCityFromSearch   | 
                 SetCountryName | SetCountryId       |
                 SetCityId | SetAllowedPlace         |
-                SetSubscribedCities | SetCheckIntro |
-                SetFetching                          )
+                AddSubscribedCities | SetCheckIntro |
+                SetFetching | SetSnackbar           |
+                RemoveSubscribedCities               )
 
 export const homeReducer = (state=initialState,action:Action):InitialState=>{
     switch(action.type){
@@ -59,12 +67,22 @@ export const homeReducer = (state=initialState,action:Action):InitialState=>{
                     fromSearch: action.city
                 }
             }
+        case ADD_SUBSCRIBED_CITIES:
+            return{
+                ...state,
+                subscribedCities:[...state.subscribedCities, ...action.subscribedCities]
+            }
+        case REMOVE_SUBSCRIBED_CITIES:
+            return{
+                ...state,
+                subscribedCities: state.subscribedCities.filter(s=>action.subscribedCities.some(a=>a.cityId===s.cityId))
+            }
         case SET_COUNTRY_NAME:
         case SET_COUNTRY_ID:
         case SET_CITY_ID:
         case SET_ALLOWED_PLACE:
-        case SET_SUBSCRIBED_CITIES:
         case SET_CHECK_INTRO:
+        case SET_SNACKBAR:
         case SET_FETCHING:
             return{
                 ...state,
@@ -75,6 +93,18 @@ export const homeReducer = (state=initialState,action:Action):InitialState=>{
     }
 }
 
+type SetSnackbar = {
+    type: typeof SET_SNACKBAR
+    payload:{
+        snackbar: null | ReactElement<any,any>
+    }
+}
+export const setSnackbar = (snackbar: null | ReactElement<any,any>):SetSnackbar =>{
+    return{
+        type: SET_SNACKBAR,
+        payload:{snackbar}
+    }
+}
 
 type SetNativeCity = {
     type: typeof SET_NATIVE_CITY
@@ -141,18 +171,25 @@ export const setCheckIntro = (isCheckIntro: boolean):SetCheckIntro =>{
     }
 }
 
-type SetSubscribedCities = {
-    type: typeof SET_SUBSCRIBED_CITIES
-    payload:{
-        subscribedCities: UserEcoSubs[]
+type AddSubscribedCities = {
+    type: typeof ADD_SUBSCRIBED_CITIES,
+    subscribedCities: UserEcoSubs[] 
+}
+export const addSubscribedCities = (subscribedCities: UserEcoSubs[]):AddSubscribedCities =>{
+    return{
+        type: ADD_SUBSCRIBED_CITIES,
+        subscribedCities
     }
 }
-export const setSubscribedCities = (subscribedCities:UserEcoSubs[]):SetSubscribedCities =>{
+
+type RemoveSubscribedCities = {
+    type: typeof REMOVE_SUBSCRIBED_CITIES,
+    subscribedCities: UserEcoSubs[] 
+}
+export const removeSubscribedCities = (subscribedCities: UserEcoSubs[]):RemoveSubscribedCities =>{
     return{
-        type: SET_SUBSCRIBED_CITIES,
-        payload:{
-            subscribedCities
-        }
+        type: REMOVE_SUBSCRIBED_CITIES,
+        subscribedCities
     }
 }
 
@@ -204,7 +241,7 @@ export const setCountryName = (countryName: string):SetCountryName =>{
 
 // Thunks
 
-export const allowPlace = (cityId:string | null):Thunk => async (dispatch:Dispatch)=>{
+export const setNativeCityAsync = ():Thunk => async (dispatch:Dispatch)=>{
     try {
         dispatch(setFetching(true))
         //@ts-ignore
@@ -217,50 +254,105 @@ export const allowPlace = (cityId:string | null):Thunk => async (dispatch:Dispat
         let candidateCountryName = DEFAULT_COUNTRY_NAME
         let candidateNativeCity = null as null | EcoCityData
 
-        const data = (await getEcoSearchData(cityNameFromCoordinate)).data
-        data.cities.forEach(item => {
+        const {cities} = (await getEcoSearchData(cityNameFromCoordinate)).data
+        cities.forEach(item => {
             if (item.name === cityNameFromCoordinate && (!candidateNativeCity)) {
                 candidateCityId = item.id
                 candidateNativeCity = item
             }
         })
-        const dataCountry = (await getEcoSearchData(candidateNativeCity.country)).data
-        dataCountry.countries.forEach(item => {
+        const {countries} = (await getEcoSearchData(candidateNativeCity.country)).data
+        countries.forEach(item => {
             if (item.name === candidateNativeCity.country) {
                 candidateCountryId = item.id
                 candidateCountryName = item.name
             }
         })
-        await bridge.send('VKWebAppStorageSet',
-            {
-                key: STATE_KEYS.DEFAULT_COUNTRY_NAME,
-                value: candidateCountryName
-            })
+        await setValueByKeyStorageVKBridge(candidateCountryName,STATE_KEYS.DEFAULT_COUNTRY_NAME)
         dispatch(setCountryName(candidateCountryName))
 
-        await bridge.send('VKWebAppStorageSet',
-            {
-                key: STATE_KEYS.DEFAULT_COUNTRY_ID,
-                value: candidateCountryId
-            })
+        await setValueByKeyStorageVKBridge(candidateCountryId, STATE_KEYS.DEFAULT_COUNTRY_ID)
         dispatch(setCountryId(candidateCountryId))
 
-        await bridge.send('VKWebAppStorageSet',
-            {
-                key: STATE_KEYS.DEFAULT_CITY_ID,
-                value: candidateCityId
-            })
-        if (!cityId) {
-            dispatch(setCityId(candidateCityId))
-        }
+        await setValueByKeyStorageVKBridge(candidateCityId, STATE_KEYS.DEFAULT_CITY_ID)
         dispatch(setNativeCity(candidateNativeCity))
         dispatch(setFetching(false))
     } catch (e) {
-        bridge.send('VKWebAppStorageSet',
-            {
-                key: STATE_KEYS.DEFAULT_CITY_ID,
-                value: JSON.stringify(cityId)
-            })
+        await setValueByKeyStorageVKBridge(DEFAULT_CITY_ID, STATE_KEYS.DEFAULT_CITY_ID)
         dispatch(setFetching(false))
+    }
+}
+
+export const setCityFromSearchByCityId = (cityId: string):Thunk => async (dispatch:Dispatch)=>{
+    dispatch(setFetching(true))
+	
+    let city = (await getEcologyCity(cityId)).data
+    if(!city){
+        city = (await getEcologyCity(DEFAULT_CITY_ID)).data
+    }
+	dispatch(setCityFromSearch(city))
+	
+    dispatch(setFetching(false))
+}
+
+export const requestPermissionLocation = ():Thunk => async (dispatch) => {
+    await bridge.send('VKWebAppGetGeodata')
+        .then(res => {
+            setValueByKeyStorageVKBridge(JSON.stringify(true), STATE_KEYS.IS_ALLOWED_PLACE)
+            .then(res => {
+                dispatch(setAllowedPlace(true))
+            })
+        }).catch(e => {
+            dispatch(setAllowedPlace(false))
+        })
+}
+
+export const subscribeNoticificationByCityId = (cityId:string | null):Thunk=> async (dispatch:Dispatch) => {
+    try {
+        const res = await bridge.send('VKWebAppAllowNotifications')
+
+        if (res.result && cityId) {
+            await subscribeNoticification(cityId)
+            dispatch(addSubscribedCities([{cityId, id:cityId, subscribed:true}]))
+            dispatch(setSnackbar(<MySnackbar
+                closeHandler={()=>dispatch(setSnackbar(null))}
+                resultOperation={true}
+                text={'Уведомления включены'} />))    
+        }else{
+            dispatch(setSnackbar(<MySnackbar
+                closeHandler={()=>dispatch(setSnackbar(null))}
+                resultOperation={false}
+                text={'Включить уведомления не удалось'} />))
+        }
+
+    } catch (e) {
+        dispatch(setSnackbar(<MySnackbar
+            closeHandler={()=>dispatch(setSnackbar(null))}
+            resultOperation={false}
+            text={'Включить уведомления не удалось'} />))
+    }
+}
+
+export const unsubsubscribeNoticificationByCityId = (cityId:string | null):Thunk =>async (dispatch:Dispatch) => {
+    try {
+        if (cityId) {
+            await unsubscribeNoticification(cityId)
+            dispatch(removeSubscribedCities([{cityId,id:cityId,subscribed:false}]))
+            dispatch(setSnackbar(<MySnackbar
+				resultOperation={true}
+				closeHandler={()=>dispatch(setSnackbar(null))}
+				text={'Уведомления выключены'} />))
+        }else{
+            dispatch(setSnackbar(<MySnackbar
+                closeHandler={()=>dispatch(setSnackbar(null))}
+                resultOperation={false}
+                text={'Выключить уведомления не удалось'} />))
+        }
+
+    } catch (e) {
+        dispatch(setSnackbar(<MySnackbar
+            closeHandler={()=>dispatch(setSnackbar(null))}
+            resultOperation={false}
+            text={'Выключить уведомления не удалось'} />))
     }
 }

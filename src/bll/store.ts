@@ -1,12 +1,14 @@
 import { combineReducers, createStore, applyMiddleware } from "redux";
 import { initialReducer } from "./Reducers/initialReducer";
+import { homeReducer } from "./Reducers/homeReducer";
 import  ThunkMiddleware from "redux-thunk";
 
 
 
 
 const reducers = combineReducers({
-    initial: initialReducer
+    initial: initialReducer,
+    home: homeReducer
 })
 
 type Reducers = typeof reducers
