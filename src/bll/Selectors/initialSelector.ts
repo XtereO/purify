@@ -1,8 +1,6 @@
 import { AppState } from "../store";
 
 
-
-
 export const bgAppSelector = (state: AppState) =>{
     return state.initial.bgApp
 }

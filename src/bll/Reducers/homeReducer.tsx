@@ -5,7 +5,7 @@ import { ThunkAction } from "redux-thunk"
 import { MySnackbar } from "../../bricks/MySnackbar"
 import { DEFAULT_CITY_ID, DEFAULT_COUNTRY_ID, DEFAULT_COUNTRY_NAME } from "../../consts/DEFAULT_VALUES"
 import { STATE_KEYS } from "../../consts/STATE_KEYS"
-import { getCityByCoordinate, getEcologyCity, getEcoSearchData, subscribeNoticification, unsubscribeNoticification } from "../../dal/api"
+import { getCityByCoordinate, getEcologyCity, getEcoSearchData, getSubscribes, subscribeNoticification, unsubscribeNoticification } from "../../dal/api"
 import { EcoCityData, UserEcoSubs } from "../../types/EcoTypes"
 import { setValueByKeyStorageVKBridge } from "../../utils/setAndGetVkBridge"
 import { AppState } from "../store"
@@ -241,7 +241,7 @@ export const setCountryName = (countryName: string):SetCountryName =>{
 
 // Thunks
 
-export const setNativeCityAsync = ():Thunk => async (dispatch:Dispatch)=>{
+export const setNativeCityByPermission = ():Thunk => async (dispatch:Dispatch)=>{
     try {
         dispatch(setFetching(true))
         //@ts-ignore
@@ -295,7 +295,7 @@ export const setCityFromSearchByCityId = (cityId: string):Thunk => async (dispat
     dispatch(setFetching(false))
 }
 
-export const requestPermissionLocation = ():Thunk => async (dispatch) => {
+export const requestPermissionLocation = ():Thunk => async (dispatch:Dispatch) => {
     await bridge.send('VKWebAppGetGeodata')
         .then(res => {
             setValueByKeyStorageVKBridge(JSON.stringify(true), STATE_KEYS.IS_ALLOWED_PLACE)
@@ -305,6 +305,19 @@ export const requestPermissionLocation = ():Thunk => async (dispatch) => {
         }).catch(e => {
             dispatch(setAllowedPlace(false))
         })
+}
+
+export const checkIntro = ():Thunk => async (dispatch:Dispatch) =>{
+    try {
+        await bridge.send('VKWebAppStorageSet',
+            {
+                key: STATE_KEYS.IS_CHECK_INFO,
+                value: 'true'
+            })
+        dispatch(setCheckIntro(true))
+    } catch (e) {
+
+    }
 }
 
 export const subscribeNoticificationByCityId = (cityId:string | null):Thunk=> async (dispatch:Dispatch) => {
@@ -333,7 +346,7 @@ export const subscribeNoticificationByCityId = (cityId:string | null):Thunk=> as
     }
 }
 
-export const unsubsubscribeNoticificationByCityId = (cityId:string | null):Thunk =>async (dispatch:Dispatch) => {
+export const unsubscribeNoticificationByCityId = (cityId:string | null):Thunk =>async (dispatch:Dispatch) => {
     try {
         if (cityId) {
             await unsubscribeNoticification(cityId)
@@ -355,4 +368,9 @@ export const unsubsubscribeNoticificationByCityId = (cityId:string | null):Thunk
             resultOperation={false}
             text={'Выключить уведомления не удалось'} />))
     }
+}
+
+export const setAllSubscribersUser = ():Thunk => async (dispatch:Dispatch) =>{
+    const res = await getSubscribes()
+	dispatch(addSubscribedCities(res))
 }

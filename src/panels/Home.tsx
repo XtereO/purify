@@ -24,22 +24,22 @@ import { getDistance } from "../utils/getDistance";
 
 const LIGHT_BLUE = '#4475F1'
 type PropsType={
-    id: string,
-    isGoodWind: boolean,
-    city: EcoCityData | null,
-    nativeCityId: string,
-    go:(modal:string)=>void,
-    isInit: boolean,
-    bgApp: string,
-    subscribeNoticification: ()=>void,
-	unsubsubscribeNoticification: ()=>void,
-	isCitySubscribed: boolean,
-    snackbar: ReactElement<any,any> | null,
+    id: string
+    isGoodWind: boolean
+    city: EcoCityData | null
+    nativeCityId: string
+    go:(modal:string)=>void
+    isFetching: boolean
+    bgApp: string
+    subscribeNoticification: ()=>void
+	unsubsubscribeNoticification: ()=>void
+	isCitySubscribed: boolean
+    snackbar: ReactElement<any,any> | null
     doStory: ()=>void
 }
 
 
-export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city, go, isInit, nativeCityId, isCitySubscribed, subscribeNoticification, unsubsubscribeNoticification, doStory }) => {
+export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city, go, isFetching, nativeCityId, isCitySubscribed, subscribeNoticification, unsubsubscribeNoticification, doStory }) => {
 
     const [isShowMore,setShowMore] = useState(false)
     const [isShowBigImage, setShowBigImage] = useState(false)
@@ -137,24 +137,24 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
             </div>
             }
             <Div
-                className={(isInit ? 'bg__init card' : 'card' + ' ' + ((city && city.current.aqi<50) ? 'home__good__weather' : (city && city.current.aqi<100) ? 'home__okay__weather' : 'home__bad__weather'))}>
+                className={(isFetching ? 'bg__init card' : 'card' + ' ' + ((city && city.current.aqi<50) ? 'home__good__weather' : (city && city.current.aqi<100) ? 'home__okay__weather' : 'home__bad__weather'))}>
                 <div className='home__main__title'>
-                    {isInit ?  <div
+                    {isFetching ?  <div
                     style={{height:24,width:61}}
                     className='bg__init__home'></div> : <div
                     style={{fontSize:24,fontWeight:'inherit',lineHeight:2.2,color:'rgba(0,0,0,0.5)'}}
                     className='text__SF-Pro-Rounded-Semibold'>{city && city.current.aqi} AQI</div>}
                 </div>
                 <div className='center__x text__Inter-Medium' style={{color:'rgba(0,0,0,0.5)'}}>
-                    {isInit && <div 
+                    {isFetching && <div 
                     style={{height:16, width:97, marginTop:10}}
                     className='bg__init__home'></div> }
                     <div 
                     style={{fontSize:17}}
                     className='center__y'>
-                    {(city && nativeCityId===city.id && (!isInit)) && <Icon16Place fill='rgba(0,0,0,0.5)' style={{marginRight:3}} />}
+                    {(city && nativeCityId===city.id && (!isFetching)) && <Icon16Place fill='rgba(0,0,0,0.5)' style={{marginRight:3}} />}
                     </div>
-                    {((!isInit) && city) && city.name}
+                    {((!isFetching) && city) && city.name}
                 </div>
                 <div>
                     <div className='mt-4 home__main__bottom__side'>
@@ -166,7 +166,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
                         <Avatar 
                         style={{backgroundColor:'rgba(255, 255, 255, 0.35)'}}
                         shadow={false}>
-                            {(!isInit) && <Icon24Search  fill='#000' />}
+                            {(!isFetching) && <Icon24Search  fill='#000' />}
                         </Avatar>
                         </div>
                     </div>
@@ -180,8 +180,8 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
                         <Avatar 
                         style={{backgroundColor:'rgba(255, 255, 255, 0.35)'}}
                         shadow={false}>
-                            {(!isInit) && (!isCitySubscribed) && <Icon24NotificationOutline fill='#000' />}
-                            {(!isInit) && (isCitySubscribed) && <Icon24NotificationCheckOutline fill='#000' />}
+                            {(!isFetching) && (!isCitySubscribed) && <Icon24NotificationOutline fill='#000' />}
+                            {(!isFetching) && (isCitySubscribed) && <Icon24NotificationCheckOutline fill='#000' />}
                         </Avatar>
                         </div>
                         <div
@@ -193,7 +193,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
                         className='home__search__cell__rounded home__search__cell__rounded_active' 
                         style={{backgroundColor:'rgba(255, 255, 255, 0.35)'}}
                         shadow={false}>
-                            {(!isInit) && <Icon24StoryOutline fill='#000' />}
+                            {(!isFetching) && <Icon24StoryOutline fill='#000' />}
                         </Avatar>
                         </div>
                     </div>
@@ -201,13 +201,13 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
                 </div>
             </Div>
             <Div>
-                {(city && (!isInit)) && <Advice
+                {(city && (!isFetching)) && <Advice
                 bgApp={bgApp}
                 doStory={doStory}
                 pollution={city.recommendations.pollution}
                 isGoodWind={isGoodWind}
                 />}
-                {isInit && <Card 
+                {isFetching && <Card 
                 className='card__app'
                 mode='shadow'>
                     <div className='d-flex'>
@@ -223,7 +223,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
             </Div>  
             <Div>
                 <Header className='text__SF-Pro-Rounded-Semibold'>
-                    {(!isInit) ? <span className="text__gray unselectable">
+                    {(!isFetching) ? <span className="text__gray unselectable">
                     ЗАГРЯЗНИТЕЛИ
                     </span> : <div
                     style={{height:12, width:85}}
@@ -236,7 +236,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
                 >
                     <div
                     className='card__app'>
-                    {(isInit) && [3,2,1,0].map((c)=><><div
+                    {(isFetching) && [3,2,1,0].map((c)=><><div
                     key={`pollutant${c}`}
                     style={{display:'grid',gridTemplateColumns:'1fr 50px'}}>
                         <div 
@@ -247,17 +247,17 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
                         className='bg__init'>
                         </div></div>
                         {c!==0 && <Spacing key={`pollutant_key${c}`} className="spacing" separator size={32}/>}</>)} 
-                    {(!isInit) && [...pollutantsJSX].slice(0,4)}
+                    {(!isFetching) && [...pollutantsJSX].slice(0,4)}
                     {((!isShowMore) && (pollutantsJSX.length>4)) && <Cell onClick={()=>setShowMore(true)}><ListItem bgApp={bgApp} description={<Link>Показать все</Link>}>
                         <Icon24Dropdown fill={LIGHT_BLUE}/>
                     </ListItem></Cell>}
-                    {(isShowMore && (!isInit)) && <>{[...pollutantsJSX].slice(4,6)}</>}
+                    {(isShowMore && (!isFetching)) && <>{[...pollutantsJSX].slice(4,6)}</>}
                     </div>
                 </Card> 
             </Div>
             <Div>
                 <Header className='text__SF-Pro-Rounded-Semibold'>
-                    {(!isInit) ? <span className='text__gray unselectable'>
+                    {(!isFetching) ? <span className='text__gray unselectable'>
                         ПРОГНОЗ НА НЕДЕЛЮ
                     </span> : <div
                     style={{height:12, width:85}}
@@ -268,7 +268,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
                 mode='shadow'
                 className='card__app'>
                     <div className=''>
-                    {(isInit) && [5,6,7,8,9,4,10].map((c)=><><div 
+                    {(isFetching) && [5,6,7,8,9,4,10].map((c)=><><div 
                     key={`weather${c}`}
                     style={{display:'grid',gridTemplateColumns:'24px 1fr 60px', gridGap:'10px'}}>
                         <div 
@@ -283,13 +283,13 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
                         className='bg__init'>
                         </div>
                     </div>{c!==10 && <Spacing key={`weather_spacing${c}`} className="spacing" separator size={16} />}</>)}
-                        {(!isInit) && forecastsJSX}
+                        {(!isFetching) && forecastsJSX}
                     </div>
                 </Card>
             </Div>
             {stations.length!==0 && <Div>
                 <Header className='text__SF-Pro-Rounded-Semibold'>
-                    {(!isInit) ? <span className='text__gray'>
+                    {(!isFetching) ? <span className='text__gray'>
                         СТАНЦИИ
                     </span> : <div
                     style={{height:12, width:85}}
@@ -300,7 +300,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
                 mode='shadow'
                 className='card__app'>
                     <div className=''>
-                    {(isInit) && [5,6,7,8,9,4,10].map((c)=><><div 
+                    {(isFetching) && [5,6,7,8,9,4,10].map((c)=><><div 
                     key={`station${c}`}
                     style={{display:'grid',gridTemplateColumns:'24px 1fr 60px', gridGap:'10px'}}>
                         <div 
@@ -315,7 +315,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
                         className='bg__init'>
                         </div>
                     </div>{c!==10 && <Spacing key={`station_spacing${c}}`} separator className="spacing" size={16} />}</>)}
-                        {(!isInit) && stationsJSX}
+                        {(!isFetching) && stationsJSX}
                     </div>
                 </Card>
             </Div>}
