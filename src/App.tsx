@@ -338,6 +338,8 @@ type PlaceImageType = {
 }
 const PlaceImage:React.FC<PlaceImageType> = ({ x }) => {
 	const [image] = useImage(placePNG);
+	//@ts-ignore
+	image.setAttribute('crossOrigin','anonymous')
 	return <Image
 		x={x}
 		y={762.15}
@@ -346,6 +348,8 @@ const PlaceImage:React.FC<PlaceImageType> = ({ x }) => {
 
 const ChevronRight = () => {
 	const [image] = useImage(chevron_right);
+	//@ts-ignore
+	image.setAttribute('crossOrigin','anonymous')
 	return <Image
 		x={1005.8}
 		y={1167.05}
