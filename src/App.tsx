@@ -15,10 +15,10 @@ import { MyCities } from './panels/MyCities';
 import { MySnackbar } from './bricks/MySnackbar';
 import { Layer, Stage, Image, Text, Rect, FastLayer } from "react-konva";
 //@ts-ignore
-import placePNG from "./media/place.svg";
+import placePNG from "./media/place_for_story.png";
 import useImage from 'use-image';
 //@ts-ignore
-import chevron_right from "./media/chevron_right.svg";
+import chevron_right from "./media/chevron_right_for_story.png";
 import { TurnNoticifications } from './panels/TurnNoticifications';
 import { useDispatch, useSelector } from 'react-redux';
 import { activeModalSelector, activePanelSelector, bgAppSelector, platformSelector } from './bll/Selectors/initialSelector';
@@ -338,8 +338,6 @@ type PlaceImageType = {
 }
 const PlaceImage:React.FC<PlaceImageType> = ({ x }) => {
 	const [image] = useImage(placePNG);
-	//@ts-ignore
-	image.setAttribute('crossOrigin','anonymous')
 	return <Image
 		x={x}
 		y={762.15}
@@ -348,8 +346,6 @@ const PlaceImage:React.FC<PlaceImageType> = ({ x }) => {
 
 const ChevronRight = () => {
 	const [image] = useImage(chevron_right);
-	//@ts-ignore
-	image.setAttribute('crossOrigin','anonymous')
 	return <Image
 		x={1005.8}
 		y={1167.05}

@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "./static/css/main.fd509e86.css",
-    "main.js": "./static/js/main.92461fee.js",
+    "main.js": "./static/js/main.31d5b0c9.js",
     "static/js/61.2c270fd9.chunk.js": "./static/js/61.2c270fd9.chunk.js",
     "static/js/390.15ee7719.chunk.js": "./static/js/390.15ee7719.chunk.js",
     "static/media/SF-Pro-Rounded-Semibold.ttf": "./static/media/SF-Pro-Rounded-Semibold.af98bf892da1313b61a1.ttf",
@@ -19,13 +19,11 @@
     "static/media/wifi_outline_56.svg": "./static/media/wifi_outline_56.e7641413a94b495cf3956c6b57f51897.svg",
     "static/media/mask.svg": "./static/media/mask.ca4eeaf1f03497066ea6a3890d165fbb.svg",
     "static/media/score_high.svg": "./static/media/score_high.8b2dd07198a8ad5252259dea941583a4.svg",
-    "static/media/place.svg": "./static/media/place.1a9be207c927eeed7754ec9e9507270b.svg",
     "index.html": "./index.html",
-    "static/media/chevron_right.svg": "./static/media/chevron_right.f01bceace195d7363dc2082f7bae7e14.svg",
     "static/media/score_low.svg": "./static/media/score_low.272815f57b2d0d5155b9a7ccbc353431.svg"
   },
   "entrypoints": [
     "static/css/main.fd509e86.css",
-    "static/js/main.92461fee.js"
+    "static/js/main.31d5b0c9.js"
   ]
 }
