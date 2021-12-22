@@ -15,16 +15,15 @@ import { hidden } from "chalk";
 
 
 type PropsType = {
-    id: string,
-    countryId: string,
-    countryName: string,
-    handlerClose: () => void,
-    setDefaultCity: (cityId: string) => void,
-    onClickMyCities: () => void,
-    myCity: string,
-    myCityId: string,
-    bgApp: string,
-    isAllowedPlace: boolean,
+    id: string
+    countryId: string
+    countryName: string
+    handlerClose: () => void
+    setDefaultCity: (cityId: string) => void
+    myCity: string
+    myCityId: string
+    bgApp: string
+    isAllowedPlace: boolean
     requestPermissionLocation: () => void
 }
 

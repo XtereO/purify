@@ -31,8 +31,8 @@ import failed_img from './media/score_high.svg'
 import { ROUTES } from './consts/ROUTES';
 import { STATE_KEYS } from './consts/STATE_KEYS';
 import { DEFAULT_CITY_ID, DEFAULT_COUNTRY_NAME, DEFAULT_COUNTRY_ID } from './consts/DEFAULT_VALUES';
-import { checkIntro, requestPermissionLocation, setAllowedPlace, setAllSubscribersUser, setCheckIntro, setCityFromSearchByCityId, setCityId, setCountryId, setCountryName, setFetching, setNativeCityByPermission, setSnackbar, subscribeNoticificationByCityId, unsubscribeNoticificationByCityId } from './bll/Reducers/homeReducer';
-import { getAllowedPlace, getCityFromSearch, getCityId, getCountryId, getCountryName, getFetching, getNativeCity, getSnackbar, getSubscribedCities } from './bll/Selectors/homeSelector';
+import { checkIntro, requestPermissionLocation, setAllowedPlace, setAllSubscribersUser, setCheckIntro, setCityFromSearchByCityId, setDefaultCityId, setCountryId, setCountryName, setFetching, setNativeCityByPermission, setSnackbar, subscribeNoticificationByCityId, unsubscribeNoticificationByCityId } from './bll/Reducers/homeReducer';
+import { getAllowedPlace, getCityFromSearch, getDefaultCityId, getCountryId, getCountryName, getFetching, getNativeCity, getSnackbar, getSubscribedCities } from './bll/Selectors/homeSelector';
 
 
 const App = () => {
@@ -42,7 +42,7 @@ const App = () => {
 	const bgApp = useSelector(bgAppSelector)
 	const activePanel = useSelector(activePanelSelector)
 	const activeModal = useSelector(activeModalSelector)
-	const cityId = useSelector(getCityId)
+	const defaultCityId = useSelector(getDefaultCityId)
 	const cityFromSearch = useSelector(getCityFromSearch)
 	const isAllowedPlace = useSelector(getAllowedPlace)
 	const nativeCity = useSelector(getNativeCity)
@@ -52,65 +52,26 @@ const App = () => {
 	const subscribedCities = useSelector(getSubscribedCities)
 	const isFetching = useSelector(getFetching)
 
-	const setActivePanel = (panel:string | null) => {
+	const setActivePanel = (panel: string | null) => {
 		dispatch(setActivePanelState(panel ? panel : ''))
 	}
-	const setActiveModal = (modal:string | null) => {
+	const setActiveModal = (modal: string | null) => {
 		dispatch(setActiveModalState(modal ? modal : ''))
 	}
 
 	const handlerCloseModal = () => {
 		setActiveModal(null)
 	}
-	
-	useEffect(() => {
-		async function fetchData() {
-			const res = (await bridge.send('VKWebAppStorageGet', { keys: Object.values(STATE_KEYS) }))
 
-			let data = res.keys
-			data.forEach((s) => {
-				let value = s.value ? JSON.parse(s.value) : null
-				switch (s.key) {
-					case STATE_KEYS.IS_CHECK_INFO:
-						if (!value) {
-							setActiveModal(ROUTES.INFO)
-						} else {
-							dispatch(setCheckIntro(true))
-						}
-						break
-					case STATE_KEYS.IS_ALLOWED_PLACE:
-						if (value) {
-							dispatch(setAllowedPlace(true))
-						}
-						break
-					case STATE_KEYS.DEFAULT_COUNTRY_ID:
-						if (value) {
-							dispatch(setCountryId(value))
-						}
-					case STATE_KEYS.DEFAULT_CITY_ID:
-						if (value && (!cityId)) {
-							dispatch(setCityId(value))
-						}
-						break
-					case STATE_KEYS.DEFAULT_COUNTRY_NAME:
-						if (value) {
-							dispatch(setCountryName(value))
-						}
-						break
-					default:
-						break;
-				}
-			})
-		}
-		fetchData()
-		dispatch(setAllSubscribersUser)
+	useEffect(() => {
+		dispatch(setAllSubscribersUser())
 	}, []);
 
 	const handlerLocationHashChange = async () => {
-		const routes = [ROUTES.POLLUTION_CITIES,ROUTES.TURN_NOTICIFICATIONS]
-		if (window.location.hash.slice(1,) &&  (!routes.some(r=>r===window.location.hash.slice(1,))) ) {
+		const routes = [ROUTES.POLLUTION_CITIES, ROUTES.TURN_NOTICIFICATIONS]
+		if (window.location.hash.slice(1,) && (!routes.some(r => r === window.location.hash.slice(1,)))) {
 			dispatch(setFetching(true))
-			dispatch(setCityId(window.location.hash.slice(1,)))
+			dispatch(setDefaultCityId(window.location.hash.slice(1,)))
 			dispatch(setFetching(false))
 		}
 	}
@@ -118,33 +79,28 @@ const App = () => {
 		handlerLocationHashChange()
 	}, [window.location.hash])
 
-	useEffect(()=>{
-		window.addEventListener('hashchange',(e)=>{
-			if(!window.location.hash.slice(1,)){
+	useEffect(() => {
+		window.addEventListener('hashchange', (e) => {
+			if (!window.location.hash.slice(1,)) {
 				setActiveModal(window.location.hash.slice(1,))
 			}
 		})
-	},[])
-	const go = (modal:string | null) => {
+	}, [])
+	const go = (modal: string | null) => {
 		setActiveModal(modal)
-		window.location.assign('#'+(modal ? modal : ''))
+		window.location.assign('#' + (modal ? modal : ''))
 	}
 
 	useEffect(() => {
-		if(isAllowedPlace){
+		if (isAllowedPlace) {
 			dispatch(setNativeCityByPermission())
 		}
 	}, [isAllowedPlace])
 	useEffect(() => {
-		dispatch(setCityFromSearchByCityId(cityId))
-	}, [cityId])
-
-	const handleCloseForMyCities = () => {
-		setActiveModal(ROUTES.POLLUTION_CITIES)
-	}
-	const handleOpenMyCities = () => {
-		setActiveModal(ROUTES.MY_CITIES)
-	}
+		if (defaultCityId) {
+			dispatch(setCityFromSearchByCityId(defaultCityId))
+		}
+	}, [defaultCityId])
 
 	const ref = useRef(null)
 	const refBg = useRef(null)
@@ -154,6 +110,7 @@ const App = () => {
 			if (platform === 'pc') {
 				data = {
 					background_type: 'image',
+					//@ts-ignore
 					blob: ref.current.toDataURL()
 				}
 			} else {
@@ -161,47 +118,50 @@ const App = () => {
 					background_type: 'none'
 				}
 			}
-			//@ts-ignore
-			await bridge.send('VKWebAppShowStoryBox', {
-				...data,
-				"stickers": [
-					{
-						"sticker_type": "renderable",
-						"sticker": {
-							"can_delete": false,
-							"content_type": "image",
-							"blob": ref.current.toDataURL(),
-							"clickable_zones": [
-								{
-									"action_type": "link",
-									"action": {
-										"link": `https://vk.com/app7991717#${state.ecoCity.id}`,
-										"tooltip_text_key": "tooltip_open_default"
+			if (cityFromSearch) {
+				//@ts-ignore
+				await bridge.send('VKWebAppShowStoryBox', {
+					...data,
+					"stickers": [
+						{
+							"sticker_type": "renderable",
+							"sticker": {
+								"can_delete": false,
+								"content_type": "image",
+								//@ts-ignore
+								"blob": ref.current.toDataURL(),
+								"clickable_zones": [
+									{
+										"action_type": "link",
+										"action": {
+											"link": `https://vk.com/app7991717#${cityFromSearch.id}`,
+											"tooltip_text_key": "tooltip_open_default"
+										}
 									}
+								],
+								"transform": {
+									"gravity": "center",
+									"relation_width": 1
 								}
-							],
-							"transform": {
-								"gravity": "center",
-								"relation_width": 1
 							}
 						}
+					]
+				}).catch(e => {
+					dispatch(setSnackbar(<MySnackbar
+						closeHandler={closeSnackbarHandler}
+						resultOperation={true} text={'Опубликовать историю не удалось'} />))
+				}).then(res => {
+					if (res) {
+						dispatch(setSnackbar(<MySnackbar
+							closeHandler={closeSnackbarHandler}
+							resultOperation={true} text={'История опубликована'} />))
+					} else {
+						dispatch(setSnackbar(<MySnackbar
+							closeHandler={closeSnackbarHandler}
+							resultOperation={false} text={'Опубликовать историю не удалось'} />))
 					}
-				]
-			}).catch(e => {
-				dispatch(setSnackbar(<MySnackbar
-					closeHandler={closeSnackbarHandler}
-					resultOperation={true} text={'Опубликовать историю не удалось'} />))
-			}).then(res => {
-				if (res) {
-					dispatch(setSnackbar(<MySnackbar
-						closeHandler={closeSnackbarHandler}
-						resultOperation={true} text={'История опубликована'} />))
-				} else {
-					dispatch(setSnackbar(<MySnackbar
-						closeHandler={closeSnackbarHandler}
-						resultOperation={false} text={'Опубликовать историю не удалось'} />))
-				}
-			})
+				})
+			}
 		} catch (e) {
 			dispatch(setSnackbar(<MySnackbar
 				closeHandler={closeSnackbarHandler}
@@ -212,26 +172,18 @@ const App = () => {
 		dispatch(setSnackbar(null))
 	}
 
-	const subscribeNoticification = useCallback(() =>{
-		dispatch(subscribeNoticificationByCityId(cityId))
-	},[cityId])
-	const unsubscribeNoticification = useCallback(()=>{
-		dispatch(unsubscribeNoticificationByCityId(cityId))
-	},[cityId])
+	const subscribeNoticification = useCallback(() => {
+		dispatch(subscribeNoticificationByCityId(defaultCityId))
+	}, [defaultCityId])
+	const unsubscribeNoticification = useCallback(() => {
+		dispatch(unsubscribeNoticificationByCityId(defaultCityId))
+	}, [defaultCityId])
 
 	const modal = (
 		<ModalRoot onClose={handlerCloseModal} activeModal={activeModal}>
-			{<MyCities
-				toHome={handlerCloseModal}
-				cityFromSearch={cityFromSearch}
-				cityOfUser={nativeCity}
-				setCitySearch={(cityId) => dispatch(setCityId(cityId))}
-				handleClose={handleCloseForMyCities}
-				id={ROUTES.MY_CITIES}
-			/>}
 			<Intro
 				bgApp={bgApp}
-				checkInfo={checkIntro}
+				checkIntro={checkIntro}
 				requestPermissionLocation={requestPermissionLocation}
 				id={ROUTES.INFO} handlerClose={handlerCloseModal} />
 			<TurnNoticifications
@@ -246,8 +198,7 @@ const App = () => {
 				bgApp={bgApp}
 				myCityId={nativeCity ? nativeCity.id : DEFAULT_CITY_ID}
 				myCity={nativeCity ? nativeCity.name : 'Санкт-Петербург'}
-				onClickMyCities={handleOpenMyCities}
-				setDefaultCity={(cityId) => dispatch(setCityId(cityId))}
+				setDefaultCity={(cityId) => dispatch(setDefaultCityId(cityId))}
 				countryName={countryName}
 				countryId={countryId}
 				handlerClose={handlerCloseModal}
@@ -255,13 +206,13 @@ const App = () => {
 		</ModalRoot>
 	)
 
-	const openSubscribePanel = () =>{
+	const openSubscribePanel = () => {
 		go(ROUTES.TURN_NOTICIFICATIONS)
 	}
 	return (
 		<AdaptivityProvider>
 			<AppRoot>
-				<View activePanel={activePanel} modal={modal}>
+				<View activePanel={activePanel ? activePanel : ''} modal={modal}>
 					<NotConnection
 						image={wifiImage}
 						id={ROUTES.OFFLINE} />
@@ -382,7 +333,10 @@ const App = () => {
 	);
 }
 
-const PlaceImage = ({ x }) => {
+type PlaceImageType = {
+	x:number
+}
+const PlaceImage:React.FC<PlaceImageType> = ({ x }) => {
 	const [image] = useImage(placePNG);
 	return <Image
 		x={x}

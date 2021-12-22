@@ -9,7 +9,7 @@ import { Icon24LocationOutline } from '@vkontakte/icons';
 
 const LIGHT_BLUE = '#4475F1'
 
-export const Intro=({id,bgApp,handlerClose,checkInfo,requestPermissionLocation})=>{
+export const Intro=({id,bgApp,handlerClose,checkIntro,requestPermissionLocation})=>{
     
     
 
@@ -49,7 +49,11 @@ export const Intro=({id,bgApp,handlerClose,checkInfo,requestPermissionLocation})
             >
                 <Button  
                 size='l'
-                onClick={requestPermissionLocation}
+                onClick={()=>{
+                    requestPermissionLocation().then(res=>{
+                        handlerClose()
+                    })
+                }}
                 className='intro__button__location'
                 style={{background:LIGHT_BLUE}}
                 before={<Icon24LocationOutline/>}>
@@ -58,7 +62,9 @@ export const Intro=({id,bgApp,handlerClose,checkInfo,requestPermissionLocation})
             </Div>
             <div
             onClick={()=>{
-                checkInfo()
+                checkIntro().then(res=>{
+                    handlerClose()
+                })
             }}
             style={{paddingTop:15,paddingBottom:15}}
             className='w-100 highlight_on_touch center__x text__gray'

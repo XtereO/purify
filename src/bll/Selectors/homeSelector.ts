@@ -21,8 +21,12 @@ export const getSubscribedCities = (state:AppState) =>{
     return state.home.subscribedCities
 }
 
-export const getCityId = (state:AppState) =>{
-    return state.home.cityId
+export const getDefaultCityId = (state:AppState) =>{
+    return state.home.defaultCityId
+}
+
+export const getNativeCityId = (state:AppState) =>{
+    return state.home.nativeCityId
 }
 
 export const getCountryId = (state:AppState) =>{

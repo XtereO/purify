@@ -15,5 +15,6 @@ type Reducers = typeof reducers
 export type AppState = ReturnType<Reducers>
 
 export const store = createStore(reducers, applyMiddleware(ThunkMiddleware))
-
+//@ts-ignore
+window.store = store
 

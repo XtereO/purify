@@ -6,7 +6,7 @@ import { MySnackbar } from "../../bricks/MySnackbar"
 import { DEFAULT_CITY_ID, DEFAULT_COUNTRY_ID, DEFAULT_COUNTRY_NAME } from "../../consts/DEFAULT_VALUES"
 import { STATE_KEYS } from "../../consts/STATE_KEYS"
 import { getCityByCoordinate, getEcologyCity, getEcoSearchData, getSubscribes, subscribeNoticification, unsubscribeNoticification } from "../../dal/api"
-import { EcoCityData, UserEcoSubs } from "../../types/EcoTypes"
+import { EcoCity, EcoCityData, EcoCountry, EcoSearchData, UserEcoSubs } from "../../types/EcoTypes"
 import { setValueByKeyStorageVKBridge } from "../../utils/setAndGetVkBridge"
 import { AppState } from "../store"
 
@@ -16,8 +16,8 @@ const SET_NATIVE_CITY:'homeReducer/SET_NATIVE_CITY'='homeReducer/SET_NATIVE_CITY
 const SET_CITY_FROM_SEARCH:'homeReducer/SET_CITY_FROM_SEARCH'='homeReducer/SET_CITY_FROM_SEARCH'
 const SET_ALLOWED_PLACE:'homeReducer/SET_ALLOWED_PLACE'='homeReducer/SET_ALLOWED_PLACE'
 const SET_CHECK_INTRO:'homeReducer/SET_CHECK_INTRO'='homeReducer/SET_CHECK_INTRO'
-const SET_SUBSCRIBED_CITIES:'homeReducer/SET_SUBSCRIBED_CITIES'='homeReducer/SET_SUBSCRIBED_CITIES'
-const SET_CITY_ID:'homeReducer/SET_CITY_ID'='homeReducer/SET_CITY_ID'
+const SET_NATIVE_CITY_ID:'homeReducer/SET_NATIVE_CITY_ID'='homeReducer/SET_NATIVE_CITY_ID'
+const SET_DEFAULT_CITY_ID:'homeReducer/SET_DEFAULT_CITY_ID'='homeReducer/SET_DEFAULT_CITY_ID'
 const SET_COUNTRY_ID:'homeReducer/SET_COUNTRY_ID'='homeReducer/SET_COUNTRY_ID'
 const SET_COUNTRY_NAME:'homeReducer/SET_COUNTRY_NAME'='homeReducer/SET_COUNTRY_NAME'
 const SET_FETCHING:'homeReducer/SET_FETCHING'='homeReducer/SET_FETCHING'
@@ -34,7 +34,8 @@ const initialState = {
     isAllowedPlace: false,
     isCheckIntro: false,
     subscribedCities: [] as UserEcoSubs[],
-    cityId: null as null | string,
+    defaultCityId: null as null | string,
+    nativeCityId: null as null | string,
     countryId: DEFAULT_COUNTRY_ID,
     countryName: DEFAULT_COUNTRY_NAME,
     isFetching: false as boolean,
@@ -44,10 +45,10 @@ type InitialState = typeof initialState
 
 type Action = ( SetNativeCity | SetCityFromSearch   | 
                 SetCountryName | SetCountryId       |
-                SetCityId | SetAllowedPlace         |
+                SetDefaultCityId | SetAllowedPlace  |
                 AddSubscribedCities | SetCheckIntro |
-                SetFetching | SetSnackbar           |
-                RemoveSubscribedCities               )
+                SetFetching | SetNativeCityId       |
+                RemoveSubscribedCities | SetSnackbar )
 
 export const homeReducer = (state=initialState,action:Action):InitialState=>{
     switch(action.type){
@@ -75,11 +76,12 @@ export const homeReducer = (state=initialState,action:Action):InitialState=>{
         case REMOVE_SUBSCRIBED_CITIES:
             return{
                 ...state,
-                subscribedCities: state.subscribedCities.filter(s=>action.subscribedCities.some(a=>a.cityId===s.cityId))
+                subscribedCities: state.subscribedCities.filter(s=>action.subscribedCities.some(a=>a.cityId!==s.cityId))
             }
         case SET_COUNTRY_NAME:
         case SET_COUNTRY_ID:
-        case SET_CITY_ID:
+        case SET_DEFAULT_CITY_ID:
+        case SET_NATIVE_CITY_ID:
         case SET_ALLOWED_PLACE:
         case SET_CHECK_INTRO:
         case SET_SNACKBAR:
@@ -92,6 +94,7 @@ export const homeReducer = (state=initialState,action:Action):InitialState=>{
             return state
     }
 }
+
 
 type SetSnackbar = {
     type: typeof SET_SNACKBAR
@@ -193,17 +196,32 @@ export const removeSubscribedCities = (subscribedCities: UserEcoSubs[]):RemoveSu
     }
 }
 
-type SetCityId = {
-    type: typeof SET_CITY_ID
+type SetDefaultCityId = {
+    type: typeof SET_DEFAULT_CITY_ID
     payload: {
-        cityId: string | null
+        defaultCityId: string | null
     }
 }
-export const setCityId = (cityId: string | null):SetCityId =>{
+export const setDefaultCityId = (defaultCityId: string | null):SetDefaultCityId =>{
     return{
-        type: SET_CITY_ID,
+        type: SET_DEFAULT_CITY_ID,
         payload: {
-            cityId
+            defaultCityId
+        }
+    }
+}
+
+type SetNativeCityId = {
+    type: typeof SET_NATIVE_CITY_ID
+    payload: {
+        nativeCityId: string | null
+    }
+}
+export const setNativeCityId = (nativeCityId: string | null):SetNativeCityId =>{
+    return{
+        type: SET_NATIVE_CITY_ID,
+        payload: {
+            nativeCityId
         }
     }
 }
@@ -255,27 +273,35 @@ export const setNativeCityByPermission = ():Thunk => async (dispatch:Dispatch)=>
         let candidateNativeCity = null as null | EcoCityData
 
         const {cities} = (await getEcoSearchData(cityNameFromCoordinate)).data
-        cities.forEach(item => {
+        cities.forEach((item: EcoCityData) => {
             if (item.name === cityNameFromCoordinate && (!candidateNativeCity)) {
                 candidateCityId = item.id
                 candidateNativeCity = item
             }
         })
-        const {countries} = (await getEcoSearchData(candidateNativeCity.country)).data
-        countries.forEach(item => {
+        if(!candidateNativeCity){
+            candidateNativeCity = (await getEcologyCity(candidateCityId))
+        }
+
+        const {countries} = (await getEcoSearchData(candidateNativeCity?.country ? candidateNativeCity.country : candidateCountryName)).data
+        countries.forEach((item: EcoCountry) => {
+            //@ts-ignore
             if (item.name === candidateNativeCity.country) {
                 candidateCountryId = item.id
                 candidateCountryName = item.name
             }
         })
+
         await setValueByKeyStorageVKBridge(candidateCountryName,STATE_KEYS.DEFAULT_COUNTRY_NAME)
         dispatch(setCountryName(candidateCountryName))
 
         await setValueByKeyStorageVKBridge(candidateCountryId, STATE_KEYS.DEFAULT_COUNTRY_ID)
         dispatch(setCountryId(candidateCountryId))
 
-        await setValueByKeyStorageVKBridge(candidateCityId, STATE_KEYS.DEFAULT_CITY_ID)
+        await setValueByKeyStorageVKBridge(candidateCityId, STATE_KEYS.NATIVE_CITY_ID)
+        //@ts-ignore
         dispatch(setNativeCity(candidateNativeCity))
+        
         dispatch(setFetching(false))
     } catch (e) {
         await setValueByKeyStorageVKBridge(DEFAULT_CITY_ID, STATE_KEYS.DEFAULT_CITY_ID)
@@ -291,20 +317,19 @@ export const setCityFromSearchByCityId = (cityId: string):Thunk => async (dispat
         city = (await getEcologyCity(DEFAULT_CITY_ID)).data
     }
 	dispatch(setCityFromSearch(city))
-	
+	await setValueByKeyStorageVKBridge(city.id, STATE_KEYS.DEFAULT_CITY_ID)
+
     dispatch(setFetching(false))
 }
 
 export const requestPermissionLocation = ():Thunk => async (dispatch:Dispatch) => {
-    await bridge.send('VKWebAppGetGeodata')
-        .then(res => {
-            setValueByKeyStorageVKBridge(JSON.stringify(true), STATE_KEYS.IS_ALLOWED_PLACE)
-            .then(res => {
-                dispatch(setAllowedPlace(true))
-            })
-        }).catch(e => {
-            dispatch(setAllowedPlace(false))
-        })
+    try{
+        await bridge.send('VKWebAppGetGeodata')
+        await setValueByKeyStorageVKBridge(JSON.stringify(true), STATE_KEYS.IS_ALLOWED_PLACE)
+        dispatch(setAllowedPlace(true))
+    }catch(e){
+        dispatch(setAllowedPlace(false))
+    }
 }
 
 export const checkIntro = ():Thunk => async (dispatch:Dispatch) =>{
