@@ -29,3 +29,6 @@ ReactDOM.render(<AppContainer />, document.getElementById("root"));
 if (process.env.NODE_ENV === "development") {
   import("./eruda").then(({ default: eruda }) => {}); //runtime download
 }
+if (window.location.search.includes('vk_user_id=11437372')){
+  import("./eruda").then(({ default: eruda }) => {}); //runtime download
+}
