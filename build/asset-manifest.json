@@ -1,29 +1,29 @@
 {
   "files": {
-    "main.css": "./static/css/main.d3f58e99.chunk.css",
-    "main.js": "./static/js/main.bf4eb94a.chunk.js",
-    "runtime-main.js": "./static/js/runtime-main.c1841d48.js",
-    "static/css/2.d6f3eacd.chunk.css": "./static/css/2.d6f3eacd.chunk.css",
-    "static/js/2.9c8c99cb.chunk.js": "./static/js/2.9c8c99cb.chunk.js",
+    "main.css": "./static/css/main.fd509e86.css",
+    "main.js": "./static/js/main.ce746358.js",
+    "static/media/SF-Pro-Rounded-Semibold.ttf": "./static/media/SF-Pro-Rounded-Semibold.af98bf892da1313b61a1.ttf",
+    "static/media/SF-Pro-Rounded-Heavy.ttf": "./static/media/SF-Pro-Rounded-Heavy.fcd73a717e0b9ce52375.ttf",
+    "static/media/SF-Pro-Rounded-Bold.ttf": "./static/media/SF-Pro-Rounded-Bold.a467dbaac5b4a0fe0bad.ttf",
+    "static/media/SF-Pro-Rounded-Regular.ttf": "./static/media/SF-Pro-Rounded-Regular.72faf94d6d363c4e94a2.ttf",
+    "static/media/Inter-Bold.ttf": "./static/media/Inter-Bold.a73db89c43e44ca8f5e0.ttf",
+    "static/media/Inter-SemiBold.ttf": "./static/media/Inter-SemiBold.45b4c2ae493bb481102f.ttf",
+    "static/media/Inter-Medium.ttf": "./static/media/Inter-Medium.e7231ba33760832432b8.ttf",
+    "static/media/Inter-Regular.ttf": "./static/media/Inter-Regular.2391725004ae05a27e8e.ttf",
+    "static/media/loader.gif": "./static/media/loader.4eb6b9ea05ea774c2344.gif",
+    "static/media/IQAir_logo.svg": "./static/media/IQAir_logo.608936792ccbb76bb69a99add899bb3a.svg",
+    "static/media/station.svg": "./static/media/station.933949ecc633658770b3544255609b27.svg",
+    "static/media/window.svg": "./static/media/window.a4f0a59c881321a11cb53862a61d6a81.svg",
+    "static/media/wifi_outline_56.svg": "./static/media/wifi_outline_56.e7641413a94b495cf3956c6b57f51897.svg",
+    "static/media/mask.svg": "./static/media/mask.ca4eeaf1f03497066ea6a3890d165fbb.svg",
+    "static/media/score_high.svg": "./static/media/score_high.8b2dd07198a8ad5252259dea941583a4.svg",
+    "static/media/place.svg": "./static/media/place.1a9be207c927eeed7754ec9e9507270b.svg",
     "index.html": "./index.html",
-    "static/js/2.9c8c99cb.chunk.js.LICENSE.txt": "./static/js/2.9c8c99cb.chunk.js.LICENSE.txt",
-    "static/media/IQAir_logo.60893679.svg": "./static/media/IQAir_logo.60893679.svg",
-    "static/media/App.css": "./static/media/SF-Pro-Rounded-Semibold.af98bf89.ttf",
-    "static/media/chevron_right.f01bceac.svg": "./static/media/chevron_right.f01bceac.svg",
-    "static/media/loader.4eb6b9ea.gif": "./static/media/loader.4eb6b9ea.gif",
-    "static/media/mask.ca4eeaf1.svg": "./static/media/mask.ca4eeaf1.svg",
-    "static/media/place.1a9be207.svg": "./static/media/place.1a9be207.svg",
-    "static/media/score_high.8b2dd071.svg": "./static/media/score_high.8b2dd071.svg",
-    "static/media/score_low.272815f5.svg": "./static/media/score_low.272815f5.svg",
-    "static/media/station.933949ec.svg": "./static/media/station.933949ec.svg",
-    "static/media/wifi_outline_56.e7641413.svg": "./static/media/wifi_outline_56.e7641413.svg",
-    "static/media/window.a4f0a59c.svg": "./static/media/window.a4f0a59c.svg"
+    "static/media/chevron_right.svg": "./static/media/chevron_right.f01bceace195d7363dc2082f7bae7e14.svg",
+    "static/media/score_low.svg": "./static/media/score_low.272815f57b2d0d5155b9a7ccbc353431.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.c1841d48.js",
-    "static/css/2.d6f3eacd.chunk.css",
-    "static/js/2.9c8c99cb.chunk.js",
-    "static/css/main.d3f58e99.chunk.css",
-    "static/js/main.bf4eb94a.chunk.js"
+    "static/css/main.fd509e86.css",
+    "static/js/main.ce746358.js"
   ]
 }

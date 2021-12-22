@@ -38,7 +38,7 @@ const initialState = {
     nativeCityId: null as null | string,
     countryId: DEFAULT_COUNTRY_ID,
     countryName: DEFAULT_COUNTRY_NAME,
-    isFetching: false as boolean,
+    isFetching: true as boolean,
     snackbar: null as null | ReactElement<any,any>
 }
 type InitialState = typeof initialState
