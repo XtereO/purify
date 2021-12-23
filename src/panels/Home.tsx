@@ -46,7 +46,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
 
     const dispatch = useDispatch()
     const [isShowMore,setShowMore] = useState(false)
-    const stations = useSelector(getStations)
+    const stations = useSelector(getStations) 
 
     useEffect(()=>{
         if(city){
@@ -58,7 +58,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
         }
     },[city])
     
-    const stationsJSX = city ? stations.map((c,index)=><>
+    const stationsJSX = (stations && city) ? stations.map((c,index)=><>
     <StationItem 
     distance={getDistance({point1:c.coordinates,point2:city.coordinates})}
     stationName={c.name}

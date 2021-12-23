@@ -6,11 +6,6 @@ import { Intro } from './panels/Intro';
 import { Home } from './panels/Home';
 import './App.css'
 import { PollutionCities } from './panels/PollutionCities';
-import {
-	getCityByCoordinate, getEcologyCity, getEcologyCountry,
-	getEcoSearchData, getSubscribes, subscribeNoticification, unsubscribeNoticification
-} from './dal/api';
-import { MyCities } from './panels/MyCities';
 import { MySnackbar } from './bricks/MySnackbar';
 import { Layer, Stage, Image, Text, Rect, FastLayer } from "react-konva";
 //@ts-ignore

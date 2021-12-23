@@ -415,8 +415,8 @@ export const setAllSubscribersUser = ():Thunk => async (dispatch:Dispatch) =>{
 
 export const setStationsByCityName = (cityName:string):Thunk => async (dispatch:Dispatch) =>{
     try{
-        const res = await getEcoSearchData(cityName)
-        dispatch(setStations(res.data))
+        const {stations} = (await getEcoSearchData(cityName)).data
+        dispatch(setStations(stations))
     }catch(e){
         dispatch(setStations([]))
     }
