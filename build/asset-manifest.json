@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "./static/css/main.fd509e86.css",
-    "main.js": "./static/js/main.31d5b0c9.js",
+    "main.js": "./static/js/main.6b2543a2.js",
     "static/js/61.2c270fd9.chunk.js": "./static/js/61.2c270fd9.chunk.js",
     "static/js/390.15ee7719.chunk.js": "./static/js/390.15ee7719.chunk.js",
     "static/media/SF-Pro-Rounded-Semibold.ttf": "./static/media/SF-Pro-Rounded-Semibold.af98bf892da1313b61a1.ttf",
@@ -12,7 +12,6 @@
     "static/media/Inter-SemiBold.ttf": "./static/media/Inter-SemiBold.45b4c2ae493bb481102f.ttf",
     "static/media/Inter-Medium.ttf": "./static/media/Inter-Medium.e7231ba33760832432b8.ttf",
     "static/media/Inter-Regular.ttf": "./static/media/Inter-Regular.2391725004ae05a27e8e.ttf",
-    "static/media/loader.gif": "./static/media/loader.4eb6b9ea05ea774c2344.gif",
     "static/media/IQAir_logo.svg": "./static/media/IQAir_logo.608936792ccbb76bb69a99add899bb3a.svg",
     "static/media/station.svg": "./static/media/station.933949ecc633658770b3544255609b27.svg",
     "static/media/window.svg": "./static/media/window.a4f0a59c881321a11cb53862a61d6a81.svg",
@@ -24,6 +23,6 @@
   },
   "entrypoints": [
     "static/css/main.fd509e86.css",
-    "static/js/main.31d5b0c9.js"
+    "static/js/main.6b2543a2.js"
   ]
 }

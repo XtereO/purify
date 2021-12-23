@@ -49,7 +49,7 @@ export const fetchData = async () => {
                 dispatch(setCountryName(value ? value : DEFAULT_COUNTRY_NAME))
                 break
             case STATE_KEYS.IS_CHECK_INFO:
-                if (!value) {
+                if (value) {
                     dispatch(setActiveModalState(ROUTES.INFO))
                 } else {
                     dispatch(setCheckIntro(true))

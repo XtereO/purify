@@ -19,6 +19,9 @@ import { getDescriptionPollutant, getFullNamePollutant } from "../utils/pollutan
 import { getEcoSearchData } from "../dal/api";
 import { StationItem } from "../bricks/StationItem";
 import { getDistance } from "../utils/getDistance";
+import { useDispatch, useSelector } from "react-redux";
+import { setStationsByCityName } from "../bll/Reducers/homeReducer";
+import { getStations } from "../bll/Selectors/homeSelector";
 
 
 
@@ -41,33 +44,19 @@ type PropsType={
 
 export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city, go, isFetching, nativeCityId, isCitySubscribed, subscribeNoticification, unsubsubscribeNoticification, doStory }) => {
 
+    const dispatch = useDispatch()
     const [isShowMore,setShowMore] = useState(false)
-    const [isShowBigImage, setShowBigImage] = useState(false)
-    const [stations,setStations] = useState<EcoStation[]>([])
+    const stations = useSelector(getStations)
 
     useEffect(()=>{
         if(city){
-            getEcoSearchData(city.name).then((res:{data:EcoSearchData})=>{
-                if(res.data){
-                    setStations(res.data.stations)
-                }
-            })
+            dispatch(setStationsByCityName(city.name))
             setShowMore(false)    
         }
         return()=>{
             setShowMore(false)
         }
     },[city])
-
-    const handlerOpenImage=()=>{
-        setShowBigImage(true)
-    }
-    const handlerCloseImage=()=>{
-        setShowBigImage(false)
-    }
-    const goToForecastPollutionForTheDay=()=>{
-        go('FORECAST_POLLUTION_FOR_THE_DAY')
-    }
     
     const stationsJSX = city ? stations.map((c,index)=><>
     <StationItem 
@@ -100,7 +89,7 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
     const forecastsJSX = city ? city.forecasts.daily.map((c,index)=><>
         <WeatherItem 
         key={`${index}-${c.temperature}${c.aqi}`}
-        onClick={goToForecastPollutionForTheDay}
+        onClick={()=>{}}
         day={currentDay+index+1} value={c.aqi} mode={c.aqi >= 100 ? 'danger' : ((c.aqi>=50) ? 'okay' : 'good')} />
         {(index+1)!==city.forecasts.daily.length && <Spacing 
         key={`weather_spacing${index}`}
@@ -121,21 +110,6 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
         style={{paddingTop:0}}
         className={bgApp}
         >
-            {isShowBigImage && 
-            <div 
-            onClick={handlerCloseImage}
-            style={{
-                display:'flex',
-                justifyContent:'center',
-                flexDirection:'column',
-                position:'fixed',
-                zIndex:1000,
-                width:'100%',
-                height:'100%'
-                }}>
-                <Loader />
-            </div>
-            }
             <Div
                 className={(isFetching ? 'bg__init card' : 'card' + ' ' + ((city && city.current.aqi<50) ? 'home__good__weather' : (city && city.current.aqi<100) ? 'home__okay__weather' : 'home__bad__weather'))}>
                 <div className='home__main__title'>
@@ -319,24 +293,6 @@ export const Home:React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city
                     </div>
                 </Card>
             </Div>}
-            {/*<Div>
-                <Header>
-                    <span className='text__gray'>
-                        ИНТЕРАКТИВНАЯ КАРТА
-                    </span>
-                </Header>
-                <Card mode='outline'>
-                    <Loader />
-                    <div className='home__map__bottom'>
-                    <div 
-                    onClick={handlerOpenImage}
-                    className='home__map__button home__map__button_active'>
-                        <Icon24Fullscreen/>
-                        <div className='ml-1'>Открыть</div>
-                    </div>
-                    </div>
-                </Card>
-            </Div>*/}
             <Footer style={{paddingTop:4,paddingLeft:4}}>
                 <Div className='text__SF-Pro-Rounded-Semibold'>
                 Информация предоставлена

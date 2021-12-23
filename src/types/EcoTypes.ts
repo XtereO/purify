@@ -273,3 +273,10 @@ export type EcoCityRank = {
   state: string;
   url: string;
 };
+
+export type City = {
+  id: string
+  name: string
+  country: string
+  aqi?: number
+} 

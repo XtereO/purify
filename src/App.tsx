@@ -5,7 +5,6 @@ import '@vkontakte/vkui/dist/vkui.css';
 import { Intro } from './panels/Intro';
 import { Home } from './panels/Home';
 import './App.css'
-import { ForecastPollutionForDay } from './panels/ForecastPollutionForDay';
 import { PollutionCities } from './panels/PollutionCities';
 import {
 	getCityByCoordinate, getEcologyCity, getEcologyCountry,
@@ -29,7 +28,6 @@ import wifiImage from './media/wifi_outline_56.svg'
 //@ts-ignore
 import failed_img from './media/score_high.svg'
 import { ROUTES } from './consts/ROUTES';
-import { STATE_KEYS } from './consts/STATE_KEYS';
 import { DEFAULT_CITY_ID, DEFAULT_COUNTRY_NAME, DEFAULT_COUNTRY_ID } from './consts/DEFAULT_VALUES';
 import { checkIntro, requestPermissionLocation, setAllowedPlace, setAllSubscribersUser, setCheckIntro, setCityFromSearchByCityId, setDefaultCityId, setCountryId, setCountryName, setFetching, setNativeCityByPermission, setSnackbar, subscribeNoticificationByCityId, unsubscribeNoticificationByCityId } from './bll/Reducers/homeReducer';
 import { getAllowedPlace, getCityFromSearch, getDefaultCityId, getCountryId, getCountryName, getFetching, getNativeCity, getSnackbar, getSubscribedCities } from './bll/Selectors/homeSelector';
@@ -183,8 +181,8 @@ const App = () => {
 		<ModalRoot onClose={handlerCloseModal} activeModal={activeModal}>
 			<Intro
 				bgApp={bgApp}
-				checkIntro={checkIntro}
-				requestPermissionLocation={requestPermissionLocation}
+				checkIntro={()=>dispatch(checkIntro())}
+				requestPermissionLocation={()=>dispatch(requestPermissionLocation())}
 				id={ROUTES.INFO} handlerClose={handlerCloseModal} />
 			<TurnNoticifications
 				bgApp={bgApp}

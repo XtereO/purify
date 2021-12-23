@@ -6,7 +6,7 @@ import { MySnackbar } from "../../bricks/MySnackbar"
 import { DEFAULT_CITY_ID, DEFAULT_COUNTRY_ID, DEFAULT_COUNTRY_NAME } from "../../consts/DEFAULT_VALUES"
 import { STATE_KEYS } from "../../consts/STATE_KEYS"
 import { getCityByCoordinate, getEcologyCity, getEcoSearchData, getSubscribes, subscribeNoticification, unsubscribeNoticification } from "../../dal/api"
-import { EcoCity, EcoCityData, EcoCountry, EcoSearchData, UserEcoSubs } from "../../types/EcoTypes"
+import { EcoCity, EcoCityData, EcoCountry, EcoSearchData, EcoStation, UserEcoSubs } from "../../types/EcoTypes"
 import { setValueByKeyStorageVKBridge } from "../../utils/setAndGetVkBridge"
 import { AppState } from "../store"
 
@@ -24,6 +24,7 @@ const SET_FETCHING:'homeReducer/SET_FETCHING'='homeReducer/SET_FETCHING'
 const SET_SNACKBAR:'homeReducer/SET_SNACKBAR'='homeReducer/SET_SNACKBAR'
 const ADD_SUBSCRIBED_CITIES:'homeReducer/ADD_LIST_TO_SUBSCRIBED_CITIES'='homeReducer/ADD_LIST_TO_SUBSCRIBED_CITIES'
 const REMOVE_SUBSCRIBED_CITIES:'homeReducer/REMOVE_SUBSCRIBED_CITIES'='homeReducer/REMOVE_SUBSCRIBED_CITIES'
+const SET_STATIONS:'homeReducer/SET_STATIONS'='homeReducer/SET_STATIONS'
 
 
 const initialState = {
@@ -34,6 +35,7 @@ const initialState = {
     isAllowedPlace: false,
     isCheckIntro: false,
     subscribedCities: [] as UserEcoSubs[],
+    stations: [] as EcoStation[],
     defaultCityId: null as null | string,
     nativeCityId: null as null | string,
     countryId: DEFAULT_COUNTRY_ID,
@@ -48,7 +50,8 @@ type Action = ( SetNativeCity | SetCityFromSearch   |
                 SetDefaultCityId | SetAllowedPlace  |
                 AddSubscribedCities | SetCheckIntro |
                 SetFetching | SetNativeCityId       |
-                RemoveSubscribedCities | SetSnackbar )
+                SetStations | SetSnackbar           |
+                RemoveSubscribedCities               )
 
 export const homeReducer = (state=initialState,action:Action):InitialState=>{
     switch(action.type){
@@ -85,6 +88,7 @@ export const homeReducer = (state=initialState,action:Action):InitialState=>{
         case SET_ALLOWED_PLACE:
         case SET_CHECK_INTRO:
         case SET_SNACKBAR:
+        case SET_STATIONS:
         case SET_FETCHING:
             return{
                 ...state,
@@ -174,6 +178,21 @@ export const setCheckIntro = (isCheckIntro: boolean):SetCheckIntro =>{
     }
 }
 
+type SetStations = {
+    type: typeof SET_STATIONS
+    payload:{
+        stations: EcoStation[]
+    }
+}
+export const setStations = (stations:EcoStation[]):SetStations =>{
+    return{
+        type: SET_STATIONS,
+        payload:{
+            stations
+        }
+    }
+}
+
 type AddSubscribedCities = {
     type: typeof ADD_SUBSCRIBED_CITIES,
     subscribedCities: UserEcoSubs[] 
@@ -258,7 +277,6 @@ export const setCountryName = (countryName: string):SetCountryName =>{
 
 
 // Thunks
-
 export const setNativeCityByPermission = ():Thunk => async (dispatch:Dispatch)=>{
     try {
         dispatch(setFetching(true))
@@ -334,14 +352,9 @@ export const requestPermissionLocation = ():Thunk => async (dispatch:Dispatch) =
 
 export const checkIntro = ():Thunk => async (dispatch:Dispatch) =>{
     try {
-        await bridge.send('VKWebAppStorageSet',
-            {
-                key: STATE_KEYS.IS_CHECK_INFO,
-                value: 'true'
-            })
+        await setValueByKeyStorageVKBridge('true',STATE_KEYS.IS_CHECK_INFO)
         dispatch(setCheckIntro(true))
     } catch (e) {
-
     }
 }
 
@@ -398,4 +411,13 @@ export const unsubscribeNoticificationByCityId = (cityId:string | null):Thunk =>
 export const setAllSubscribersUser = ():Thunk => async (dispatch:Dispatch) =>{
     const res = await getSubscribes()
 	dispatch(addSubscribedCities(res))
+}
+
+export const setStationsByCityName = (cityName:string):Thunk => async (dispatch:Dispatch) =>{
+    try{
+        const res = await getEcoSearchData(cityName)
+        dispatch(setStations(res.data))
+    }catch(e){
+        dispatch(setStations([]))
+    }
 }
