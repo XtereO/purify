@@ -1,14 +1,11 @@
 import { Icon12ErrorCircle, Icon24Dismiss, Icon32PlaceOutline } from "@vkontakte/icons"
 import { Card, Cell, Div, Group, Header, Input, ModalPage, ModalPageHeader, PanelHeaderButton, Search, Spacing } from "@vkontakte/vkui"
 import React, { ChangeEvent, Fragment, useEffect, useState } from "react"
-import { Icon20Search } from '@vkontakte/icons';
 import { ListItem } from "../bricks/ListItem";
-import { Icon20PlaceOutline } from '@vkontakte/icons';
 import { PlaceItem } from "../bricks/PlaceItem";
-import { getEcologyCity, getEcoRankCity, getEcoSearchData } from "../dal/api";
-import { EcoCity, EcoStation } from "../types/EcoTypes";
-import { Formik } from "formik";
-import { hidden } from "chalk";
+import { useDispatch, useSelector } from "react-redux";
+import { setCitiesByTitle, setClearestCitiesByCountryId } from "../bll/Reducers/pollutionCitiesReducer";
+import { getCitiesFromSearch, getClearestCities, getFetching } from "../bll/Selectors/pollutionCitiesSelector";
 
 
 
@@ -29,48 +26,21 @@ type PropsType = {
 
 export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, handlerClose, setDefaultCity, countryName, myCity, myCityId, isAllowedPlace, requestPermissionLocation }) => {
 
-    type CityType = {
-        id: string,
-        name: string,
-        country: string,
-        aqi?: number
-    }
+    const dispatch = useDispatch()
+    const cities = useSelector(getCitiesFromSearch)
+    const clearestCities = useSelector(getClearestCities)
+    const isFetching = useSelector(getFetching)
+
     const [title, setTitle] = useState('')
+    useEffect(() => {
+        dispatch(setCitiesByTitle(title.length>2 ? title : countryName))
+    }, [title])
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value)
     }
-    const [cities, setCities] = useState<CityType[]>([])
-    const [clearestCities, setClearestCitites] = useState<CityType[]>([])
-    const [isFetching, setFetching] = useState(true)
 
     useEffect(() => {
-        setFetching(true)
-        getEcoSearchData(title.length > 2 ? title : countryName)
-            .then(res => {
-                const data = res.data
-                setCities(data.cities)
-                setFetching(false)
-            }).catch(e => {
-                setFetching(false)
-            })
-    }, [title])
-
-    useEffect(() => {
-        setFetching(true)
-        getEcoSearchData(countryName)
-            .then(res => {
-                const data = res.data
-                setCities(data.cities)
-
-                getEcoRankCity(countryId)
-                    .then(res => {
-                        const data = res.data
-                        setClearestCitites(data)
-                        setFetching(false)
-                    })
-            }).catch(e => {
-                setFetching(false)
-            })
+        dispatch(setClearestCitiesByCountryId(countryId))
     }, [])
 
 

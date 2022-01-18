@@ -1,18 +1,18 @@
 import { AppState } from "../store";
 
 
-export const bgAppSelector = (state: AppState) =>{
+export const getBgApp = (state: AppState) =>{
     return state.initial.bgApp
 }
 
-export const platformSelector = (state: AppState) =>{
+export const getPlatform = (state: AppState) =>{
     return state.initial.platform
 }
 
-export const activePanelSelector = (state: AppState) =>{
+export const getActivePanel = (state: AppState) =>{
     return state.initial.activePanel
 }
 
-export const activeModalSelector = (state: AppState) =>{
+export const getActiveModal = (state: AppState) =>{
     return state.initial.activeModal
 }

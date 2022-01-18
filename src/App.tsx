@@ -1,40 +1,43 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import bridge, { StickerContainer } from '@vkontakte/vk-bridge';
-import { View, Panel, ScreenSpinner, AdaptivityProvider, AppRoot, ModalRoot, ConfigProvider, usePlatform, Snackbar } from '@vkontakte/vkui';
+import React, {  useEffect, useRef, useCallback } from 'react';
+import bridge from '@vkontakte/vk-bridge';
+import useImage from 'use-image';
+import { useDispatch, useSelector } from 'react-redux';
+import { View, AdaptivityProvider, AppRoot, ModalRoot } from '@vkontakte/vkui';
+import { Layer, Stage, Image, Text, Rect } from "react-konva";
 import '@vkontakte/vkui/dist/vkui.css';
+import './App.css'
+
 import { Intro } from './panels/Intro';
 import { Home } from './panels/Home';
-import './App.css'
 import { PollutionCities } from './panels/PollutionCities';
 import { MySnackbar } from './bricks/MySnackbar';
-import { Layer, Stage, Image, Text, Rect, FastLayer } from "react-konva";
+import { NotConnection } from './panels/NotConnection';
+import { TurnNoticifications } from './panels/TurnNoticifications';
+
+import { setActiveModalState, setActivePanelState } from './bll/Reducers/initialReducer';
+import { checkIntro, requestPermissionLocation, setAllowedPlace, setAllSubscribersUser, setCheckIntro, setCityFromSearchByCityId, setDefaultCityId, setFetching, setNativeCityByPermission, setSnackbar, subscribeNoticificationByCityId, unsubscribeNoticificationByCityId } from './bll/Reducers/homeReducer';
+import { getAllowedPlace, getCityFromSearch, getDefaultCityId, getCountryId, getCountryName, getFetching, getNativeCity, getSnackbar, getSubscribedCities } from './bll/Selectors/homeSelector';
+import { getActiveModal, getActivePanel, getBgApp, getPlatform } from './bll/Selectors/initialSelector';
+
+import { ROUTES } from './consts/ROUTES';
+import { DEFAULT_CITY_ID } from './consts/DEFAULT_VALUES';
+
 //@ts-ignore
 import placePNG from "./media/place_for_story.png";
-import useImage from 'use-image';
 //@ts-ignore
 import chevron_right from "./media/chevron_right_for_story.png";
-import { TurnNoticifications } from './panels/TurnNoticifications';
-import { useDispatch, useSelector } from 'react-redux';
-import { activeModalSelector, activePanelSelector, bgAppSelector, platformSelector } from './bll/Selectors/initialSelector';
-import { NotConnection } from './panels/NotConnection';
-import { setActiveModalState, setActivePanelState } from './bll/Reducers/initialReducer';
 //@ts-ignore
 import wifiImage from './media/wifi_outline_56.svg'
 //@ts-ignore
 import failed_img from './media/score_high.svg'
-import { ROUTES } from './consts/ROUTES';
-import { DEFAULT_CITY_ID, DEFAULT_COUNTRY_NAME, DEFAULT_COUNTRY_ID } from './consts/DEFAULT_VALUES';
-import { checkIntro, requestPermissionLocation, setAllowedPlace, setAllSubscribersUser, setCheckIntro, setCityFromSearchByCityId, setDefaultCityId, setCountryId, setCountryName, setFetching, setNativeCityByPermission, setSnackbar, subscribeNoticificationByCityId, unsubscribeNoticificationByCityId } from './bll/Reducers/homeReducer';
-import { getAllowedPlace, getCityFromSearch, getDefaultCityId, getCountryId, getCountryName, getFetching, getNativeCity, getSnackbar, getSubscribedCities } from './bll/Selectors/homeSelector';
-
 
 const App = () => {
 
 	const dispatch = useDispatch()
-	const platform = useSelector(platformSelector)
-	const bgApp = useSelector(bgAppSelector)
-	const activePanel = useSelector(activePanelSelector)
-	const activeModal = useSelector(activeModalSelector)
+	const platform = useSelector(getPlatform)
+	const bgApp = useSelector(getBgApp)
+	const activePanel = useSelector(getActivePanel)
+	const activeModal = useSelector(getActiveModal)
 	const defaultCityId = useSelector(getDefaultCityId)
 	const cityFromSearch = useSelector(getCityFromSearch)
 	const isAllowedPlace = useSelector(getAllowedPlace)
