@@ -2,6 +2,7 @@ import { useState } from "react"
 import { FixedLayout, Group, Panel } from "@vkontakte/vkui"
 import { MySnackbar } from "../bricks/MySnackbar"
 import { toOnline } from "../utils/internetConnection"
+import { TextInterRegular, TextInterSemibold, TextSFProRoundedRegular } from "../bricks/Fonts"
 
 
 type PropsType = {
@@ -30,21 +31,26 @@ export const NotConnection:React.FC<PropsType> = ({id,image}) =>{
     className='center__y'>
         <img src={image} />
         <div 
-        className='text__Inter-SemiBold'
         style={{fontSize:20}}>
+        <TextInterSemibold>
         Нет подключения
+        </TextInterSemibold>
         </div>
         <div 
-        className='text__Inter-Regular center__x'
+        className='center__x'
         style={{color:'#898989',fontSize:16,marginTop:8}}
         >
+            <TextInterRegular>
             Проверьте соединение и повторите
+            </TextInterRegular>
         </div>
         <div 
-        className='text__Inter-Regular center__x'
+        className='center__x'
         style={{color:'#898989',fontSize:16}}
         >
+            <TextInterRegular>
             попытку
+            </TextInterRegular>
         </div>
         <div style={{marginTop:24}}>
             <button
@@ -57,10 +63,12 @@ export const NotConnection:React.FC<PropsType> = ({id,image}) =>{
                 border:'none',
                 fontSize:15
             }}
-            className='center__y text__SF-Pro-Rounded-Regular'
+            className='center__y'
             onClick={tryConnectHandler}
             >
+                <TextSFProRoundedRegular>
                 Повторить попытку
+                </TextSFProRoundedRegular>
             </button>
         </div>
     </div>

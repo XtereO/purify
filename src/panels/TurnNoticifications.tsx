@@ -2,6 +2,7 @@ import React from "react"
 import { Button, ModalCard } from "@vkontakte/vkui"
 import { Icon56NotificationOutline } from '@vkontakte/icons';
 import { LIGHT_BLUE } from "../consts/COLORS";
+import { TextInterBold, TextInterMedium, TextInterRegular } from "../bricks/Fonts";
 
 
 
@@ -19,8 +20,9 @@ export const TurnNoticifications:React.FC<PropsType>=({id, subscribeNoticificati
 
           onClose={closeHandler}
           icon={<Icon56NotificationOutline fill={LIGHT_BLUE} />}
-          header={<div className='text__Inter-Bold'>Включить уведомления?</div>}
-          subheader={<div className='text__Inter-Regular'>
+          header={<div><TextInterBold>Включить уведомления?</TextInterBold></div>}
+          subheader={<div>
+            <TextInterRegular>
               Мы будем уведомлять вас об актуальном качестве воздуха
               раз в неделю, а также:
               <div style={{marginTop:10}}>
@@ -29,13 +31,16 @@ export const TurnNoticifications:React.FC<PropsType>=({id, subscribeNoticificati
               <div style={{marginTop:5}}>
                  - О резких скачках количества загрязнителей
               </div>
+            </TextInterRegular>
             </div>}
           actions={
             <Button size="l" mode="primary" onClick={()=>{
                 subscribeNoticification()
                 closeHandler()
             }} className='text__Inter-Medium'>
-              Включить
+              <TextInterMedium>
+                Включить
+              </TextInterMedium>
             </Button>
           }
         />

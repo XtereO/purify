@@ -9,6 +9,7 @@ import { setCitiesByTitle, setClearestCitiesByCountryId } from "../bll/Reducers/
 import { getCitiesFromSearch, getClearestCities, getFetching } from "../bll/Selectors/pollutionCitiesSelector";
 
 import { Icon12ErrorCircle, Icon24Dismiss, Icon32PlaceOutline } from "@vkontakte/icons"
+import { TextSFProRoundedSemibold } from "../bricks/Fonts";
 
 
 
@@ -150,12 +151,14 @@ export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, han
                 </Card>
             </Div>
             <Div>
-                <Header className='text__SF-Pro-Rounded-Semibold'>
+                <Header>
+                    <TextSFProRoundedSemibold>
                     {(!isFetching) ? <span className='text__gray'>
                         {title.length > 0 ? "ВСЕ" : "С НИЗКИМ AQI ЗА ДЕНЬ"}
                     </span> : <div
                         className='bg__init' style={{ width: 85, height: 12 }}
                     ></div>}
+                    </TextSFProRoundedSemibold>
                 </Header>
                 <Card
                     mode='shadow'
@@ -167,12 +170,14 @@ export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, han
                 </Card>
             </Div>
             <Div>
-                <Header className='text__SF-Pro-Rounded-Semibold'>
+                <Header>
+                    <TextSFProRoundedSemibold>
                     {(!isFetching) ? <span className='text__gray'>
                         {title.length > 0 ? "С НИЗКИМ AQI ЗА ДЕНЬ" : "ВСЕ"}
                     </span> : <div
                         className='bg__init' style={{ width: 85, height: 12 }}>
                     </div>}
+                    </TextSFProRoundedSemibold>
                 </Header>
                 <Card
                     mode='shadow'
