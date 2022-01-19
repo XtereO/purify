@@ -1,11 +1,6 @@
+import { useState } from "react"
 import { FixedLayout, Group, Panel } from "@vkontakte/vkui"
-import axios from "axios"
-import { ReactElement, useState } from "react"
-import { useDispatch } from "react-redux"
-import { setActiveModalState, setActivePanelState } from "../bll/Reducers/initialReducer"
 import { MySnackbar } from "../bricks/MySnackbar"
-import { getCityByCoordinate } from "../dal/api"
-import { retry } from "../utils/forImage"
 import { toOnline } from "../utils/internetConnection"
 
 
@@ -15,11 +10,18 @@ type PropsType = {
 }
 
 export const NotConnection:React.FC<PropsType> = ({id,image}) =>{
-    
-    const dispatch = useDispatch()
-
     const [snackbar,setSnackbar] = useState<any>(null)
-
+    const tryConnectHandler = ()=>{
+        if(navigator.onLine){
+            toOnline()
+        }else{
+            setSnackbar(<MySnackbar
+                text={'Не удалось подключиться'}
+                resultOperation={false}
+                closeHandler={()=>setSnackbar(null)}
+            />)
+        }
+    }
 
     return<Panel id={id}>
         <Group>
@@ -56,17 +58,7 @@ export const NotConnection:React.FC<PropsType> = ({id,image}) =>{
                 fontSize:15
             }}
             className='center__y text__SF-Pro-Rounded-Regular'
-            onClick={()=>{
-                if(navigator.onLine){
-                    toOnline()
-                }else{
-                    setSnackbar(<MySnackbar
-                        text={'Не удалось подключиться'}
-                        resultOperation={false}
-                        closeHandler={()=>setSnackbar(null)}
-                    />)
-                }
-            }}
+            onClick={tryConnectHandler}
             >
                 Повторить попытку
             </button>

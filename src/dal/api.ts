@@ -12,6 +12,7 @@ export const getEcoSearchData = (searchQ?:string) =>{
     }).then(res=>res.data)
     .catch(e=>e.response.data)
 }
+
 export const getEcologyCity = (cityId:string) =>{
     return instance.post<{data:EcoCityData} | null>(`eco-info${window.location.search}`,{
         id: cityId,
@@ -19,6 +20,7 @@ export const getEcologyCity = (cityId:string) =>{
     }).then(res=>res.data)
     .catch(e=>e.response.data)
 }
+
 export const getEcologyCountry = (countryId:string) =>{
     return instance.post<{data:EcoCityData} | null>(`eco-info${window.location.search}`,{
         id: countryId,
@@ -26,6 +28,7 @@ export const getEcologyCountry = (countryId:string) =>{
     }).then(res=>res.data)
     .catch(e=>e.response.data)
 }
+
 export type CityCoordinateType={
     city: string,
     countryName: string
@@ -35,6 +38,7 @@ export const getCityByCoordinate = (lat:number, long:number) =>{
     .then(res=>res.data)
     .catch(e=>e.response.data)
 }
+
 export const getEcoRankCity = (countryId: string) =>{
     return instance.post<EcoCityRank>(`rank${window.location.search}`,{
         id: countryId
@@ -42,13 +46,16 @@ export const getEcoRankCity = (countryId: string) =>{
     .then(res=>res.data)
     .catch(e=>e.response.data)
 }
+
 export const subscribeNoticification=(cityId:string)=>{
     return instance.post(`subscribe${window.location.search}`,{id:cityId})
 }
+
 export const unsubscribeNoticification=(cityId:string)=>{
     return instance.delete(`subscribe${window.location.search}`,
     {data:{id:cityId}})
 }
+
 export const getSubscribes=()=>{
     return instance.get<{data:UserEcoSubs[]}>(`subscribe${window.location.search}`)
     .then(res=>res.data.data)

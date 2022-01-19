@@ -275,107 +275,124 @@ export const setCountryName = (countryName: string):SetCountryName =>{
     }
 }
 
-
 // Thunks
+const trySetNativeCityByPermission = () => async (dispatch:Dispatch)=>{
+    dispatch(setFetching(true))
+    //@ts-ignore
+    const { lat, long } = await bridge.send('VKWebAppGetGeodata')
+    const { city } = await getCityByCoordinate(lat, long)
+    const cityNameFromCoordinate = city
+
+    let candidateCityId = DEFAULT_CITY_ID
+    let candidateCountryId = DEFAULT_COUNTRY_ID
+    let candidateCountryName = DEFAULT_COUNTRY_NAME
+    let candidateNativeCity = null as null | EcoCityData
+
+    const {cities} = (await getEcoSearchData(cityNameFromCoordinate)).data
+    cities.forEach((item: EcoCityData) => {
+        if (item.name === cityNameFromCoordinate && (!candidateNativeCity)) {
+            candidateCityId = item.id
+            candidateNativeCity = item
+        }
+    })
+    if(!candidateNativeCity){
+        candidateNativeCity = (await getEcologyCity(candidateCityId)).data
+    }
+
+    const {countries} = (await getEcoSearchData(candidateNativeCity?.country ? candidateNativeCity.country : candidateCountryName)).data
+    countries.forEach((item: EcoCountry) => {
+        //@ts-ignore
+        if (item.name === candidateNativeCity.country) {
+            candidateCountryId = item.id
+            candidateCountryName = item.name
+        }
+    })
+
+    await setValueByKeyStorageVKBridge(candidateCountryName,STATE_KEYS.DEFAULT_COUNTRY_NAME)
+    dispatch(setCountryName(candidateCountryName))
+
+    await setValueByKeyStorageVKBridge(candidateCountryId, STATE_KEYS.DEFAULT_COUNTRY_ID)
+    dispatch(setCountryId(candidateCountryId))
+
+    await setValueByKeyStorageVKBridge(candidateCityId, STATE_KEYS.NATIVE_CITY_ID)
+    //@ts-ignore
+    dispatch(setNativeCity(candidateNativeCity))
+    
+    dispatch(setFetching(false))
+}
 export const setNativeCityByPermission = ():Thunk => async (dispatch:Dispatch)=>{
     try {
-        dispatch(setFetching(true))
-        //@ts-ignore
-        let { lat, long } = await bridge.send('VKWebAppGetGeodata')
-        const { city } = await getCityByCoordinate(lat, long)
-        let cityNameFromCoordinate = city
-
-        let candidateCityId = DEFAULT_CITY_ID
-        let candidateCountryId = DEFAULT_COUNTRY_ID
-        let candidateCountryName = DEFAULT_COUNTRY_NAME
-        let candidateNativeCity = null as null | EcoCityData
-
-        const {cities} = (await getEcoSearchData(cityNameFromCoordinate)).data
-        cities.forEach((item: EcoCityData) => {
-            if (item.name === cityNameFromCoordinate && (!candidateNativeCity)) {
-                candidateCityId = item.id
-                candidateNativeCity = item
-            }
-        })
-        if(!candidateNativeCity){
-            candidateNativeCity = (await getEcologyCity(candidateCityId))
-        }
-
-        const {countries} = (await getEcoSearchData(candidateNativeCity?.country ? candidateNativeCity.country : candidateCountryName)).data
-        countries.forEach((item: EcoCountry) => {
-            //@ts-ignore
-            if (item.name === candidateNativeCity.country) {
-                candidateCountryId = item.id
-                candidateCountryName = item.name
-            }
-        })
-
-        await setValueByKeyStorageVKBridge(candidateCountryName,STATE_KEYS.DEFAULT_COUNTRY_NAME)
-        dispatch(setCountryName(candidateCountryName))
-
-        await setValueByKeyStorageVKBridge(candidateCountryId, STATE_KEYS.DEFAULT_COUNTRY_ID)
-        dispatch(setCountryId(candidateCountryId))
-
-        await setValueByKeyStorageVKBridge(candidateCityId, STATE_KEYS.NATIVE_CITY_ID)
-        //@ts-ignore
-        dispatch(setNativeCity(candidateNativeCity))
-        
-        dispatch(setFetching(false))
+        trySetNativeCityByPermission()(dispatch)
     } catch (e) {
         await setValueByKeyStorageVKBridge(DEFAULT_CITY_ID, STATE_KEYS.DEFAULT_CITY_ID)
         dispatch(setFetching(false))
     }
 }
 
-export const setCityFromSearchByCityId = (cityId: string):Thunk => async (dispatch:Dispatch)=>{
+const trySetCityFromSearchByCityId = (cityId:string) => async (dispatch:Dispatch) =>{
     dispatch(setFetching(true))
-	
+    
     let city = (await getEcologyCity(cityId)).data
     if(!city){
         city = (await getEcologyCity(DEFAULT_CITY_ID)).data
     }
 	dispatch(setCityFromSearch(city))
-	await setValueByKeyStorageVKBridge(city.id, STATE_KEYS.DEFAULT_CITY_ID)
-
+	
+    await setValueByKeyStorageVKBridge(city.id, STATE_KEYS.DEFAULT_CITY_ID)
     dispatch(setFetching(false))
 }
+export const setCityFromSearchByCityId = (cityId: string):Thunk => async (dispatch:Dispatch)=>{
+    try{
+        trySetCityFromSearchByCityId(cityId)(dispatch)
+    }catch(e){
+        dispatch(setFetching(false))
+    }
+}
 
+const tryRequestPermissionLocation = () => async (dispatch:Dispatch) =>{
+    await bridge.send('VKWebAppGetGeodata')
+    await setValueByKeyStorageVKBridge(JSON.stringify(true), STATE_KEYS.IS_ALLOWED_PLACE)
+    dispatch(setAllowedPlace(true))
+}
 export const requestPermissionLocation = ():Thunk => async (dispatch:Dispatch) => {
     try{
-        await bridge.send('VKWebAppGetGeodata')
-        await setValueByKeyStorageVKBridge(JSON.stringify(true), STATE_KEYS.IS_ALLOWED_PLACE)
-        dispatch(setAllowedPlace(true))
+        tryRequestPermissionLocation()(dispatch)
     }catch(e){
         dispatch(setAllowedPlace(false))
     }
 }
 
+const tryCheckIntro = () => async (dispatch:Dispatch) =>{
+    await setValueByKeyStorageVKBridge('true',STATE_KEYS.IS_CHECK_INFO)
+    dispatch(setCheckIntro(true))
+}
 export const checkIntro = ():Thunk => async (dispatch:Dispatch) =>{
     try {
-        await setValueByKeyStorageVKBridge('true',STATE_KEYS.IS_CHECK_INFO)
-        dispatch(setCheckIntro(true))
+        tryCheckIntro()(dispatch)
     } catch (e) {
     }
 }
 
+const trySubscribeNoticificationByCityId = (cityId:string) => async (dispatch:Dispatch) =>{
+    await subscribeNoticification(cityId)
+    dispatch(addSubscribedCities([{cityId, id:cityId, subscribed:true}]))
+    dispatch(setSnackbar(<MySnackbar
+        closeHandler={()=>dispatch(setSnackbar(null))}
+        resultOperation={true}
+        text={'Уведомления включены'} />))
+}
 export const subscribeNoticificationByCityId = (cityId:string | null):Thunk=> async (dispatch:Dispatch) => {
     try {
         const res = await bridge.send('VKWebAppAllowNotifications')
 
         if (res.result && cityId) {
-            await subscribeNoticification(cityId)
-            dispatch(addSubscribedCities([{cityId, id:cityId, subscribed:true}]))
-            dispatch(setSnackbar(<MySnackbar
-                closeHandler={()=>dispatch(setSnackbar(null))}
-                resultOperation={true}
-                text={'Уведомления включены'} />))    
+            trySubscribeNoticificationByCityId(cityId)(dispatch)
         }else{
             dispatch(setSnackbar(<MySnackbar
                 closeHandler={()=>dispatch(setSnackbar(null))}
                 resultOperation={false}
                 text={'Включить уведомления не удалось'} />))
         }
-
     } catch (e) {
         dispatch(setSnackbar(<MySnackbar
             closeHandler={()=>dispatch(setSnackbar(null))}
@@ -384,22 +401,24 @@ export const subscribeNoticificationByCityId = (cityId:string | null):Thunk=> as
     }
 }
 
-export const unsubscribeNoticificationByCityId = (cityId:string | null):Thunk =>async (dispatch:Dispatch) => {
+const tryUnsubscribeNoticificationByCityId = (cityId:string) => async (dispatch:Dispatch) =>{
+    await unsubscribeNoticification(cityId)
+    dispatch(removeSubscribedCities([{cityId,id:cityId,subscribed:false}]))
+    dispatch(setSnackbar(<MySnackbar
+		resultOperation={true}
+		closeHandler={()=>dispatch(setSnackbar(null))}
+		text={'Уведомления выключены'} />))
+}
+export const unsubscribeNoticificationByCityId = (cityId:string | null):Thunk => async (dispatch:Dispatch) => {
     try {
         if (cityId) {
-            await unsubscribeNoticification(cityId)
-            dispatch(removeSubscribedCities([{cityId,id:cityId,subscribed:false}]))
-            dispatch(setSnackbar(<MySnackbar
-				resultOperation={true}
-				closeHandler={()=>dispatch(setSnackbar(null))}
-				text={'Уведомления выключены'} />))
+            tryUnsubscribeNoticificationByCityId(cityId)(dispatch)    
         }else{
             dispatch(setSnackbar(<MySnackbar
                 closeHandler={()=>dispatch(setSnackbar(null))}
                 resultOperation={false}
                 text={'Выключить уведомления не удалось'} />))
         }
-
     } catch (e) {
         dispatch(setSnackbar(<MySnackbar
             closeHandler={()=>dispatch(setSnackbar(null))}
@@ -408,15 +427,25 @@ export const unsubscribeNoticificationByCityId = (cityId:string | null):Thunk =>
     }
 }
 
-export const setAllSubscribersUser = ():Thunk => async (dispatch:Dispatch) =>{
+const trySetAllSubscribersUser = () => async (dispatch:Dispatch) =>{
     const res = await getSubscribes()
 	dispatch(addSubscribedCities(res))
 }
+export const setAllSubscribersUser = ():Thunk => async (dispatch:Dispatch) =>{
+    try{
+        trySetAllSubscribersUser()(dispatch)
+    }catch(e){
+        dispatch(addSubscribedCities([]))
+    }
+}
 
+const trySetStationsByCityName = (cityName:string) => async (dispatch:Dispatch) =>{
+    const {stations} = (await getEcoSearchData(cityName)).data
+    dispatch(setStations(stations))
+}
 export const setStationsByCityName = (cityName:string):Thunk => async (dispatch:Dispatch) =>{
     try{
-        const {stations} = (await getEcoSearchData(cityName)).data
-        dispatch(setStations(stations))
+        trySetStationsByCityName(cityName)(dispatch)
     }catch(e){
         dispatch(setStations([]))
     }

@@ -14,8 +14,8 @@ import { MySnackbar } from './bricks/MySnackbar';
 import { NotConnection } from './panels/NotConnection';
 import { TurnNoticifications } from './panels/TurnNoticifications';
 
-import { setActiveModalState, setActivePanelState } from './bll/Reducers/initialReducer';
-import { checkIntro, requestPermissionLocation, setAllowedPlace, setAllSubscribersUser, setCheckIntro, setCityFromSearchByCityId, setDefaultCityId, setFetching, setNativeCityByPermission, setSnackbar, subscribeNoticificationByCityId, unsubscribeNoticificationByCityId } from './bll/Reducers/homeReducer';
+import { setActiveModalState } from './bll/Reducers/initialReducer';
+import { checkIntro, requestPermissionLocation, setAllSubscribersUser, setCityFromSearchByCityId, setDefaultCityId, setFetching, setNativeCityByPermission, setSnackbar, subscribeNoticificationByCityId, unsubscribeNoticificationByCityId } from './bll/Reducers/homeReducer';
 import { getAllowedPlace, getCityFromSearch, getDefaultCityId, getCountryId, getCountryName, getFetching, getNativeCity, getSnackbar, getSubscribedCities } from './bll/Selectors/homeSelector';
 import { getActiveModal, getActivePanel, getBgApp, getPlatform } from './bll/Selectors/initialSelector';
 
@@ -48,9 +48,6 @@ const App = () => {
 	const subscribedCities = useSelector(getSubscribedCities)
 	const isFetching = useSelector(getFetching)
 
-	const setActivePanel = (panel: string | null) => {
-		dispatch(setActivePanelState(panel ? panel : ''))
-	}
 	const setActiveModal = (modal: string | null) => {
 		dispatch(setActiveModalState(modal ? modal : ''))
 	}
@@ -98,7 +95,7 @@ const App = () => {
 		}
 	}, [defaultCityId])
 
-	const ref = useRef(null)
+	const refSticker = useRef(null)
 	const refBg = useRef(null)
 	const doStory = React.useCallback(async () => {
 		try {
@@ -107,7 +104,7 @@ const App = () => {
 				data = {
 					background_type: 'image',
 					//@ts-ignore
-					blob: ref.current.toDataURL()
+					blob: refSticker.current.toDataURL()
 				}
 			} else {
 				data = {
@@ -125,7 +122,7 @@ const App = () => {
 								"can_delete": false,
 								"content_type": "image",
 								//@ts-ignore
-								"blob": ref.current.toDataURL(),
+								"blob": refSticker.current.toDataURL(),
 								"clickable_zones": [
 									{
 										"action_type": "link",
@@ -163,7 +160,7 @@ const App = () => {
 				closeHandler={closeSnackbarHandler}
 				resultOperation={false} text={'Опубликовать историю не удалось'} />))
 		}
-	}, [ref, cityFromSearch, refBg])
+	}, [refSticker, cityFromSearch, refBg])
 	const closeSnackbarHandler = () => {
 		dispatch(setSnackbar(null))
 	}
@@ -253,7 +250,7 @@ const App = () => {
 					</Layer>
 				</Stage>
 				<Stage
-					ref={ref}
+					ref={refSticker}
 					width={1362} height={1427}
 				>
 

@@ -1,31 +1,31 @@
-import { CardGrid, Group, Panel, Div, Avatar, Card, Cell, Spacing, Header, Progress, Link, Footer, FixedLayout, PanelHeader } from "@vkontakte/vkui"
-import React, { ReactElement, useEffect,useRef,useState} from "react"
+import { Group, Panel, Div, Avatar, Card, Cell, Spacing, Header, Link, Footer, FixedLayout, PanelHeader } from "@vkontakte/vkui"
+import React, { ReactElement, useEffect, useState} from "react"
+import { useDispatch, useSelector } from "react-redux";
 import './Home.css'
-import { Icon16Place, Icon24Search } from '@vkontakte/icons';
-import { Icon24NotificationOutline } from '@vkontakte/icons';
-import { Icon28StoryOutline } from '@vkontakte/icons';
-import { Icon24StoryOutline } from '@vkontakte/icons';
-import { Icon24NotificationCheckOutline } from '@vkontakte/icons';
-//@ts-ignore
-import logo from '../media/IQAir_logo.svg'
-import { Icon24Dropdown } from '@vkontakte/icons';
-import { Loader } from '../bricks/Loader'
+
 import {ListItem} from '../bricks/ListItem'
 import {PollutionItem} from '../bricks/PollutionItem'
 import { WeatherItem } from "../bricks/WeatherItem";
 import { Advice } from "../bricks/Advice";
-import { EcoCityData, EcoCityType, EcoSearchData, EcoStation } from "../types/EcoTypes";
-import { getDescriptionPollutant, getFullNamePollutant } from "../utils/pollutants";
-import { getEcoSearchData } from "../dal/api";
 import { StationItem } from "../bricks/StationItem";
-import { getDistance } from "../utils/getDistance";
-import { useDispatch, useSelector } from "react-redux";
 import { setStationsByCityName } from "../bll/Reducers/homeReducer";
 import { getStations } from "../bll/Selectors/homeSelector";
+import { EcoCityData } from "../types/EcoTypes";
+
+import { getDistance } from "../utils/getDistance";
+import { getDescriptionPollutant, getFullNamePollutant } from "../utils/pollutants";
+
+import { Icon24Dropdown } from '@vkontakte/icons';
+import { Icon16Place, Icon24Search } from '@vkontakte/icons';
+import { Icon24NotificationOutline } from '@vkontakte/icons';
+import { Icon24StoryOutline } from '@vkontakte/icons';
+import { Icon24NotificationCheckOutline } from '@vkontakte/icons';
+//@ts-ignore
+import logo from '../media/IQAir_logo.svg'
+import { LIGHT_BLUE } from "../consts/COLORS";
 
 
 
-const LIGHT_BLUE = '#4475F1'
 type PropsType={
     id: string
     isGoodWind: boolean

@@ -1,12 +1,14 @@
-import { Icon12ErrorCircle, Icon24Dismiss, Icon32PlaceOutline } from "@vkontakte/icons"
-import { Card, Cell, Div, Group, Header, Input, ModalPage, ModalPageHeader, PanelHeaderButton, Search, Spacing } from "@vkontakte/vkui"
-import React, { ChangeEvent, Fragment, useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux";
+import React, { ChangeEvent, useEffect, useState } from "react"
+import { Card, Cell, Div, Group, Header, ModalPage, ModalPageHeader, PanelHeaderButton, Search, Spacing } from "@vkontakte/vkui"
+
 import { ListItem } from "../bricks/ListItem";
 import { PlaceItem } from "../bricks/PlaceItem";
-import { useDispatch, useSelector } from "react-redux";
+
 import { setCitiesByTitle, setClearestCitiesByCountryId } from "../bll/Reducers/pollutionCitiesReducer";
 import { getCitiesFromSearch, getClearestCities, getFetching } from "../bll/Selectors/pollutionCitiesSelector";
 
+import { Icon12ErrorCircle, Icon24Dismiss, Icon32PlaceOutline } from "@vkontakte/icons"
 
 
 

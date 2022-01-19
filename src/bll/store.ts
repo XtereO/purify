@@ -1,7 +1,7 @@
 import { combineReducers, createStore, applyMiddleware } from "redux";
+import  ThunkMiddleware from "redux-thunk";
 import { initialReducer } from "./Reducers/initialReducer";
 import { homeReducer } from "./Reducers/homeReducer";
-import  ThunkMiddleware from "redux-thunk";
 import { pollutionCitiesReducer } from "./Reducers/pollutionCitiesReducer";
 
 

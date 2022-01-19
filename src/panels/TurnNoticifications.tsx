@@ -1,7 +1,7 @@
-import { Button, Card, ModalCard } from "@vkontakte/vkui"
-import { BackgroundColor } from "chalk";
 import React from "react"
+import { Button, ModalCard } from "@vkontakte/vkui"
 import { Icon56NotificationOutline } from '@vkontakte/icons';
+import { LIGHT_BLUE } from "../consts/COLORS";
 
 
 
@@ -12,7 +12,6 @@ type PropsType={
     closeHandler: ()=>void,
     subscribeNoticification: ()=>void
 }
-const LIGHT_BLUE = '#4475F1'
 
 export const TurnNoticifications:React.FC<PropsType>=({id, subscribeNoticification, bgApp, closeHandler})=>{
     return<ModalCard      
