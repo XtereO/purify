@@ -1,14 +1,14 @@
 import { Dispatch } from "redux"
 import { ThunkAction } from "redux-thunk"
+import { AppState } from "../store"
 import { getEcoRankCity, getEcoSearchData } from "../../dal/api"
 import { City } from "../../types/EcoTypes"
-import { AppState } from "../store"
-
-type Thunk = ThunkAction<Promise<void>, AppState, unknown, Action>
 
 const SET_CLEAREST_CITIES: 'pollutionCitiesReducer/SET_CLEAREST_CITIES' = 'pollutionCitiesReducer/SET_CLEAREST_CITIES'
 const SET_CITIES_FROM_SEARCH: 'pollutionCitiesReducer/SET_CITIES_FROM_SEARCH' = 'pollutionCitiesReducer/SET_CITIES_FROM_SEARCH'
 const SET_FETCHING: 'pollutionCitiesReducer/SET_FETCHING' = 'pollutionCitiesReducer/SET_FETCHING'
+
+type Thunk = ThunkAction<Promise<void>, AppState, unknown, Action>
 
 const initialState = {
     cities: {

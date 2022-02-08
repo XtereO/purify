@@ -4,19 +4,15 @@ import { initialReducer } from "./Reducers/initialReducer";
 import { homeReducer } from "./Reducers/homeReducer";
 import { pollutionCitiesReducer } from "./Reducers/pollutionCitiesReducer";
 
-
-
-
-const reducers = combineReducers({
+const rootReducer = combineReducers({
     initial: initialReducer,
     home: homeReducer,
     pollutionCities: pollutionCitiesReducer
 })
 
-type Reducers = typeof reducers
-export type AppState = ReturnType<Reducers>
+type RootReducer = typeof rootReducer
+export type AppState = ReturnType<RootReducer>
 
-export const store = createStore(reducers, applyMiddleware(ThunkMiddleware))
+export const store = createStore(rootReducer, applyMiddleware(ThunkMiddleware))
 //@ts-ignore
 window.store = store
-

@@ -1,14 +1,15 @@
-
+import React from "react"
 
 const ComponentWithFontByFontTitleCreator = (fontTitle:string) =>{
-    type PropsType={}
-    const TextWithFont:React.FC<PropsType> = (props)=>{
+    type Props={}
+    const TextWithFont = React.memo<Props>((props)=>{
         return<span className={fontTitle}>
             {props.children}
         </span>
-    }
+    })
     return TextWithFont
 }
+
 export const TextSFProRoundedSemibold = ComponentWithFontByFontTitleCreator('text__SF-Pro-Rounded-Semibold')
 export const TextInterMedium = ComponentWithFontByFontTitleCreator('text__Inter-Medium')
 export const TextInterSemibold = ComponentWithFontByFontTitleCreator('text__Inter-SemiBold')

@@ -1,14 +1,12 @@
-import React, { memo } from "react";
+import React from "react";
 
-
-type PropsType={
+type Props={
     value: any,
     color: string,
     style?: any
 }
 
-export const Badge:React.FC<PropsType> = memo(({value,color,style}) =>{
-
+export const Badge=React.memo<Props>(({value,color,style}) =>{
     return<span {...style} className={'badge' + ' ' + color } >
         {value}
     </span>
