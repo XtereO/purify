@@ -1,10 +1,12 @@
-import React from "react"
+import React, { ReactElement } from "react"
 
 const ComponentWithFontByFontTitleCreator = (fontTitle:string) =>{
-    type Props={}
-    const TextWithFont = React.memo<Props>((props)=>{
+    type Props={
+        children: ReactElement<any,any> | string
+    }
+    const TextWithFont = React.memo<Props>(({children})=>{
         return<span className={fontTitle}>
-            {props.children}
+            {children}
         </span>
     })
     return TextWithFont

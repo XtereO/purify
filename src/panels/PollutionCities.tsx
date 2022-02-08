@@ -8,20 +8,20 @@ import { getCitiesFromSearch, getClearestCities, getFetching } from "../bll/Sele
 import { Icon12ErrorCircle, Icon24Dismiss, Icon32PlaceOutline } from "@vkontakte/icons"
 import { TextSFProRoundedSemibold } from "../bricks/Fonts";
 
-type PropsType = {
+type Props = {
     id: string
     countryId: string
     countryName: string
-    closeHandler: () => void
-    setDefaultCity: (cityId: string) => void
     myCity: string
     myCityId: string
     bgApp: string
     isAllowedPlace: boolean
     requestPermissionLocation: () => void
+    closeHandler: () => void
+    setDefaultCity: (cityId: string) => void
 }
 
-export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, closeHandler, setDefaultCity, countryName, myCity, myCityId, isAllowedPlace, requestPermissionLocation }) => {
+export const PollutionCities = React.memo<Props>(({ id, bgApp, countryId, closeHandler, setDefaultCity, countryName, myCity, myCityId, isAllowedPlace, requestPermissionLocation }) => {
     const dispatch = useDispatch()
     const cities = useSelector(getCitiesFromSearch)
     const clearestCities = useSelector(getClearestCities)
@@ -29,17 +29,15 @@ export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, clo
 
     const [title, setTitle] = useState('')
     useEffect(() => {
-        dispatch(setCitiesByTitle(title.length>2 ? title : countryName))
+        dispatch(setCitiesByTitle(title.length > 2 ? title : countryName))
     }, [title])
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const changeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value)
     }
 
     useEffect(() => {
         dispatch(setClearestCitiesByCountryId(countryId))
     }, [])
-
-
 
     const citiesJSX = cities.length > 0 ? cities.map((c, index) => <><div
         key={c.id} className=''>
@@ -50,7 +48,7 @@ export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, clo
             }}
             city={c.name} {...c} />
     </div>{(index + 1) !== cities.length && <Spacing separator className="spacing" size={8} />}</>) : <div style={{ display: 'flex', justifyContent: 'center' }}>
-    Ничего не найдено</div>
+        Ничего не найдено</div>
     const clearestCitiesJSX = clearestCities.length > 0 ? clearestCities.map((c, index) => <><div key={c.id} className=''>
         <PlaceItem
             value={c.aqi ? c.aqi : -1}
@@ -61,8 +59,6 @@ export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, clo
             city={c.name} {...c} country={countryName} />
     </div>{(index + 1) !== cities.length && <Spacing className="spacing" separator size={8} />}</>) : <div style={{ display: 'flex', justifyContent: 'center' }}>
         Ничего не найдено</div>
-
-
 
     return <ModalPage
         settlingHeight={100}
@@ -76,9 +72,8 @@ export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, clo
         <Group className={bgApp}>
             <div>
                 <Search
-                    value={title} onChange={handleChange}
-                    className={bgApp}
-                />
+                    value={title} onChange={changeHandler}
+                    className={bgApp} />
             </div>
             <Div>
                 <Card
@@ -108,11 +103,11 @@ export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, clo
                                                 <div style={{ height: 18, marginRight: 5 }} className='center__y'>
                                                     <Icon12ErrorCircle fill='C1C1C1' />
                                                 </div>
-                                                    <div
+                                                <div
                                                     style={{ fontSize: 15 }}>
-                                                        Может быть неточным
-                                                    </div>
+                                                    Может быть неточным
                                                 </div>
+                                            </div>
                                         </div>
                                     </div> </> : <div
                                         style={{ color: '#4475F1', fontSize: 16 }}>
@@ -146,11 +141,11 @@ export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, clo
             <Div>
                 <Header>
                     <TextSFProRoundedSemibold>
-                    {(!isFetching) ? <span className='text__gray'>
-                        {title.length > 0 ? "ВСЕ" : "С НИЗКИМ AQI ЗА ДЕНЬ"}
-                    </span> : <div
-                        className='bg__init' style={{ width: 85, height: 12 }}
-                    ></div>}
+                        {(!isFetching) ? <span className='text__gray'>
+                            {title.length > 0 ? "ВСЕ" : "С НИЗКИМ AQI ЗА ДЕНЬ"}
+                        </span> : <div
+                            className='bg__init' style={{ width: 85, height: 12 }}
+                        ></div>}
                     </TextSFProRoundedSemibold>
                 </Header>
                 <Card
@@ -165,11 +160,11 @@ export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, clo
             <Div>
                 <Header>
                     <TextSFProRoundedSemibold>
-                    {(!isFetching) ? <span className='text__gray'>
-                        {title.length > 0 ? "С НИЗКИМ AQI ЗА ДЕНЬ" : "ВСЕ"}
-                    </span> : <div
-                        className='bg__init' style={{ width: 85, height: 12 }}>
-                    </div>}
+                        {(!isFetching) ? <span className='text__gray'>
+                            {title.length > 0 ? "С НИЗКИМ AQI ЗА ДЕНЬ" : "ВСЕ"}
+                        </span> : <div
+                            className='bg__init' style={{ width: 85, height: 12 }}>
+                        </div>}
                     </TextSFProRoundedSemibold>
                 </Header>
                 <Card
@@ -186,12 +181,10 @@ export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, clo
             <Spacing size={70} />
         </Group>
     </ModalPage>
-}
+})
 
-
-type PropsClearestCitiesType = {}
-const BgInitClearestCities: React.FC<PropsClearestCitiesType> = ({ }) => {
-
+type BgClearestCitiesProps = {}
+const BgInitClearestCities = React.memo<BgClearestCitiesProps>(({ }) => {
     const items = [2, 3, 4, 5, 1].map(c => <><Div key={`clearCity${c}`} className='px-2'
         style={{ display: 'grid', gridTemplateColumns: '1fr 50px' }}>
         <div>
@@ -211,10 +204,10 @@ const BgInitClearestCities: React.FC<PropsClearestCitiesType> = ({ }) => {
     </Div>{c !== 1 && <Spacing className="spacing" separator size={8} />}</>)
 
     return <>{items}</>
-}
+})
 
-type PropsBgInitCitiesType = {}
-const BgInitCities: React.FC<PropsBgInitCitiesType> = ({ }) => {
+type BgInitCitiesProps = {}
+const BgInitCities = React.memo<BgInitCitiesProps>(({ }) => {
     const items = [2, 3, 4, 5, 1].map(c => <><Div key={`city${c}`} className='px-2'>
         <div>
             <div
@@ -229,4 +222,4 @@ const BgInitCities: React.FC<PropsBgInitCitiesType> = ({ }) => {
     </Div>{c !== 1 && <Spacing className="spacing" separator size={8} />}</>)
 
     return <>{items}</>
-}
+})

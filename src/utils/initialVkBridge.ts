@@ -6,7 +6,6 @@ import { DEFAULT_CITY_ID, DEFAULT_COUNTRY_ID, DEFAULT_COUNTRY_NAME } from "../co
 import { ROUTES } from "../consts/ROUTES";
 import { STATE_KEYS } from "../consts/STATE_KEYS";
 
-
 const dispatch = store.dispatch
 export const subscribeVkBridge = async () => {
     bridge.subscribe(({ detail }) => {
@@ -83,4 +82,3 @@ export const fetchData = async () => {
         dispatch(setDefaultCityId(nativeCityId))
     }
 }
-

@@ -1,12 +1,8 @@
-import { Cell } from '@vkontakte/vkui'
-import { number } from 'prop-types'
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { isKrym } from '../utils/isKrym'
 import { Badge } from './Badge'
 
-
-
-type PropsType = {
+type Props = {
     city: string,
     country: string,
     value?: number,
@@ -14,10 +10,8 @@ type PropsType = {
     onClick: () => void
 }
 
-
-export const PlaceItem: React.FC<PropsType> = ({ city, country, value, onClick, id }) => {
-
-    let [bg, setBG] = useState('bg__good')
+export const PlaceItem= memo<Props>(({ city, country, value, onClick, id }) => {
+    const [bg, setBG] = useState('bg__good')
     useEffect(() => {
         if (typeof value === 'number') {
             if (value >= 100) {
@@ -50,8 +44,7 @@ export const PlaceItem: React.FC<PropsType> = ({ city, country, value, onClick, 
             </div>
         </div>
         {value && <div className='center__y' >
-            <Badge color={bg} value={value===-1 ? 0 : value} >
-            </Badge> 
+            <Badge color={bg} value={value===-1 ? 0 : value} />
         </div>}
     </div>
-}
+})

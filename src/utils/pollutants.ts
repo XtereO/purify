@@ -1,7 +1,3 @@
-
-
-
-
 export const getFullNamePollutant=(title:string)=>{
     switch (title) {
         case 'pm25':
@@ -20,6 +16,7 @@ export const getFullNamePollutant=(title:string)=>{
             return title.toUpperCase()
     }
 }
+
 export const getDescriptionPollutant=(title:string)=>{
     switch (title) {
         case 'pm25':

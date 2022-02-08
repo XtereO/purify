@@ -66,8 +66,7 @@ export const Intro=React.memo<IntroProps>(({id,bgApp,closeHandler,checkIntro,req
                 closeHandler()
             }}
             style={{paddingTop:15,paddingBottom:15}}
-            className='w-100 highlight_on_touch center__x text__gray'
-            >
+            className='w-100 highlight_on_touch center__x text__gray'>
                 Пропустить
             </div>
             <Spacing size={80}/>

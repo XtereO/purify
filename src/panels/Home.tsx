@@ -1,8 +1,6 @@
 import { Group, Panel, Div, Avatar, Card, Cell, Spacing, Header, Link, Footer, FixedLayout, PanelHeader } from "@vkontakte/vkui"
 import React, { ReactElement, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
-import './Home.css'
-
 import { ListItem } from '../bricks/ListItem'
 import { PollutionItem } from '../bricks/PollutionItem'
 import { WeatherItem } from "../bricks/WeatherItem";
@@ -11,10 +9,8 @@ import { StationItem } from "../bricks/StationItem";
 import { setStationsByCityName } from "../bll/Reducers/homeReducer";
 import { getStations } from "../bll/Selectors/homeSelector";
 import { EcoCityData } from "../types/EcoTypes";
-
 import { getDistance } from "../utils/getDistance";
 import { getDescriptionPollutant, getFullNamePollutant } from "../utils/pollutants";
-
 import { Icon24Dropdown } from '@vkontakte/icons';
 import { Icon16Place, Icon24Search } from '@vkontakte/icons';
 import { Icon24NotificationOutline } from '@vkontakte/icons';
@@ -25,9 +21,7 @@ import logo from '../media/IQAir_logo.svg'
 import { LIGHT_BLUE } from "../consts/COLORS";
 import { TextInterMedium, TextSFProRoundedSemibold } from "../bricks/Fonts";
 
-
-
-type PropsType = {
+type Props = {
     id: string
     isGoodWind: boolean
     city: EcoCityData | null
@@ -42,13 +36,10 @@ type PropsType = {
     doStory: () => void
 }
 
-
-export const Home: React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, city, go, isFetching, nativeCityId, isCitySubscribed, subscribeNoticification, unsubsubscribeNoticification, doStory }) => {
-
+export const Home = React.memo<Props>(({ id, snackbar, bgApp, isGoodWind, city, go, isFetching, nativeCityId, isCitySubscribed, subscribeNoticification, unsubsubscribeNoticification, doStory }) => {
     const dispatch = useDispatch()
     const [isShowMore, setShowMore] = useState(false)
     const stations = useSelector(getStations)
-
     useEffect(() => {
         if (city) {
             dispatch(setStationsByCityName(city.name))
@@ -90,13 +81,11 @@ export const Home: React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, cit
     const forecastsJSX = city ? city.forecasts.daily.map((c, index) => <>
         <WeatherItem
             key={`${index}-${c.temperature}${c.aqi}`}
-            onClick={() => { }}
             day={currentDay + index + 1} value={c.aqi} mode={c.aqi >= 100 ? 'danger' : ((c.aqi >= 50) ? 'okay' : 'good')} />
         {(index + 1) !== city.forecasts.daily.length && <Spacing
             key={`weather_spacing${index}`}
             className="spacing" separator size={16} />}
     </>) : []
-
 
     return <Panel
         id={id}>
@@ -118,10 +107,11 @@ export const Home: React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, cit
                             style={{ height: 24, width: 61 }}
                             className='bg__init__home'></div> : <div
                                 style={{ fontSize: 24, fontWeight: 'inherit', lineHeight: 2.2, color: 'rgba(0,0,0,0.5)' }}
-                            ><TextSFProRoundedSemibold>{city && city.current.aqi} AQI</TextSFProRoundedSemibold></div>}
+                            ><TextSFProRoundedSemibold><>{city && city.current.aqi} AQI</></TextSFProRoundedSemibold></div>}
                     </div>
                     <div className='center__x' style={{ color: 'rgba(0,0,0,0.5)' }}>
                         <TextInterMedium>
+                            <>
                             {isFetching && <div
                                 style={{ height: 16, width: 97, marginTop: 10 }}
                                 className='bg__init__home'></div>}
@@ -131,6 +121,7 @@ export const Home: React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, cit
                                 {(city && nativeCityId === city.id && (!isFetching)) && <Icon16Place fill='rgba(0,0,0,0.5)' style={{ marginRight: 3 }} />}
                             </div>
                             {((!isFetching) && city) && city.name}
+                            </>
                         </TextInterMedium>
                     </div>
                     <div>
@@ -318,7 +309,4 @@ export const Home: React.FC<PropsType> = ({ id, snackbar, bgApp, isGoodWind, cit
             </Group>
         </div>
     </Panel>
-}
-
-
-
+})

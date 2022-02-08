@@ -11,7 +11,7 @@ import { Home } from './panels/Home';
 import { PollutionCities } from './panels/PollutionCities';
 import { MySnackbar } from './bricks/MySnackbar';
 import { NotConnection } from './panels/NotConnection';
-import { TurnNoticifications } from './panels/TurnNoticifications';
+import { TurnNoticification } from './panels/TurnNoticifications';
 import { setActiveModalState } from './bll/Reducers/initialReducer';
 import { checkIntro, requestPermissionLocation, setAllSubscribersUser, setCityFromSearchByCityId, setDefaultCityId, setFetching, setNativeCityByPermission, setSnackbar, subscribeNoticificationByCityId, unsubscribeNoticificationByCityId } from './bll/Reducers/homeReducer';
 import { getAllowedPlace, getCityFromSearch, getDefaultCityId, getCountryId, getCountryName, getFetching, getNativeCity, getSnackbar, getSubscribedCities } from './bll/Selectors/homeSelector';
@@ -28,7 +28,6 @@ import wifiImage from './media/wifi_outline_56.svg'
 import failed_img from './media/score_high.svg'
 
 const App = () => {
-
 	const dispatch = useDispatch()
 	const platform = useSelector(getPlatform)
 	const bgApp = useSelector(getBgApp)
@@ -175,7 +174,7 @@ const App = () => {
 				checkIntro={()=>dispatch(checkIntro())}
 				requestPermissionLocation={()=>dispatch(requestPermissionLocation())}
 				id={ROUTES.INFO} closeHandler={closeModalHandler} />
-			<TurnNoticifications
+			<TurnNoticification
 				bgApp={bgApp}
 				id={ROUTES.TURN_NOTICIFICATIONS}
 				closeHandler={closeModalHandler}
@@ -340,6 +339,5 @@ const ChevronRight = () => {
 		y={1167.05}
 		image={image} />;
 }
-
 
 export default App;

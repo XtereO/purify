@@ -1,6 +1,5 @@
 import bridge from "@vkontakte/vk-bridge"
 
-
 type Result = {
     result: boolean
 }

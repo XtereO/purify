@@ -1,10 +1,8 @@
+import React, { memo, useEffect, useState } from "react"
 import { Icon20Info } from "@vkontakte/icons"
 import {Tooltip} from './Tooltip'
-import React, { memo, useEffect, useState } from "react"
 
-
-
-type PropsType = {
+type Props = {
     title: string,
     value: number,
     tooltipDescription: string,
@@ -13,16 +11,12 @@ type PropsType = {
     bgApp: string
 }
 
-export const PollutionItem: React.FC<PropsType> = memo(({ title, value, tooltipDescription, bar, aqi, bgApp }) => {
-
-    let [isOpen, setOpen] = useState(false)
-    let [isClosed, setClosed] = useState(false)
+export const PollutionItem = memo<Props>(({ title, value, tooltipDescription, bar, aqi, bgApp }) => {
+    const [isOpen, setOpen] = useState(false)
+    const [isClosed, setClosed] = useState(false)
 
     const showTooltip = () => {
         setOpen(true)
-        /*setTimeout(() => {
-            setShow(false)
-        }, 4000)*/
     }
     useEffect(()=>{
         if(isOpen){

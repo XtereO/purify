@@ -1,6 +1,3 @@
-
-
-
 export const ROUTES = {
 	INFO: 'INFO',
 	POLLUTION_CITIES: 'POLLUTION_CITIES',

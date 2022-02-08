@@ -1,7 +1,6 @@
 import axios from "axios";
 import { EcoCityData, EcoCityRank, EcoSearchData, UserEcoSubs } from "../types/EcoTypes";
 
-
 const instance = axios.create({
     baseURL:'https://showtime.app-dich.com/api/ecology/'
 })

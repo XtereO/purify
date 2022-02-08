@@ -1,6 +1,3 @@
-
-
-
 export const getDayOfWeek=(day:number):string=>{
     const week = [
         'Понедельник',

@@ -1,8 +1,3 @@
-
-
-
-
-
 export const isKrym = (cityId:string):boolean =>{
     const krymsCity:string[] = [
         '5bc822af41fdcdf1939e6641','5bc822af41fdcdf1939e6642',
