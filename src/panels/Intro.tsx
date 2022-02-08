@@ -1,21 +1,24 @@
-import { Div, Spacing, FixedLayout, Group, ModalPage, PanelHeaderClose, ModalPageHeader, Panel, useAdaptivity, ViewWidth, usePlatform, Button, Cell } from "@vkontakte/vkui"
-import React,{ Fragment } from "react"
+import React,{ Fragment, ReactElement } from "react"
+import { Div, Spacing, Group, ModalPage, ModalPageHeader, Button } from "@vkontakte/vkui"
 import './Intro.css'
+import { LIGHT_BLUE } from "../consts/COLORS";
 import { Icon28NarrativeOutline } from '@vkontakte/icons';
 import { Icon28Notifications } from '@vkontakte/icons';
 import { Icon28StoryOutline } from '@vkontakte/icons';
 import { Icon24LocationOutline } from '@vkontakte/icons';
 
+type IntroProps = {
+    id: string
+    bgApp: string
+    closeHandler: ()=>void
+    checkIntro: ()=>void
+    requestPermissionLocation: ()=>void
+}   
 
-const LIGHT_BLUE = '#4475F1'
-
-export const Intro=({id,bgApp,handlerClose,checkIntro,requestPermissionLocation})=>{
-    
-    
-
+export const Intro=React.memo<IntroProps>(({id,bgApp,closeHandler,checkIntro,requestPermissionLocation})=>{
     return<ModalPage
     id={id}      
-    onClose={handlerClose}
+    onClose={closeHandler}
     header={
             <ModalPageHeader
             className={bgApp==='bg__app__light' ? 'modal__app__light' : 'modal__app__dark'}
@@ -44,15 +47,12 @@ export const Intro=({id,bgApp,handlerClose,checkIntro,requestPermissionLocation}
                     />
                 </Div>
             </Group>
-            <Div
-            className='center__x'
-            >
+            <Div className='center__x'>
                 <Button  
                 size='l'
                 onClick={()=>{
-                    requestPermissionLocation().then(res=>{
-                        handlerClose()
-                    })
+                    requestPermissionLocation()
+                    closeHandler()
                 }}
                 className='intro__button__location'
                 style={{background:LIGHT_BLUE}}
@@ -62,9 +62,8 @@ export const Intro=({id,bgApp,handlerClose,checkIntro,requestPermissionLocation}
             </Div>
             <div
             onClick={()=>{
-                checkIntro().then(res=>{
-                    handlerClose()
-                })
+                checkIntro()
+                closeHandler()
             }}
             style={{paddingTop:15,paddingBottom:15}}
             className='w-100 highlight_on_touch center__x text__gray'
@@ -75,9 +74,15 @@ export const Intro=({id,bgApp,handlerClose,checkIntro,requestPermissionLocation}
         </Fragment>
         </div>
     </ModalPage>
+})
+
+type InfoBlockProps={
+    description:string
+    title:string
+    Icon: ({fill:string})=>ReactElement<any,any>
 }
 
-export const InfoBlock=({description, title, Icon})=>{
+const InfoBlock=React.memo<InfoBlockProps>(({description, title, Icon})=>{
     return<Div className='intro__info'>
     <div className='center__y'>
         <Icon fill={LIGHT_BLUE}/>
@@ -91,4 +96,4 @@ export const InfoBlock=({description, title, Icon})=>{
         </div>
     </Div>
 </Div>
-}
+})

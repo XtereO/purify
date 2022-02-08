@@ -1,24 +1,18 @@
 import { useDispatch, useSelector } from "react-redux";
 import React, { ChangeEvent, useEffect, useState } from "react"
 import { Card, Cell, Div, Group, Header, ModalPage, ModalPageHeader, PanelHeaderButton, Search, Spacing } from "@vkontakte/vkui"
-
 import { ListItem } from "../bricks/ListItem";
 import { PlaceItem } from "../bricks/PlaceItem";
-
 import { setCitiesByTitle, setClearestCitiesByCountryId } from "../bll/Reducers/pollutionCitiesReducer";
 import { getCitiesFromSearch, getClearestCities, getFetching } from "../bll/Selectors/pollutionCitiesSelector";
-
 import { Icon12ErrorCircle, Icon24Dismiss, Icon32PlaceOutline } from "@vkontakte/icons"
 import { TextSFProRoundedSemibold } from "../bricks/Fonts";
-
-
-
 
 type PropsType = {
     id: string
     countryId: string
     countryName: string
-    handlerClose: () => void
+    closeHandler: () => void
     setDefaultCity: (cityId: string) => void
     myCity: string
     myCityId: string
@@ -27,8 +21,7 @@ type PropsType = {
     requestPermissionLocation: () => void
 }
 
-export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, handlerClose, setDefaultCity, countryName, myCity, myCityId, isAllowedPlace, requestPermissionLocation }) => {
-
+export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, closeHandler, setDefaultCity, countryName, myCity, myCityId, isAllowedPlace, requestPermissionLocation }) => {
     const dispatch = useDispatch()
     const cities = useSelector(getCitiesFromSearch)
     const clearestCities = useSelector(getClearestCities)
@@ -53,7 +46,7 @@ export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, han
         <PlaceItem
             onClick={() => {
                 setDefaultCity(c.id)
-                handlerClose()
+                closeHandler()
             }}
             city={c.name} {...c} />
     </div>{(index + 1) !== cities.length && <Spacing separator className="spacing" size={8} />}</>) : <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -63,7 +56,7 @@ export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, han
             value={c.aqi ? c.aqi : -1}
             onClick={() => {
                 setDefaultCity(c.id)
-                handlerClose()
+                closeHandler()
             }}
             city={c.name} {...c} country={countryName} />
     </div>{(index + 1) !== cities.length && <Spacing className="spacing" separator size={8} />}</>) : <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -76,7 +69,7 @@ export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, han
         header={<ModalPageHeader
             className={bgApp === 'bg__app__light' ? 'modal__app__light' : 'modal__app__dark'}
             right={
-                <PanelHeaderButton onClick={handlerClose}><Icon24Dismiss />
+                <PanelHeaderButton onClick={closeHandler}><Icon24Dismiss />
                 </PanelHeaderButton>} />}
         id={id}
     >
@@ -96,7 +89,7 @@ export const PollutionCities: React.FC<PropsType> = ({ id, bgApp, countryId, han
                         onClick={() => {
                             if (isAllowedPlace) {
                                 setDefaultCity(myCityId)
-                                handlerClose()
+                                closeHandler()
                             } else {
                                 requestPermissionLocation()
                             }

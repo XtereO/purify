@@ -6,22 +6,18 @@ import { View, AdaptivityProvider, AppRoot, ModalRoot } from '@vkontakte/vkui';
 import { Layer, Stage, Image, Text, Rect } from "react-konva";
 import '@vkontakte/vkui/dist/vkui.css';
 import './App.css'
-
 import { Intro } from './panels/Intro';
 import { Home } from './panels/Home';
 import { PollutionCities } from './panels/PollutionCities';
 import { MySnackbar } from './bricks/MySnackbar';
 import { NotConnection } from './panels/NotConnection';
 import { TurnNoticifications } from './panels/TurnNoticifications';
-
 import { setActiveModalState } from './bll/Reducers/initialReducer';
 import { checkIntro, requestPermissionLocation, setAllSubscribersUser, setCityFromSearchByCityId, setDefaultCityId, setFetching, setNativeCityByPermission, setSnackbar, subscribeNoticificationByCityId, unsubscribeNoticificationByCityId } from './bll/Reducers/homeReducer';
 import { getAllowedPlace, getCityFromSearch, getDefaultCityId, getCountryId, getCountryName, getFetching, getNativeCity, getSnackbar, getSubscribedCities } from './bll/Selectors/homeSelector';
 import { getActiveModal, getActivePanel, getBgApp, getPlatform } from './bll/Selectors/initialSelector';
-
 import { ROUTES } from './consts/ROUTES';
 import { DEFAULT_CITY_ID } from './consts/DEFAULT_VALUES';
-
 //@ts-ignore
 import placePNG from "./media/place_for_story.png";
 //@ts-ignore
@@ -52,7 +48,7 @@ const App = () => {
 		dispatch(setActiveModalState(modal ? modal : ''))
 	}
 
-	const handlerCloseModal = () => {
+	const closeModalHandler = () => {
 		setActiveModal(null)
 	}
 
@@ -173,16 +169,16 @@ const App = () => {
 	}, [defaultCityId])
 
 	const modal = (
-		<ModalRoot onClose={handlerCloseModal} activeModal={activeModal}>
+		<ModalRoot onClose={closeModalHandler} activeModal={activeModal}>
 			<Intro
 				bgApp={bgApp}
 				checkIntro={()=>dispatch(checkIntro())}
 				requestPermissionLocation={()=>dispatch(requestPermissionLocation())}
-				id={ROUTES.INFO} handlerClose={handlerCloseModal} />
+				id={ROUTES.INFO} closeHandler={closeModalHandler} />
 			<TurnNoticifications
 				bgApp={bgApp}
 				id={ROUTES.TURN_NOTICIFICATIONS}
-				closeHandler={handlerCloseModal}
+				closeHandler={closeModalHandler}
 				subscribeNoticification={subscribeNoticification}
 			/>
 			<PollutionCities
@@ -194,7 +190,7 @@ const App = () => {
 				setDefaultCity={(cityId) => dispatch(setDefaultCityId(cityId))}
 				countryName={countryName}
 				countryId={countryId}
-				handlerClose={handlerCloseModal}
+				closeHandler={closeModalHandler}
 				id={ROUTES.POLLUTION_CITIES} />
 		</ModalRoot>
 	)
