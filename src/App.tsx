@@ -1,4 +1,4 @@
-import React, {  useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import bridge from '@vkontakte/vk-bridge';
 import useImage from 'use-image';
 import { useDispatch, useSelector } from 'react-redux';
@@ -92,63 +92,66 @@ const App = () => {
 
 	const refSticker = useRef(null)
 	const refBg = useRef(null)
-	const doStory = React.useCallback(async () => {
-		try {
-			let data = {}
-			if (platform === 'pc') {
-				data = {
-					background_type: 'image',
-					//@ts-ignore
-					blob: refSticker.current.toDataURL()
-				}
-			} else {
-				data = {
-					background_type: 'none'
-				}
-			}
-			if (cityFromSearch) {
-				//@ts-ignore
-				await bridge.send('VKWebAppShowStoryBox', {
-					...data,
-					"stickers": [
-						{
-							"sticker_type": "renderable",
-							"sticker": {
-								"can_delete": false,
-								"content_type": "image",
-								//@ts-ignore
-								"blob": refSticker.current.toDataURL(),
-								"clickable_zones": [
-									{
-										"action_type": "link",
-										"action": {
-											"link": `https://vk.com/app7991717#${cityFromSearch.id}`,
-											"tooltip_text_key": "tooltip_open_default"
-										}
-									}
-								],
-								"transform": {
-									"gravity": "center",
-									"relation_width": 1
+	const tryDoStory = React.useCallback(async (data: { background_type: string, blob?: string }) => {
+		//@ts-ignore
+		await bridge.send('VKWebAppShowStoryBox', {
+			...data,
+			"stickers": [
+				{
+					"sticker_type": "renderable",
+					"sticker": {
+						"can_delete": false,
+						"content_type": "image",
+						//@ts-ignore
+						"blob": refSticker.current.toDataURL(),
+						"clickable_zones": [
+							{
+								"action_type": "link",
+								"action": {
+									"link": `https://vk.com/app7991717#${cityFromSearch?.id ?? DEFAULT_CITY_ID}`,
+									"tooltip_text_key": "tooltip_open_default"
 								}
 							}
+						],
+						"transform": {
+							"gravity": "center",
+							"relation_width": 1
 						}
-					]
-				}).catch(e => {
-					dispatch(setSnackbar(<MySnackbar
-						closeHandler={closeSnackbarHandler}
-						resultOperation={true} text={'Опубликовать историю не удалось'} />))
-				}).then(res => {
-					if (res) {
-						dispatch(setSnackbar(<MySnackbar
-							closeHandler={closeSnackbarHandler}
-							resultOperation={true} text={'История опубликована'} />))
-					} else {
-						dispatch(setSnackbar(<MySnackbar
-							closeHandler={closeSnackbarHandler}
-							resultOperation={false} text={'Опубликовать историю не удалось'} />))
 					}
-				})
+				}
+			]
+		}).catch(e => {
+			dispatch(setSnackbar(<MySnackbar
+				closeHandler={closeSnackbarHandler}
+				resultOperation={true} text={'Опубликовать историю не удалось'} />))
+		}).then(res => {
+			if (res) {
+				dispatch(setSnackbar(<MySnackbar
+					closeHandler={closeSnackbarHandler}
+					resultOperation={true} text={'История опубликована'} />))
+			} else {
+				dispatch(setSnackbar(<MySnackbar
+					closeHandler={closeSnackbarHandler}
+					resultOperation={false} text={'Опубликовать историю не удалось'} />))
+			}
+		})
+	}, [platform, refSticker, refBg])
+	const doStory = React.useCallback(async () => {
+		let data = {}
+		if (platform === 'pc') {
+			data = {
+				background_type: 'image',
+				//@ts-ignore
+				blob: refSticker.current.toDataURL()
+			}
+		} else {
+			data = {
+				background_type: 'none'
+			}
+		}
+		try {
+			if (cityFromSearch) {
+				await tryDoStory(data as { background_type: string, blob?: string })
 			}
 		} catch (e) {
 			dispatch(setSnackbar(<MySnackbar
@@ -171,8 +174,8 @@ const App = () => {
 		<ModalRoot onClose={closeModalHandler} activeModal={activeModal}>
 			<Intro
 				bgApp={bgApp}
-				checkIntro={()=>dispatch(checkIntro())}
-				requestPermissionLocation={()=>dispatch(requestPermissionLocation())}
+				checkIntro={() => dispatch(checkIntro())}
+				requestPermissionLocation={() => dispatch(requestPermissionLocation())}
 				id={ROUTES.INFO} closeHandler={closeModalHandler} />
 			<TurnNoticification
 				bgApp={bgApp}
@@ -322,9 +325,9 @@ const App = () => {
 }
 
 type PlaceImageType = {
-	x:number
+	x: number
 }
-const PlaceImage:React.FC<PlaceImageType> = ({ x }) => {
+const PlaceImage: React.FC<PlaceImageType> = ({ x }) => {
 	const [image] = useImage(placePNG);
 	return <Image
 		x={x}

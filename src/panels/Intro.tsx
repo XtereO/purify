@@ -32,16 +32,16 @@ export const Intro=React.memo<IntroProps>(({id,bgApp,closeHandler,checkIntro,req
                 </Div>
                 <Div>
                     <InfoBlock 
-                    Icon={Icon28NarrativeOutline}
+                    icon={<Icon28NarrativeOutline fill={LIGHT_BLUE} />}
                     description={'Просматривайте актуальную статистику и получайте важные советы, чтобы сберечь здоровье. '}
                     title={'Следите за качеством воздуха'} />
                     <InfoBlock 
-                    Icon={Icon28Notifications}
+                    icon={<Icon28Notifications fill={LIGHT_BLUE} />}
                     description={'Получайте уведомления, чтобы заранее знать об изменениях в худшую сторону.'}
                     title={'Будьте в курсе'}
                     />
                     <InfoBlock 
-                    Icon={Icon28StoryOutline}
+                    icon={<Icon28StoryOutline fill={LIGHT_BLUE} />}
                     description={'Информируйте их в критических ситуациях через истории ВКонтакте.'}
                     title={'Сообщайте близким'}
                     />
@@ -78,13 +78,13 @@ export const Intro=React.memo<IntroProps>(({id,bgApp,closeHandler,checkIntro,req
 type InfoBlockProps={
     description:string
     title:string
-    Icon: ({fill:string})=>ReactElement<any,any>
+    icon: ReactElement<any,any>
 }
 
-const InfoBlock=React.memo<InfoBlockProps>(({description, title, Icon})=>{
+const InfoBlock=React.memo<InfoBlockProps>(({description, title, icon})=>{
     return<Div className='intro__info'>
     <div className='center__y'>
-        <Icon fill={LIGHT_BLUE}/>
+        {icon}
     </div>
     <Div>
         <div>
