@@ -1,9 +1,9 @@
-.station__warning{
-    overflow-x: auto;
+.station__warning {
+  overflow-x: auto;
 }
-.break{
-    word-wrap: normal !important;
-    word-break: normal !important;
-    overflow-wrap: normal !important;
-    white-space: normal !important;
+.break {
+  word-wrap: normal !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+  white-space: normal !important;
 }

@@ -1,12 +1,12 @@
-.intro__info{
-    display: flex;
-    margin-right: 0%;
-    margin-left: 5%;
-    margin-top: 10px
+.intro__info {
+  display: flex;
+  margin-right: 0%;
+  margin-left: 5%;
+  margin-top: 10px;
 }
-.intro__button__location{
-    height: 70px;
-    padding-left: 20px;
-    padding-right: 20px;
-    border-radius: 20px;
+.intro__button__location {
+  height: 70px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 20px;
 }

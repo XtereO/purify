@@ -2,13 +2,13 @@ export type UserEcoSubs = {
   id: string;
   cityId: string;
   subscribed: boolean;
-}
+};
 
 export type EcoStation = {
   id: string;
   name: string;
   url: string;
-  type: 'station';
+  type: "station";
   coordinates: {
     latitude: number;
     longitude: number;
@@ -74,8 +74,8 @@ export type EcoSearchData = {
   publications: [];
 };
 
-export type EcoContributorType = 'Government' | 'Contributor' | 'anonymous';
-export type EcoContributorSubType = 'Government' | 'Corporate';
+export type EcoContributorType = "Government" | "Contributor" | "anonymous";
+export type EcoContributorSubType = "Government" | "Corporate";
 
 export type EcoCityContributor = {
   type: EcoContributorType;
@@ -95,15 +95,15 @@ export type EcoCitySource = {
   subtype?: string;
 };
 
-export type EcoCityType = 'city' | 'country' | 'state';
+export type EcoCityType = "city" | "country" | "state";
 
 export enum EcoPollutantName {
-  pm25 = 'pm25',
-  pm10 = 'pm10',
-  o3 = 'o3',
-  no2 = 'no2',
-  so2 = 'so2',
-  co2 = 'co2',
+  pm25 = "pm25",
+  pm10 = "pm10",
+  o3 = "o3",
+  no2 = "no2",
+  so2 = "so2",
+  co2 = "co2",
 }
 
 export type EcoCityPollutant = {
@@ -168,7 +168,7 @@ export type EcoCityData = {
   hasLowCostSensor: boolean;
   label: string;
   link: string;
-  type: 'city';
+  type: "city";
   current: {
     /**
      * format 2021-11-03T06:00:00.000Z
@@ -233,7 +233,7 @@ export type EcoCountryData = {
   hasLowCostSensor: boolean;
   label: string;
   link: string;
-  type: 'country';
+  type: "country";
   coordinates: {
     latitude: number;
     longitude: number;
@@ -252,7 +252,7 @@ export type EcoStateData = {
   hasLowCostSensor: boolean;
   label: string;
   link: string;
-  type: 'state';
+  type: "state";
   coordinates: {
     latitude: number;
     longitude: number;
@@ -260,9 +260,9 @@ export type EcoStateData = {
 };
 
 export enum EcoInfoTarget {
-  City = 'city',
-  Country = 'country',
-  State = 'state',
+  City = "city",
+  Country = "country",
+  State = "state",
 }
 
 export type EcoCityRank = {
@@ -275,8 +275,8 @@ export type EcoCityRank = {
 };
 
 export type City = {
-  id: string
-  name: string
-  country: string
-  aqi?: number
-} 
+  id: string;
+  name: string;
+  country: string;
+  aqi?: number;
+};
