@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Snackbar } from "@vkontakte/vkui";
-//@ts-ignore
-import success_img from "../media/score_low.svg";
-//@ts-ignore
-import failed_img from "../media/score_high.svg";
+import { ScoreLowIcon as SuccessIcon } from "../icons/ScoreLowIcon";
+import { ScroeHighIcon as FailedIcon } from "../icons/ScoreHighIcon";
+import { ThemeContext } from "../contexts/theme";
 
 type Props = {
   resultOperation: boolean;
@@ -13,14 +12,15 @@ type Props = {
 
 export const MySnackbar = React.memo<Props>(
   ({ text, resultOperation, closeHandler }) => {
+    const theme = useContext(ThemeContext);
     return (
       <Snackbar
         onClose={closeHandler ? closeHandler : () => {}}
-        before={<img src={resultOperation ? success_img : failed_img} />}
+        before={resultOperation ? <SuccessIcon /> : <FailedIcon />}
       >
         <div
           className={"text__SF-Pro-Rounded-Regular"}
-          style={{ fontSize: 15 }}
+          style={{ fontSize: 15, color: theme.primary }}
         >
           {text}
         </div>

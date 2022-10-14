@@ -1,6 +1,7 @@
 import React from "react";
 
 const light = {
+  primary: "#000",
   bgApp: "#F5F5F5",
   banner: {
     color: "rgba(0, 0, 0, 0.5)",
@@ -19,9 +20,13 @@ const light = {
     default: "rgba(68, 117, 241, 1)",
     icon: "rgba(28, 121, 234, 1)",
   },
-  green: "rgba(44, 211, 81, 1)",
-  orange: "rgba(255, 181, 69, 1)",
-  red: "rgba(255, 75, 75, 1)",
+  btnBlue: {
+    color: "#4475F1",
+    background: "rgba(68, 117, 241, 0.1)",
+  },
+  good: "rgba(44, 211, 81, 1)",
+  okay: "rgba(255, 181, 69, 1)",
+  danger: "rgba(255, 75, 75, 1)",
   tooltip: {
     background: "rgba(49, 49, 49, 0.85)",
     color: "rgba(255, 255, 255, 1)",
@@ -30,10 +35,14 @@ const light = {
     [100]: "rgba(235, 235, 235, 1)",
     [200]: "rgba(224, 224, 224, 1)",
   },
-  cardHeader: "rgba(129, 140, 153, 1)",
+  card: {
+    header: "rgba(129, 140, 153, 1)",
+    background: "#FEFEFE",
+  },
 };
 
 const dark: typeof light = {
+  primary: "#fff",
   bgApp: "#373737",
   banner: {
     color: "rgba(0, 0, 0, 0.5)",
@@ -52,9 +61,13 @@ const dark: typeof light = {
     default: "rgba(62, 149, 255, 1)",
     icon: "rgba(37, 135, 255, 1)",
   },
-  green: "rgba(44, 211, 81, 1)",
-  orange: "rgba(255, 181, 69, 1)",
-  red: "rgba(255, 75, 75, 1)",
+  btnBlue: {
+    color: "#4475F1",
+    background: "rgba(68, 117, 241, 0.1)",
+  },
+  good: "rgba(44, 211, 81, 1)",
+  okay: "rgba(255, 181, 69, 1)",
+  danger: "rgba(255, 75, 75, 1)",
   tooltip: {
     background: "rgba(49, 49, 49, 0.85)",
     color: "rgba(255, 255, 255, 1)",
@@ -63,7 +76,10 @@ const dark: typeof light = {
     [100]: "rgba(235, 235, 235, 1)",
     [200]: "rgba(224, 224, 224, 1)",
   },
-  cardHeader: "rgba(157, 157, 157, 1)",
+  card: {
+    header: "rgba(157, 157, 157, 1)",
+    background: "#4F4F4F",
+  },
 };
 
 export const theme = {

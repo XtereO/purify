@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useContext, useEffect, useState } from "react";
 import {
-  Card,
   Cell,
   Div,
   Group,
@@ -29,6 +28,10 @@ import {
   Icon32PlaceOutline,
 } from "@vkontakte/icons";
 import { TextSFProRoundedSemibold } from "../bricks/Fonts";
+import { ThemeContext } from "../contexts/theme";
+import { getTheme } from "../bll/Selectors/initialSelector";
+import { Skeleton } from "../bricks/Skeleton";
+import { CustomizedCard } from "../bricks/CustomizedCard";
 
 type Props = {
   id: string;
@@ -36,7 +39,6 @@ type Props = {
   countryName: string;
   myCity: string;
   myCityId: string;
-  bgApp: string;
   isAllowedPlace: boolean;
   requestPermissionLocation: () => void;
   closeHandler: () => void;
@@ -46,7 +48,6 @@ type Props = {
 export const PollutionCities = React.memo<Props>(
   ({
     id,
-    bgApp,
     countryId,
     closeHandler,
     setDefaultCity,
@@ -124,16 +125,14 @@ export const PollutionCities = React.memo<Props>(
         </div>
       );
 
+    const theme = useContext(ThemeContext);
+    const appeareance = useSelector(getTheme);
     return (
       <ModalPage
         settlingHeight={100}
         header={
           <ModalPageHeader
-            className={
-              bgApp === "bg__app__light"
-                ? "modal__app__light"
-                : "modal__app__dark"
-            }
+            className={`modal__app__${appeareance}`}
             right={
               <PanelHeaderButton onClick={closeHandler}>
                 <Icon24Dismiss />
@@ -143,14 +142,14 @@ export const PollutionCities = React.memo<Props>(
         }
         id={id}
       >
-        <Group className={bgApp}>
-          <Search value={title} onChange={changeHandler} className={bgApp} />
+        <Group style={{ background: theme.bgApp }}>
+          <Search
+            className={appeareance}
+            value={title}
+            onChange={changeHandler}
+          />
           <Div>
-            <Card
-              mode="shadow"
-              className="card__app"
-              style={{ padding: 0, overflow: "hidden" }}
-            >
+            <CustomizedCard style={{ padding: 0, overflow: "hidden" }}>
               <Cell
                 onClick={() => {
                   if (isAllowedPlace) {
@@ -164,27 +163,36 @@ export const PollutionCities = React.memo<Props>(
                 <div className="card__app">
                   {!isFetching && (
                     <ListItem
-                      bgApp={bgApp}
                       description={
                         <div>
                           {isAllowedPlace ? (
                             <>
                               {" "}
-                              <div style={{ fontSize: 16 }}>{myCity}</div>
                               <div
-                                style={{ fontSize: 15 }}
-                                className="text__gray"
+                                style={{ fontSize: 16, color: theme.gray[900] }}
                               >
-                                <div>Текущее местоположение</div>
-                                <div className="text__gray">
+                                {myCity}
+                              </div>
+                              <div style={{ fontSize: 15 }}>
+                                <div style={{ color: theme.gray[700] }}>
+                                  Текущее местоположение
+                                </div>
+                                <div>
                                   <div className="d-flex">
                                     <div
                                       style={{ height: 18, marginRight: 5 }}
                                       className="center__y"
                                     >
-                                      <Icon12ErrorCircle fill="C1C1C1" />
+                                      <Icon12ErrorCircle
+                                        fill={theme.gray[200]}
+                                      />
                                     </div>
-                                    <div style={{ fontSize: 15 }}>
+                                    <div
+                                      style={{
+                                        fontSize: 15,
+                                        color: theme.gray[300],
+                                      }}
+                                    >
                                       Может быть неточным
                                     </div>
                                   </div>
@@ -192,7 +200,12 @@ export const PollutionCities = React.memo<Props>(
                               </div>{" "}
                             </>
                           ) : (
-                            <div style={{ color: "#4475F1", fontSize: 16 }}>
+                            <div
+                              style={{
+                                color: theme.accent.default,
+                                fontSize: 16,
+                              }}
+                            >
                               <div>Разрешить доступ</div>
                               <div>к местоположению</div>
                             </div>
@@ -205,46 +218,33 @@ export const PollutionCities = React.memo<Props>(
                   )}
                   {isFetching && (
                     <ListItem
-                      bgApp={bgApp}
                       description={
                         <div>
-                          <div
-                            style={{ width: 122, height: 16 }}
-                            className="bg__init"
-                          ></div>
-                          <div
-                            style={{ width: 88, height: 12 }}
-                            className="bg__init mt-1"
-                          ></div>
+                          <Skeleton width={122} height={16} />
+                          <Skeleton width={88} height={12} className="mt-1" />
                         </div>
                       }
                     >
-                      <div
-                        style={{ height: 24, width: 24, borderRadius: 20000 }}
-                        className="bg__init"
-                      ></div>
+                      <Skeleton width={24} height={24} borderRadius={20000} />
                     </ListItem>
                   )}
                 </div>
               </Cell>
-            </Card>
+            </CustomizedCard>
           </Div>
           <Div>
             <Header>
               <TextSFProRoundedSemibold>
                 {!isFetching ? (
-                  <span className="text__gray">
+                  <span style={{ color: theme.card.header }}>
                     {title.length > 0 ? "ВСЕ" : "С НИЗКИМ AQI ЗА ДЕНЬ"}
                   </span>
                 ) : (
-                  <div
-                    className="bg__init"
-                    style={{ width: 85, height: 12 }}
-                  ></div>
+                  <Skeleton width={85} height={12} />
                 )}
               </TextSFProRoundedSemibold>
             </Header>
-            <Card mode="shadow" className="card__app">
+            <CustomizedCard>
               <Group>
                 {isFetching ? (
                   title.length > 0 ? (
@@ -265,26 +265,23 @@ export const PollutionCities = React.memo<Props>(
                   <></>
                 )}
               </Group>
-            </Card>
+            </CustomizedCard>
           </Div>
           <Div>
             <Header>
               <TextSFProRoundedSemibold>
                 {!isFetching ? (
-                  <span className="text__gray">
+                  <span style={{ color: theme.card.header }}>
                     {title.length > 0 ? "С НИЗКИМ AQI ЗА ДЕНЬ" : "ВСЕ"}
                   </span>
                 ) : (
-                  <div
-                    className="bg__init"
-                    style={{ width: 85, height: 12 }}
-                  ></div>
+                  <Skeleton width={85} height={12} />
                 )}
               </TextSFProRoundedSemibold>
             </Header>
-            <Card mode="shadow" className="card__app">
+            <CustomizedCard>
               <Group>
-                <Group className="">
+                <Group>
                   {isFetching ? (
                     title.length > 0 ? (
                       <BgInitClearestCities />
@@ -305,7 +302,7 @@ export const PollutionCities = React.memo<Props>(
                   )}
                 </Group>
               </Group>
-            </Card>
+            </CustomizedCard>
           </Div>
           <Spacing size={70} />
         </Group>
@@ -316,6 +313,7 @@ export const PollutionCities = React.memo<Props>(
 
 type BgClearestCitiesProps = {};
 const BgInitClearestCities = React.memo<BgClearestCitiesProps>(({}) => {
+  const theme = useContext(ThemeContext);
   const items = [2, 3, 4, 5, 1].map((c) => (
     <>
       <Div
@@ -324,16 +322,10 @@ const BgInitClearestCities = React.memo<BgClearestCitiesProps>(({}) => {
         style={{ display: "grid", gridTemplateColumns: "1fr 50px" }}
       >
         <div>
-          <div style={{ width: 122, height: 16 }} className="bg__init"></div>
-          <div
-            style={{ width: 88, height: 12 }}
-            className="bg__init mt-1"
-          ></div>
+          <Skeleton width={122} height={16} />
+          <Skeleton width={88} height={12} className="mt-1" />
         </div>
-        <div
-          style={{ width: 44, height: 24, borderRadius: 20000 }}
-          className="bg__init mt-1"
-        ></div>
+        <Skeleton width={44} height={24} className="mt-1" />
       </Div>
       {c !== 1 && <Spacing className="spacing" separator size={8} />}
     </>
@@ -348,11 +340,8 @@ const BgInitCities = React.memo<BgInitCitiesProps>(({}) => {
     <>
       <Div key={`city${c}`} className="px-2">
         <div>
-          <div style={{ width: 122, height: 16 }} className="bg__init"></div>
-          <div
-            style={{ width: 88, height: 12 }}
-            className="bg__init mt-1"
-          ></div>
+          <Skeleton width={122} height={16} />
+          <Skeleton width={88} height={12} className="mt-1" />
         </div>
       </Div>
       {c !== 1 && <Spacing className="spacing" separator size={8} />}

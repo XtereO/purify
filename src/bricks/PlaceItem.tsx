@@ -1,4 +1,5 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useContext, useEffect, useMemo, useState } from "react";
+import { ThemeContext } from "../contexts/theme";
 import { isKrym } from "../utils/isKrym";
 import { Badge } from "./Badge";
 
@@ -12,17 +13,18 @@ type Props = {
 
 export const PlaceItem = memo<Props>(
   ({ city, country, value, onClick, id }) => {
-    const [bg, setBG] = useState("bg__good");
-    useEffect(() => {
+    const theme = useContext(ThemeContext);
+    const bgBadge = useMemo(() => {
       if (typeof value === "number") {
         if (value >= 100) {
-          setBG("bg__danger");
+          return theme.danger;
         } else if (value >= 50) {
-          setBG("bg__okay");
+          return theme.okay;
         } else {
-          setBG("bg__good");
+          return theme.good;
         }
       }
+      return "";
     }, [value]);
 
     return (
@@ -39,14 +41,14 @@ export const PlaceItem = memo<Props>(
         }}
       >
         <div>
-          <div style={{ fontSize: 16 }}>{city}</div>
-          <div style={{ marginTop: 6, fontSize: 15, color: "#606060" }}>
+          <div style={{ fontSize: 16, color: theme.gray[900] }}>{city}</div>
+          <div style={{ marginTop: 6, fontSize: 15, color: theme.gray[700] }}>
             {isKrym(id) ? "Россия" : country}
           </div>
         </div>
         {value && (
           <div className="center__y">
-            <Badge color={bg} value={value === -1 ? 0 : value} />
+            <Badge color={bgBadge} value={value === -1 ? 0 : value} />
           </div>
         )}
       </div>

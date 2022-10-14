@@ -60,28 +60,28 @@ body {
 .text__SF-Pro-Rounded-Heavy {
   font-family: "SF-Pro-Rounded-Heavy";
 }
-.bg__app__dark .vkuiSearch__after-in {
-  background-color: #343434 !important;
+.dark .vkuiSearch__after-in {
+  background-color: #373737 !important;
 }
-.bg__app__light .vkuiSearch__after-in {
+.light .vkuiSearch__after-in {
   background-color: #f5f5f5 !important;
 }
-.bg__app__dark .vkuiPanelHeader__in {
+.dark .vkuiPanelHeader__in {
   overflow: visible !important;
   padding: 0 !important;
-  background-color: #343434 !important;
+  background-color: #373737 !important;
 }
-.bg__app__dark .PanelHeader__in {
+.dark .PanelHeader__in {
   overflow: visible !important;
   padding: 0 !important;
-  background-color: #343434 !important;
+  background-color: #373737 !important;
 }
-.bg__app__light .vkuiPanelHeader__in {
+.light .vkuiPanelHeader__in {
   overflow: visible !important;
   padding: 0 !important;
   background-color: #f5f5f5 !important;
 }
-.bg__app__light .PanelHeader__in {
+.light .PanelHeader__in {
   overflow: visible !important;
   padding: 0 !important;
   background-color: #f5f5f5 !important;
@@ -108,7 +108,7 @@ body {
                                     not supported by any browser */
 }
 .bg__app__dark {
-  background-color: #343434;
+  background-color: #373737;
   font-family: "Inter-Regular";
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Chrome/Safari/Opera */
@@ -125,7 +125,7 @@ body {
   border-top-right-radius: 10px;
 }
 .modal__app__dark {
-  background-color: #343434;
+  background-color: #373737;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }

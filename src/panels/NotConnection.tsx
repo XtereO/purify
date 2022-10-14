@@ -1,4 +1,4 @@
-import { useState, memo } from "react";
+import { useState, memo, useContext } from "react";
 import { FixedLayout, Group, Panel } from "@vkontakte/vkui";
 import { MySnackbar } from "../bricks/MySnackbar";
 import { toOnline } from "../utils/internetConnection";
@@ -7,6 +7,7 @@ import {
   TextInterSemibold,
   TextSFProRoundedRegular,
 } from "../bricks/Fonts";
+import { ThemeContext } from "../contexts/theme";
 
 type Props = {
   id: string;
@@ -29,31 +30,35 @@ export const NotConnection = memo<Props>(({ id, image }) => {
     }
   };
 
+  const theme = useContext(ThemeContext);
   return (
     <Panel id={id}>
       <Group>
         <div style={{ height: window.innerHeight }} className="center__y">
           <img src={image} />
-          <div style={{ fontSize: 20 }}>
+          <div style={{ fontSize: 20, color: theme.gray[900] }}>
             <TextInterSemibold>Нет подключения</TextInterSemibold>
           </div>
           <div
             className="center__x"
-            style={{ color: "#898989", fontSize: 16, marginTop: 8 }}
+            style={{ color: theme.gray[500], fontSize: 16, marginTop: 8 }}
           >
             <TextInterRegular>
               Проверьте соединение и повторите
             </TextInterRegular>
           </div>
-          <div className="center__x" style={{ color: "#898989", fontSize: 16 }}>
+          <div
+            className="center__x"
+            style={{ color: theme.gray[500], fontSize: 16 }}
+          >
             <TextInterRegular>попытку</TextInterRegular>
           </div>
           <div style={{ marginTop: 24 }}>
             <button
               style={{
                 borderRadius: 10,
-                color: "#4475F1",
-                background: "rgba(68, 117, 241, 0.1)",
+                color: theme.btnBlue.color,
+                background: theme.btnBlue.background,
                 height: 36,
                 width: 176,
                 border: "none",

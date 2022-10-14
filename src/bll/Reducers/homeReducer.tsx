@@ -359,7 +359,6 @@ const trySetNativeCityByPermission = () => async (dispatch: Dispatch) => {
     )
   ).data;
   countries.forEach((item: EcoCountry) => {
-    //@ts-ignore
     if (item.name === candidateNativeCity.country) {
       candidateCountryId = item.id;
       candidateCountryName = item.name;

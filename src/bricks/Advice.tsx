@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Card, Spacing } from "@vkontakte/vkui";
+import { Spacing } from "@vkontakte/vkui";
 import { ListItem } from "./ListItem";
 import { MaskIcon } from "../icons/MaskIcon";
 import { WindowIcon } from "../icons/WindowIcon";
@@ -7,6 +7,7 @@ import { ScoreLowIcon } from "../icons/ScoreLowIcon";
 import { ScroeHighIcon } from "../icons/ScoreHighIcon";
 import { Icon28LikeOutline, Icon28StoryOutline } from "@vkontakte/icons";
 import { ThemeContext } from "../contexts/theme";
+import { CustomizedCard } from "./CustomizedCard";
 
 type Props = {
   pollution: {
@@ -33,7 +34,7 @@ export const Advice = React.memo<Props>(
   ({ isGoodWind, pollution, doStory }) => {
     const theme = useContext(ThemeContext);
     return (
-      <Card mode="shadow" className="card__app">
+      <CustomizedCard>
         <div>
           <div style={{ marginLeft: 3.5 }}>
             <ListItem
@@ -104,7 +105,7 @@ export const Advice = React.memo<Props>(
             </ListItem>
           </>
         </div>
-      </Card>
+      </CustomizedCard>
     );
   }
 );

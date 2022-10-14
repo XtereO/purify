@@ -26,9 +26,5 @@ const AppContainer = () => {
   );
 };
 ReactDOM.render(<AppContainer />, document.getElementById("root"));
-if (process.env.NODE_ENV === "development") {
-  import("./eruda").then(({ default: eruda }) => {}); //runtime download
-}
-if (window.location.search.includes("vk_user_id=danielka_rafaelka17")) {
-  import("./eruda").then(({ default: eruda }) => {}); //runtime download
-}
+import("./eruda").then(({ default: eruda }) => {}); //runtime download
+
