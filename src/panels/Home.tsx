@@ -12,7 +12,7 @@ import {
   FixedLayout,
   PanelHeader,
 } from "@vkontakte/vkui";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ListItem } from "../bricks/ListItem";
 import { PollutionItem } from "../bricks/PollutionItem";
@@ -34,9 +34,9 @@ import { Icon24StoryOutline } from "@vkontakte/icons";
 import { Icon24NotificationCheckOutline } from "@vkontakte/icons";
 //@ts-ignore
 import logo from "../media/IQAir_logo.svg";
-import { LIGHT_BLUE } from "../consts/COLORS";
 import { TextInterMedium, TextSFProRoundedSemibold } from "../bricks/Fonts";
 import { Banner } from "../bricks/Banner";
+import { ThemeContext } from "../contexts/theme";
 
 type Props = {
   id: string;
@@ -45,7 +45,6 @@ type Props = {
   nativeCityId: string;
   go: (modal: string) => void;
   isFetching: boolean;
-  bgApp: string;
   subscribeNoticification: () => void;
   unsubsubscribeNoticification: () => void;
   isCitySubscribed: boolean;
@@ -57,7 +56,6 @@ export const Home = React.memo<Props>(
   ({
     id,
     snackbar,
-    bgApp,
     isGoodWind,
     city,
     go,
@@ -69,6 +67,7 @@ export const Home = React.memo<Props>(
     doStory,
   }) => {
     const dispatch = useDispatch();
+    const theme = useContext(ThemeContext);
     const [isShowMore, setShowMore] = useState(false);
     const stations = useSelector(getStations);
     useEffect(() => {
@@ -111,7 +110,6 @@ export const Home = React.memo<Props>(
       ? city.current.pollutants.map((p, index) => (
           <>
             <PollutionItem
-              bgApp={bgApp}
               key={`${index}${p.pollutantName}`}
               title={getFullNamePollutant(p.pollutantName)}
               value={p.concentration}
@@ -158,34 +156,34 @@ export const Home = React.memo<Props>(
     return (
       <Panel id={id}>
         <div style={{ width: "100%", overflow: "hidden" }}>
-          <div className={bgApp}>
+          <div style={{ background: theme.bgApp }}>
             <PanelHeader separator={false}></PanelHeader>
           </div>
-          <Group style={{ paddingTop: 0 }} className={bgApp}>
+          <Group style={{ paddingTop: 0, background: theme.bgApp }}>
             <Div
               className={
-                isFetching
-                  ? "bg__init card"
-                  : "card" +
-                    " " +
-                    (city && city.current.aqi < 50
-                      ? "home__good__weather"
-                      : city && city.current.aqi < 100
-                      ? "home__okay__weather"
-                      : "home__bad__weather")
+                "card " +
+                (city && city.current.aqi < 50
+                  ? "home__good__weather"
+                  : city && city.current.aqi < 100
+                  ? "home__okay__weather"
+                  : "home__bad__weather")
               }
+              style={{ background: isFetching ? theme.skeleton[100] : "" }}
             >
               <div className="home__main__title">
                 {isFetching ? (
                   <div
-                    style={{ height: 24, width: 61 }}
-                    className="bg__init__home"
+                    style={{
+                      height: 24,
+                      width: 61,
+                      background: theme.skeleton[200],
+                    }}
                   ></div>
                 ) : (
                   <div
                     style={{
                       fontSize: 24,
-                      fontWeight: "inherit",
                       lineHeight: 2.2,
                       color: "rgba(0,0,0,0.5)",
                     }}
@@ -201,14 +199,18 @@ export const Home = React.memo<Props>(
                   <>
                     {isFetching && (
                       <div
-                        style={{ height: 16, width: 97, marginTop: 10 }}
-                        className="bg__init__home"
+                        style={{
+                          height: 16,
+                          width: 97,
+                          marginTop: 10,
+                          background: theme.skeleton[200],
+                        }}
                       ></div>
                     )}
                     <div style={{ fontSize: 17 }} className="center__y">
                       {city && nativeCityId === city.id && !isFetching && (
                         <Icon16Place
-                          fill="rgba(0,0,0,0.5)"
+                          fill={theme.banner.color}
                           style={{ marginRight: 3 }}
                         />
                       )}
@@ -226,10 +228,12 @@ export const Home = React.memo<Props>(
                       style={{ opacity: 0.5 }}
                     >
                       <Avatar
-                        style={{ backgroundColor: "rgba(255, 255, 255, 0.35)" }}
+                        style={{ backgroundColor: theme.banner.avatar }}
                         shadow={false}
                       >
-                        {!isFetching && <Icon24Search fill="#000" />}
+                        {!isFetching && (
+                          <Icon24Search fill={theme.banner.color} />
+                        )}
                       </Avatar>
                     </div>
                   </div>
@@ -246,14 +250,18 @@ export const Home = React.memo<Props>(
                       className="home__search__cell__rounded home__search__cell__rounded_active"
                     >
                       <Avatar
-                        style={{ backgroundColor: "rgba(255, 255, 255, 0.35)" }}
+                        style={{ backgroundColor: theme.banner.avatar }}
                         shadow={false}
                       >
                         {!isFetching && !isCitySubscribed && (
-                          <Icon24NotificationOutline fill="#000" />
+                          <Icon24NotificationOutline
+                            fill={theme.banner.color}
+                          />
                         )}
                         {!isFetching && isCitySubscribed && (
-                          <Icon24NotificationCheckOutline fill="#000" />
+                          <Icon24NotificationCheckOutline
+                            fill={theme.banner.color}
+                          />
                         )}
                       </Avatar>
                     </div>
@@ -264,10 +272,12 @@ export const Home = React.memo<Props>(
                     >
                       <Avatar
                         className="home__search__cell__rounded home__search__cell__rounded_active"
-                        style={{ backgroundColor: "rgba(255, 255, 255, 0.35)" }}
+                        style={{ backgroundColor: theme.banner.avatar }}
                         shadow={false}
                       >
-                        {!isFetching && <Icon24StoryOutline fill="#000" />}
+                        {!isFetching && (
+                          <Icon24StoryOutline fill={theme.banner.color} />
+                        )}
                       </Avatar>
                     </div>
                   </div>
@@ -277,7 +287,6 @@ export const Home = React.memo<Props>(
             <Div>
               {city && !isFetching && (
                 <Advice
-                  bgApp={bgApp}
                   doStory={doStory}
                   pollution={city.recommendations.pollution}
                   isGoodWind={isGoodWind}
@@ -287,13 +296,12 @@ export const Home = React.memo<Props>(
                 <Card className="card__app" mode="shadow">
                   <div className="d-flex">
                     <div
-                      className="bg__init"
-                      style={{ height: 24, width: 24, borderRadius: 20000 }}
+                      style={{ height: 24, width: 24, background: theme.skeleton[100], borderRadius: 20000 }}
                     ></div>
                     <div
-                      className="bg__init ml-2"
-                      style={{ height: 17, width: 122 }}
-                    ></div>
+                      className="ml-2"
+                      style={{ height: 17, width: 122, background: theme.skeleton[100] }}
+                    />
                   </div>
                 </Card>
               )}
@@ -303,14 +311,13 @@ export const Home = React.memo<Props>(
               <Header>
                 <TextSFProRoundedSemibold>
                   {!isFetching ? (
-                    <span className="text__gray unselectable">
+                    <span style={{color: theme.cardHeader}} className="unselectable">
                       ЗАГРЯЗНИТЕЛИ
                     </span>
                   ) : (
                     <div
-                      style={{ height: 12, width: 85 }}
-                      className="bg__init"
-                    ></div>
+                      style={{ height: 12, width: 85, background: theme.skeleton[100] }}
+                    />
                   )}
                 </TextSFProRoundedSemibold>
               </Header>
@@ -327,18 +334,21 @@ export const Home = React.memo<Props>(
                           }}
                         >
                           <div
-                            style={{ width: 91, height: 17 }}
-                            className="bg__init"
-                          ></div>
+                            style={{
+                              width: 91,
+                              height: 17,
+                              background: theme.skeleton[100],
+                            }}
+                          />
                           <div
                             style={{
                               width: 24,
                               height: 24,
                               display: "flex",
                               justifyContent: "end",
+                              background: theme.skeleton[100],
                             }}
-                            className="bg__init"
-                          ></div>
+                          />
                         </div>
                         {c !== 0 && (
                           <Spacing
@@ -354,10 +364,13 @@ export const Home = React.memo<Props>(
                   {!isShowMore && pollutantsJSX.length > 4 && (
                     <Cell onClick={() => setShowMore(true)}>
                       <ListItem
-                        bgApp={bgApp}
-                        description={<Link>Показать все</Link>}
+                        description={
+                          <Link style={{ color: theme.accent.default }}>
+                            Показать все
+                          </Link>
+                        }
                       >
-                        <Icon24Dropdown fill={LIGHT_BLUE} />
+                        <Icon24Dropdown fill={theme.accent.icon} />
                       </ListItem>
                     </Cell>
                   )}
@@ -371,14 +384,20 @@ export const Home = React.memo<Props>(
               <Header>
                 <TextSFProRoundedSemibold>
                   {!isFetching ? (
-                    <span className="text__gray unselectable">
+                    <span
+                      style={{ color: theme.cardHeader }}
+                      className="unselectable"
+                    >
                       ПРОГНОЗ НА НЕДЕЛЮ
                     </span>
                   ) : (
                     <div
-                      style={{ height: 12, width: 85 }}
-                      className="bg__init"
-                    ></div>
+                      style={{
+                        height: 12,
+                        width: 85,
+                        background: theme.skeleton[100],
+                      }}
+                    />
                   )}
                 </TextSFProRoundedSemibold>
               </Header>
@@ -396,22 +415,28 @@ export const Home = React.memo<Props>(
                           }}
                         >
                           <div
-                            style={{ width: 24, height: 24 }}
-                            className="bg__init"
-                          ></div>
+                            style={{
+                              width: 24,
+                              height: 24,
+                              background: theme.skeleton[100],
+                            }}
+                          />
                           <div
-                            style={{ width: 91, height: 17 }}
-                            className="bg__init"
-                          ></div>
+                            style={{
+                              width: 91,
+                              height: 17,
+                              background: theme.skeleton[100],
+                            }}
+                          />
                           <div
                             style={{
                               width: 52,
                               height: 24,
                               display: "flex",
                               justifyContent: "end",
+                              background: theme.skeleton[100],
                             }}
-                            className="bg__init"
-                          ></div>
+                          />
                         </div>
                         {c !== 10 && (
                           <Spacing
@@ -432,17 +457,20 @@ export const Home = React.memo<Props>(
                 <Header>
                   <TextSFProRoundedSemibold>
                     {!isFetching ? (
-                      <span className="text__gray">СТАНЦИИ</span>
+                      <span style={{ color: theme.cardHeader }}>СТАНЦИИ</span>
                     ) : (
                       <div
-                        style={{ height: 12, width: 85 }}
-                        className="bg__init"
-                      ></div>
+                        style={{
+                          height: 12,
+                          width: 85,
+                          background: theme.skeleton[100],
+                        }}
+                      />
                     )}
                   </TextSFProRoundedSemibold>
                 </Header>
                 <Card mode="shadow" className="card__app">
-                  <div className="">
+                  <div>
                     {isFetching &&
                       [5, 6, 7, 8, 9, 4, 10].map((c) => (
                         <>
@@ -455,22 +483,28 @@ export const Home = React.memo<Props>(
                             }}
                           >
                             <div
-                              style={{ width: 24, height: 24 }}
-                              className="bg__init"
-                            ></div>
+                              style={{
+                                width: 24,
+                                height: 24,
+                                background: theme.skeleton[100],
+                              }}
+                            />
                             <div
-                              style={{ width: 91, height: 17 }}
-                              className="bg__init"
-                            ></div>
+                              style={{
+                                width: 91,
+                                height: 17,
+                                background: theme.skeleton[100],
+                              }}
+                            />
                             <div
                               style={{
                                 width: 52,
                                 height: 24,
                                 display: "flex",
                                 justifyContent: "end",
+                                background: theme.skeleton[100],
                               }}
-                              className="bg__init"
-                            ></div>
+                            />
                           </div>
                           {c !== 10 && (
                             <Spacing
@@ -488,7 +522,7 @@ export const Home = React.memo<Props>(
               </Div>
             )}
             <Footer style={{ paddingTop: 4, paddingLeft: 4 }}>
-              <Div>
+              <Div style={{ color: theme.gray[300] }}>
                 <TextSFProRoundedSemibold>
                   Информация предоставлена
                 </TextSFProRoundedSemibold>

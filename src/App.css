@@ -283,15 +283,6 @@ Spacing {
   display: flex;
   justify-content: center;
 }
-.bg__danger {
-  background-color: #ef462f;
-}
-.bg__good {
-  background-color: #2bcc4f;
-}
-.bg__okay {
-  background-color: #ffb545;
-}
 .bg__gray {
   background-color: #818181;
 }

@@ -1,21 +1,22 @@
-import { memo, ReactElement } from "react";
+import { memo, ReactElement, useContext } from "react";
+import { ThemeContext } from "../contexts/theme";
 
 type Props = {
   description: string | ReactElement<any, any>;
   className?: string;
-  bgApp: string;
   children?: ReactElement<any, any>;
   onClick?: () => void;
 };
 
 export const ListItem = memo<Props>(
-  ({ description, onClick, className, bgApp, children }) => {
+  ({ description, onClick, className, children }) => {
+    const theme = useContext(ThemeContext);
     return (
       <div
         onClick={onClick ? onClick : () => {}}
         style={{
           display: "flex",
-          color: bgApp === "bg__app__light" ? "#454545" : "white",
+          color: theme.gray[600]
         }}
       >
         <div

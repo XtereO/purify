@@ -1,6 +1,7 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useContext, useEffect, useState } from "react";
 import { Icon20Info } from "@vkontakte/icons";
 import { Tooltip } from "./Tooltip";
+import { ThemeContext } from "../contexts/theme";
 
 type Props = {
   title: string;
@@ -8,11 +9,11 @@ type Props = {
   tooltipDescription: string;
   bar: string;
   aqi?: number;
-  bgApp: string;
 };
 
 export const PollutionItem = memo<Props>(
-  ({ title, value, tooltipDescription, bar, aqi, bgApp }) => {
+  ({ title, value, tooltipDescription, bar, aqi }) => {
+    const theme = useContext(ThemeContext);
     const [isOpen, setOpen] = useState(false);
     const [isClosed, setClosed] = useState(false);
 
@@ -38,18 +39,25 @@ export const PollutionItem = memo<Props>(
         style={{
           paddingRight: 4,
           paddingLeft: 4,
-          color: bgApp === "bg__app__light" ? "#454545" : "white",
         }}
         className="w-100 pollution__item"
       >
-        <div style={{ fontSize: 16, overflow: "hidden" }}>{title}</div>
+        <div
+          style={{ fontSize: 16, overflow: "hidden", color: theme.gray[700] }}
+        >
+          {title}
+        </div>
         <div className="center__y">
           <progress className={bar} value={aqi ? aqi : value} max={100} />
         </div>
         <div style={{ display: "flex", justifyContent: "end" }}>
           <div
-            className="text__gray"
-            style={{ fontSize: 14, height: 20, overflow: "hidden" }}
+            style={{
+              fontSize: 14,
+              height: 20,
+              overflow: "hidden",
+              color: theme.gray[300],
+            }}
           >
             {value} μm<sup>3</sup>
           </div>
@@ -59,12 +67,12 @@ export const PollutionItem = memo<Props>(
           >
             {!isClosed && (
               <Tooltip tooltipDescription={tooltipDescription}>
-                <Icon20Info fill="#C1C1C1" />
+                <Icon20Info fill={theme.gray[200]} />
               </Tooltip>
             )}
             {isClosed && (
               <Tooltip tooltipDescription={tooltipDescription}>
-                <Icon20Info fill="#C1C1C1" />
+                <Icon20Info fill={theme.gray[200]} />
               </Tooltip>
             )}
           </div>
