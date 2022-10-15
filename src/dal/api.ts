@@ -15,8 +15,7 @@ export const getEcoSearchData = (searchQ?: string) => {
     .post<{ data: EcoSearchData }>(`search${window.location.search}`, {
       searchQ,
     })
-    .then((res) => res.data)
-    .catch((e) => e.response.data);
+    .then((res) => res.data);
 };
 
 export const getEcologyCity = (cityId: string) => {
@@ -25,8 +24,7 @@ export const getEcologyCity = (cityId: string) => {
       id: cityId,
       target: "city",
     })
-    .then((res) => res.data)
-    .catch((e) => e.response.data);
+    .then((res) => res.data);
 };
 
 export const getEcologyCountry = (countryId: string) => {
@@ -35,8 +33,7 @@ export const getEcologyCountry = (countryId: string) => {
       id: countryId,
       target: "country",
     })
-    .then((res) => res.data)
-    .catch((e) => e.response.data);
+    .then((res) => res.data);
 };
 
 export type CityCoordinateType = {
@@ -48,17 +45,15 @@ export const getCityByCoordinate = (lat: number, long: number) => {
     .get<CityCoordinateType>(
       `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${long}&localityLanguage=ru`
     )
-    .then((res) => res.data)
-    .catch((e) => e.response.data);
+    .then((res) => res.data);
 };
 
 export const getEcoRankCity = (countryId: string) => {
   return instance
-    .post<EcoCityRank>(`rank${window.location.search}`, {
+    .post<{data: EcoCityRank}>(`rank${window.location.search}`, {
       id: countryId,
     })
-    .then((res) => res.data)
-    .catch((e) => e.response.data);
+    .then((res) => res.data);
 };
 
 export const subscribeNoticification = (cityId: string) => {

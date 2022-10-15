@@ -7,13 +7,28 @@ export const Banner = memo(() => {
   const handleClose = useCallback(() => {
     setBannerData(null);
   }, []);
-
-  useEffect(() => {
+  const tryRequestAds = useCallback(() => {
     //@ts-ignore
     bridge.send("VKWebAppGetAds").then((bannerInfo: any) => {
-      console.log(bannerInfo);
-      setBannerData(bannerInfo.data);
+      if (
+        bannerInfo &&
+        bannerInfo.hasOwnProperty("data") &&
+        !bannerInfo.hasOwnProperty("error_type")
+      ) {
+        setBannerData(bannerInfo.data);
+      }
     });
+  }, [bannerData]);
+  const requestAds = useCallback(() => {
+    try {
+      tryRequestAds();
+    } catch (e) {
+      console.log("Without ads =(");
+    }
+  }, [tryRequestAds]);
+
+  useEffect(() => {
+    requestAds();
   }, []);
 
   if (!bannerData) {

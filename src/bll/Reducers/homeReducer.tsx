@@ -340,7 +340,8 @@ const trySetNativeCityByPermission = () => async (dispatch: Dispatch) => {
   let candidateCountryName = DEFAULT_COUNTRY_NAME;
   let candidateNativeCity = null as null | EcoCityData;
 
-  const { cities } = (await getEcoSearchData(cityNameFromCoordinate)).data;
+  const { cities } = (await getEcoSearchData(cityNameFromCoordinate))
+    .data as unknown as { cities: EcoCityData[] };
   cities.forEach((item: EcoCityData) => {
     if (item.name === cityNameFromCoordinate && !candidateNativeCity) {
       candidateCityId = item.id;
@@ -348,7 +349,8 @@ const trySetNativeCityByPermission = () => async (dispatch: Dispatch) => {
     }
   });
   if (!candidateNativeCity) {
-    candidateNativeCity = (await getEcologyCity(candidateCityId)).data;
+    candidateNativeCity = (await getEcologyCity(candidateCityId))
+      ?.data as unknown as EcoCityData;
   }
 
   const { countries } = (
@@ -359,6 +361,7 @@ const trySetNativeCityByPermission = () => async (dispatch: Dispatch) => {
     )
   ).data;
   countries.forEach((item: EcoCountry) => {
+    //@ts-ignore
     if (item.name === candidateNativeCity.country) {
       candidateCountryId = item.id;
       candidateCountryName = item.name;
@@ -403,9 +406,10 @@ const trySetCityFromSearchByCityId =
   (cityId: string) => async (dispatch: Dispatch) => {
     dispatch(setFetching(true));
 
-    let city = (await getEcologyCity(cityId)).data;
+    let city = (await getEcologyCity(cityId))?.data;
     if (!city) {
-      city = (await getEcologyCity(DEFAULT_CITY_ID)).data;
+      city = (await getEcologyCity(DEFAULT_CITY_ID))
+        ?.data as unknown as EcoCityData;
     }
     dispatch(setCityFromSearch(city));
 
@@ -559,7 +563,7 @@ export const setAllSubscribersUser =
 
 const trySetStationsByCityName =
   (cityName: string) => async (dispatch: Dispatch) => {
-    const { stations } = (await getEcoSearchData(cityName)).data;
+    const { stations } = (await getEcoSearchData(cityName))?.data;
     dispatch(setStations(stations));
   };
 export const setStationsByCityName =

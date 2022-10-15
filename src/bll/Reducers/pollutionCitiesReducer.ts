@@ -2,7 +2,7 @@ import { Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
 import { AppState } from "../store";
 import { getEcoRankCity, getEcoSearchData } from "../../dal/api";
-import { City } from "../../types/EcoTypes";
+import { City, EcoCityRank } from "../../types/EcoTypes";
 
 const SET_CLEAREST_CITIES: "pollutionCitiesReducer/SET_CLEAREST_CITIES" =
   "pollutionCitiesReducer/SET_CLEAREST_CITIES";
@@ -115,7 +115,7 @@ export const setCitiesByTitle =
 const trySetClearestCititesByCountryId =
   (countryId: string) => async (dispatch: Dispatch) => {
     dispatch(setFetching(true));
-    const data = (await getEcoRankCity(countryId)).data;
+    const data = (await getEcoRankCity(countryId))?.data as unknown as City[];
     dispatch(setClearestCities(data));
     dispatch(setFetching(false));
   };
