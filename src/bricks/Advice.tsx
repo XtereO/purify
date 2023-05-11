@@ -11,18 +11,18 @@ import { CustomizedCard } from "./CustomizedCard";
 
 type Props = {
   pollution: {
-    exercice: {
+    exercice?: {
       value: string;
       text: string;
     };
-    windows: {
+    windows?: {
       value: string;
       text: string;
     };
-    mask: {
+    mask?: {
       value: string;
     };
-    air_purifier: {
+    air_purifier?: {
       value: string;
     };
   };
@@ -51,18 +51,18 @@ export const Advice = React.memo<Props>(
               {isGoodWind ? <ScoreLowIcon /> : <ScroeHighIcon />}
             </ListItem>
           </div>
-          {pollution.mask.value !== "green" &&
+          {pollution.mask && pollution.mask.value !== "green" &&
             pollution.mask.value !== "hidden" && (
               <>
-                <Spacing className="spacing" size={32} separator />
+                <Spacing className="spacing" size={32} />
                 <ListItem description={"Носите маску на улице."}>
                   <MaskIcon />
                 </ListItem>
               </>
             )}
-          {pollution.windows.value !== "hidden" && (
+          {pollution.windows && pollution.windows.value !== "hidden" && (
             <>
-              <Spacing size={32} separator className="spacing" />
+              <Spacing size={32} className="spacing" />
               <ListItem
                 description={
                   pollution.windows.value !== "green"
@@ -76,9 +76,9 @@ export const Advice = React.memo<Props>(
               </ListItem>
             </>
           )}
-          {pollution.exercice.value !== "hidden" && (
+          {pollution.exercice && pollution.exercice.value !== "hidden" && (
             <>
-              <Spacing size={32} className="spacing" separator />
+              <Spacing size={32} className="spacing" />
               <ListItem
                 description={
                   pollution.exercice.value !== "green"
@@ -91,7 +91,7 @@ export const Advice = React.memo<Props>(
             </>
           )}
           <>
-            <Spacing className="spacing" size={32} separator />
+            <Spacing className="spacing" size={32} />
             <ListItem
               onClick={doStory}
               description={

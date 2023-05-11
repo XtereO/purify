@@ -1,16 +1,18 @@
-import {
-  setActiveModalState,
-  setActivePanelState,
-} from "../bll/Reducers/initialReducer";
-import { store } from "../bll/store";
+import { back, setActiveModal, setActivePanel } from "@blumjs/router";
+import { ROUTES } from "../consts/ROUTES";
 
-const dispatch = store.dispatch;
-export const toOffline = () => {
-  dispatch(setActiveModalState(""));
-  dispatch(setActivePanelState("OFFLINE"));
+export const toOffline = (modal?: keyof typeof ROUTES) => () => {
+  if (modal) {
+    back({
+      afterBackHandledCallback: () => {
+        setActivePanel(ROUTES.OFFLINE);
+      },
+    });
+  } else {
+    setActivePanel(ROUTES.OFFLINE);
+  }
 };
 
 export const toOnline = () => {
-  dispatch(setActivePanelState("HOME"));
-  dispatch(setActiveModalState(""));
+  setActivePanel(ROUTES.HOME);
 };

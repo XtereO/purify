@@ -8,6 +8,10 @@ import {
   AppRoot,
   ModalRoot,
   ConfigProvider,
+  PanelSpinner,
+  SplitLayout,
+  SplitCol,
+  Root,
 } from "@vkontakte/vkui";
 import { Layer, Stage, Image, Text, Rect } from "react-konva";
 import "@vkontakte/vkui/dist/vkui.css";
@@ -18,14 +22,12 @@ import { PollutionCities } from "./panels/PollutionCities";
 import { MySnackbar } from "./bricks/MySnackbar";
 import { NotConnection } from "./panels/NotConnection";
 import { TurnNoticification } from "./panels/TurnNoticifications";
-import { setActiveModalState } from "./bll/Reducers/initialReducer";
 import {
   checkIntro,
   requestPermissionLocation,
   setAllSubscribersUser,
   setCityFromSearchByCityId,
   setDefaultCityId,
-  setFetching,
   setNativeCityByPermission,
   setSnackbar,
   subscribeNoticificationByCityId,
@@ -42,12 +44,7 @@ import {
   getSnackbar,
   getSubscribedCities,
 } from "./bll/Selectors/homeSelector";
-import {
-  getActiveModal,
-  getActivePanel,
-  getPlatform,
-  getTheme,
-} from "./bll/Selectors/initialSelector";
+import { getPlatform, getTheme } from "./bll/Selectors/initialSelector";
 import { ROUTES } from "./consts/ROUTES";
 import { DEFAULT_CITY_ID } from "./consts/DEFAULT_VALUES";
 import { ThemeContext, theme } from "./contexts/theme";
@@ -55,12 +52,25 @@ import placePNG from "./media/place_for_story.png";
 import chevron_right from "./media/chevron_right_for_story.png";
 import wifiImage from "./media/wifi_outline_56.svg";
 import failed_img from "./media/score_high.svg";
+import { useInitRouter, useRouter, setActiveModal, back, createCatchBackBrowserRouteMiddleware } from "@blumjs/router";
+import { useEventListener } from "@blumjs/hooks";
+import { toOffline, toOnline } from "./utils/internetConnection";
 
 const App = () => {
+  useInitRouter({
+    view: "Main",
+    panel: ROUTES.HOME,
+    modal: null,
+    popout: null,
+  }, 
+  createCatchBackBrowserRouteMiddleware(ROUTES.HOME, ()=>{
+    console.log("closing app...")
+    bridge.send("VKWebAppClose", {status: "success"})
+  }));
+  const { activeModal, activePanel, isRouteInit } = useRouter();
+
   const dispatch = useDispatch();
   const platform = useSelector(getPlatform);
-  const activePanel = useSelector(getActivePanel);
-  const activeModal = useSelector(getActiveModal);
   const defaultCityId = useSelector(getDefaultCityId);
   const cityFromSearch = useSelector(getCityFromSearch);
   const isAllowedPlace = useSelector(getAllowedPlace);
@@ -71,12 +81,8 @@ const App = () => {
   const subscribedCities = useSelector(getSubscribedCities);
   const isFetching = useSelector(getFetching);
 
-  const setActiveModal = (modal) => {
-    dispatch(setActiveModalState(modal ? modal : ""));
-  };
-
   const closeModalHandler = () => {
-    setActiveModal(null);
+    back();
   };
 
   useEffect(() => {
@@ -84,30 +90,20 @@ const App = () => {
   }, []);
 
   const handlerLocationHashChange = async () => {
-    const routes = [ROUTES.POLLUTION_CITIES, ROUTES.TURN_NOTICIFICATIONS];
-    if (
-      window.location.hash.slice(1) &&
-      !routes.some((r) => r === window.location.hash.slice(1))
-    ) {
-      dispatch(setFetching(true));
+    if (window.location.hash.slice(1)) {
       dispatch(setDefaultCityId(window.location.hash.slice(1)));
-      dispatch(setFetching(false));
     }
   };
   useEffect(() => {
     handlerLocationHashChange();
   }, [window.location.hash]);
 
-  useEffect(() => {
-    window.addEventListener("hashchange", (e) => {
-      if (!window.location.hash.slice(1)) {
-        setActiveModal(window.location.hash.slice(1));
-      }
-    });
-  }, []);
   const go = (modal) => {
-    setActiveModal(modal);
-    window.location.assign("#" + (modal ? modal : ""));
+    if (!modal) {
+      back();
+    } else {
+      setActiveModal(modal);
+    }
   };
 
   useEffect(() => {
@@ -265,39 +261,53 @@ const App = () => {
   };
 
   const appearance = useSelector(getTheme);
+  useEventListener("offline", toOffline(activeModal));
+  useEventListener("online", toOnline);
+
+  if (!isRouteInit) {
+    return <PanelSpinner />;
+  }
   return (
     <ConfigProvider appearance={appearance}>
       <AdaptivityProvider>
-        <AppRoot>
-          <ThemeContext.Provider value={theme[appearance]}>
-            <View activePanel={activePanel ? activePanel : ""} modal={modal}>
-              <NotConnection image={wifiImage} id={ROUTES.OFFLINE} />
-              <Home
-                snackbar={snackbar}
-                subscribeNoticification={openSubscribePanel}
-                unsubsubscribeNoticification={unsubscribeNoticification}
-                isCitySubscribed={
-                  cityFromSearch
-                    ? subscribedCities.some(
-                        (s) => s.cityId === cityFromSearch.id
-                      )
-                    : false
-                }
-                doStory={doStory}
-                nativeCityId={nativeCity ? nativeCity.id : DEFAULT_CITY_ID}
-                isFetching={isFetching}
-                go={go}
-                city={cityFromSearch ? cityFromSearch : null}
-                id={ROUTES.HOME}
-                isGoodWind={
-                  cityFromSearch && cityFromSearch.current
-                    ? cityFromSearch.current.aqi <= 50
-                    : true
-                }
-              />
-            </View>
-          </ThemeContext.Provider>
-        </AppRoot>
+        <ThemeContext.Provider value={theme[appearance]}>
+          <AppRoot>
+            <SplitLayout modal={modal}>
+              <SplitCol animate>
+                <Root activeView={"Main"}>
+                  <View id="Main" activePanel={activePanel}>
+                    <NotConnection image={wifiImage} id={ROUTES.OFFLINE} />
+                    <Home
+                      snackbar={snackbar}
+                      subscribeNoticification={openSubscribePanel}
+                      unsubsubscribeNoticification={unsubscribeNoticification}
+                      isCitySubscribed={
+                        cityFromSearch
+                          ? subscribedCities.some(
+                              (s) => s.cityId === cityFromSearch.id
+                            )
+                          : false
+                      }
+                      doStory={doStory}
+                      nativeCityId={
+                        nativeCity ? nativeCity.id : DEFAULT_CITY_ID
+                      }
+                      isFetching={isFetching}
+                      go={go}
+                      city={cityFromSearch ? cityFromSearch : null}
+                      id={ROUTES.HOME}
+                      isGoodWind={
+                        cityFromSearch && cityFromSearch.current
+                          ? cityFromSearch.current.aqi <= 50
+                          : true
+                      }
+                    />
+                  </View>
+                </Root>
+              </SplitCol>
+            </SplitLayout>
+          </AppRoot>
+        </ThemeContext.Provider>
         <div
           id="canvas"
           style={{ width: 0, height: 0, opacity: 0, overflow: "hidden" }}

@@ -9,7 +9,6 @@ import {
 } from "../bll/Reducers/homeReducer";
 import {
   setPlatform,
-  setActiveModalState,
   setTheme,
 } from "../bll/Reducers/initialReducer";
 import { store } from "../bll/store";
@@ -21,17 +20,23 @@ import {
 import { ROUTES } from "../consts/ROUTES";
 import { STATE_KEYS } from "../consts/STATE_KEYS";
 import { theme } from "../contexts/theme";
+import { setActiveModal } from "@blumjs/router";
+import { getValuesByKeysStorageVKBridge } from "./setAndGetVkBridge";
 
 const dispatch = store.dispatch;
 export const subscribeVkBridge = async () => {
   bridge.subscribe(({ detail }) => {
     const { type, data } = detail;
     if (type === "VKWebAppUpdateConfig") {
+      console.log("updated", data)
       dispatch(setTheme(data.appearance));
-      bridge.send("VKWebAppSetViewSettings", {
-        status_bar_style: data.appearance,
-        action_bar_color: theme[data.appearance].bgApp,
-      });
+      if(bridge.supports("VKWebAppSetViewSettings")){
+        bridge.send("VKWebAppSetViewSettings", {
+          status_bar_style: data.appearance,
+          action_bar_color: theme[data.appearance].bgApp,
+        });
+        dispatch(setPlatform("mobile"));
+      }
       
       if (
         window.location.href.match(new RegExp("vk_platform=mobile_web")) ||
@@ -46,10 +51,8 @@ export const subscribeVkBridge = async () => {
 };
 
 export const fetchData = async () => {
-  const res = await bridge.send("VKWebAppStorageGet", {
-    keys: Object.values(STATE_KEYS),
-  });
-  const data = res.keys;
+  const data = await getValuesByKeysStorageVKBridge(Object.values(STATE_KEYS))
+  console.log("fetched data", data)
 
   data.forEach((s) => {
     const value = s.value;
@@ -59,7 +62,7 @@ export const fetchData = async () => {
         break;
       case STATE_KEYS.IS_CHECK_INFO:
         if (!value) {
-          dispatch(setActiveModalState(ROUTES.INFO));
+          setActiveModal(ROUTES.INFO);
         } else {
           dispatch(setCheckIntro(true));
         }

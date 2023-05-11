@@ -1,7 +1,9 @@
 {
   "files": {
-    "main.css": "./static/css/main.7cd19e2b.css",
-    "main.js": "./static/js/main.0e3b0cb3.js",
+    "main.css": "./static/css/main.c81ea361.css",
+    "main.js": "./static/js/main.0b34a7c6.js",
+    "static/js/61.2c270fd9.chunk.js": "./static/js/61.2c270fd9.chunk.js",
+    "static/js/390.0c49a57b.chunk.js": "./static/js/390.0c49a57b.chunk.js",
     "static/media/SF-Pro-Rounded-Semibold.ttf": "./static/media/SF-Pro-Rounded-Semibold.af98bf892da1313b61a1.ttf",
     "static/media/SF-Pro-Rounded-Heavy.ttf": "./static/media/SF-Pro-Rounded-Heavy.fcd73a717e0b9ce52375.ttf",
     "static/media/SF-Pro-Rounded-Bold.ttf": "./static/media/SF-Pro-Rounded-Bold.a467dbaac5b4a0fe0bad.ttf",
@@ -16,7 +18,7 @@
     "index.html": "./index.html"
   },
   "entrypoints": [
-    "static/css/main.7cd19e2b.css",
-    "static/js/main.0e3b0cb3.js"
+    "static/css/main.c81ea361.css",
+    "static/js/main.0b34a7c6.js"
   ]
 }

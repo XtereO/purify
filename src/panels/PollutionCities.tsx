@@ -8,8 +8,12 @@ import {
   ModalPage,
   ModalPageHeader,
   PanelHeaderButton,
+  PanelHeaderClose,
+  Platform,
   Search,
   Spacing,
+  platform,
+  usePlatform,
 } from "@vkontakte/vkui";
 import { ListItem } from "../bricks/ListItem";
 import { PlaceItem } from "../bricks/PlaceItem";
@@ -61,6 +65,7 @@ export const PollutionCities = React.memo<Props>(
     const cities = useSelector(getCitiesFromSearch);
     const clearestCities = useSelector(getClearestCities);
     const isFetching = useSelector(getFetching);
+    const platform = usePlatform();
 
     const [title, setTitle] = useState("");
     useEffect(() => {
@@ -77,8 +82,8 @@ export const PollutionCities = React.memo<Props>(
     const citiesJSX =
       cities.length > 0 ? (
         cities.map((c, index) => (
-          <>
-            <div key={c.id} className="">
+          <div key={c.id}>
+            <div>
               <PlaceItem
                 onClick={() => {
                   setDefaultCity(c.id);
@@ -89,9 +94,9 @@ export const PollutionCities = React.memo<Props>(
               />
             </div>
             {index + 1 !== cities.length && (
-              <Spacing separator className="spacing" size={8} />
+              <Spacing className="spacing" size={8} />
             )}
-          </>
+          </div>
         ))
       ) : (
         <div style={{ display: "flex", justifyContent: "center" }}>
@@ -101,8 +106,8 @@ export const PollutionCities = React.memo<Props>(
     const clearestCitiesJSX =
       clearestCities.length > 0 ? (
         clearestCities.map((c, index) => (
-          <>
-            <div key={c.id} className="">
+          <div key={c.id}>
+            <div>
               <PlaceItem
                 value={c.aqi ? c.aqi : -1}
                 onClick={() => {
@@ -115,9 +120,9 @@ export const PollutionCities = React.memo<Props>(
               />
             </div>
             {index + 1 !== cities.length && (
-              <Spacing className="spacing" separator size={8} />
+              <Spacing className="spacing" size={8} />
             )}
-          </>
+          </div>
         ))
       ) : (
         <div style={{ display: "flex", justifyContent: "center" }}>
@@ -133,10 +138,17 @@ export const PollutionCities = React.memo<Props>(
         header={
           <ModalPageHeader
             className={`modal__app__${appeareance}`}
-            right={
-              <PanelHeaderButton onClick={closeHandler}>
-                <Icon24Dismiss />
-              </PanelHeaderButton>
+            before={
+              platform == Platform.ANDROID && (
+                <PanelHeaderClose onClick={closeHandler} />
+              )
+            }
+            after={
+              platform == Platform.IOS && (
+                <PanelHeaderButton onClick={closeHandler}>
+                  <Icon24Dismiss />
+                </PanelHeaderButton>
+              )
             }
           />
         }
@@ -313,11 +325,9 @@ export const PollutionCities = React.memo<Props>(
 
 type BgClearestCitiesProps = {};
 const BgInitClearestCities = React.memo<BgClearestCitiesProps>(({}) => {
-  const theme = useContext(ThemeContext);
   const items = [2, 3, 4, 5, 1].map((c) => (
-    <>
+    <div key={`clearCity${c}`}>
       <Div
-        key={`clearCity${c}`}
         className="px-2"
         style={{ display: "grid", gridTemplateColumns: "1fr 50px" }}
       >
@@ -327,8 +337,8 @@ const BgInitClearestCities = React.memo<BgClearestCitiesProps>(({}) => {
         </div>
         <Skeleton width={44} height={24} className="mt-1" />
       </Div>
-      {c !== 1 && <Spacing className="spacing" separator size={8} />}
-    </>
+      {c !== 1 && <Spacing className="spacing" size={8} />}
+    </div>
   ));
 
   return <>{items}</>;
@@ -337,15 +347,15 @@ const BgInitClearestCities = React.memo<BgClearestCitiesProps>(({}) => {
 type BgInitCitiesProps = {};
 const BgInitCities = React.memo<BgInitCitiesProps>(({}) => {
   const items = [2, 3, 4, 5, 1].map((c) => (
-    <>
-      <Div key={`city${c}`} className="px-2">
+    <div key={`city${c}`}>
+      <Div className="px-2">
         <div>
           <Skeleton width={122} height={16} />
           <Skeleton width={88} height={12} className="mt-1" />
         </div>
       </Div>
-      {c !== 1 && <Spacing className="spacing" separator size={8} />}
-    </>
+      {c !== 1 && <Spacing className="spacing" size={8} />}
+    </div>
   ));
 
   return <>{items}</>;

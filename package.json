@@ -19,11 +19,13 @@
     "react-scripts": "^5.0.0"
   },
   "dependencies": {
+    "@blumjs/hooks": "^1.1.3",
+    "@blumjs/router": "^7.9.3",
     "@vkontakte/icons": "^1.92.0",
-    "@vkontakte/vk-bridge": "^2.4.8",
+    "@vkontakte/vk-bridge": "^2.7.2",
     "@vkontakte/vk-miniapps-deploy": "^0.0.25",
-    "@vkontakte/vkjs": "^0.22.1",
-    "@vkontakte/vkui": "^4.5.0",
+    "@vkontakte/vkjs": "^0.32.2",
+    "@vkontakte/vkui": "^5.4.1",
     "axios": "^0.24.0",
     "babel-eslint": "^10.1.0",
     "chalk": "^4.1.0",

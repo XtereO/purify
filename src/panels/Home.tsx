@@ -34,7 +34,6 @@ import { Icon24NotificationCheckOutline } from "@vkontakte/icons";
 //@ts-ignore
 import logo from "../media/IQAir_logo.svg";
 import { TextInterMedium, TextSFProRoundedSemibold } from "../bricks/Fonts";
-import { Banner } from "../bricks/Banner";
 import { ThemeContext } from "../contexts/theme";
 import { Skeleton } from "../bricks/Skeleton";
 import { CustomizedCard } from "../bricks/CustomizedCard";
@@ -86,14 +85,13 @@ export const Home = React.memo<Props>(
     const stationsJSX =
       stations && city
         ? stations.map((c, index) => (
-            <>
+            <div key={`${index}${c.name}`}>
               <StationItem
                 distance={getDistance({
                   point1: c.coordinates,
                   point2: city.coordinates,
                 })}
                 stationName={c.name}
-                key={`${index}${c.name}`}
                 value={c.aqi}
                 mode={c.aqi >= 100 ? "danger" : c.aqi >= 50 ? "okay" : "good"}
               />
@@ -101,19 +99,17 @@ export const Home = React.memo<Props>(
                 <Spacing
                   key={`station_spacing${index}`}
                   className="spacing"
-                  separator
                   size={16}
                 />
               )}
-            </>
+            </div>
           ))
         : [];
 
     const pollutantsJSX = city
       ? city.current.pollutants.map((p, index) => (
-          <>
+          <div key={`${index}${p.pollutantName}`}>
             <PollutionItem
-              key={`${index}${p.pollutantName}`}
               title={getFullNamePollutant(p.pollutantName)}
               value={p.concentration}
               aqi={p.aqi}
@@ -126,18 +122,17 @@ export const Home = React.memo<Props>(
               <Spacing
                 key={`pollutant_spacing${index}`}
                 className="spacing"
-                separator
                 size={32}
               />
             )}
-          </>
+          </div>
         ))
       : [];
 
     const currentDay = new Date().getDay();
     const forecastsJSX = city
       ? city.forecasts.daily.map((c, index) => (
-          <>
+          <div key={`${index}-${c.temperature}${c.aqi}`}>
             <WeatherItem
               key={`${index}-${c.temperature}${c.aqi}`}
               day={currentDay + index + 1}
@@ -148,11 +143,10 @@ export const Home = React.memo<Props>(
               <Spacing
                 key={`weather_spacing${index}`}
                 className="spacing"
-                separator
                 size={16}
               />
             )}
-          </>
+          </div>
         ))
       : [];
 
@@ -226,10 +220,7 @@ export const Home = React.memo<Props>(
                       onClick={() => go("POLLUTION_CITIES")}
                       style={{ opacity: 0.5 }}
                     >
-                      <Avatar
-                        style={{ backgroundColor: theme.banner.avatar }}
-                        shadow={false}
-                      >
+                      <Avatar style={{ backgroundColor: theme.banner.avatar }}>
                         {!isFetching && (
                           <Icon24Search fill={theme.banner.color} />
                         )}
@@ -248,10 +239,7 @@ export const Home = React.memo<Props>(
                       }
                       className="home__search__cell__rounded home__search__cell__rounded_active"
                     >
-                      <Avatar
-                        style={{ backgroundColor: theme.banner.avatar }}
-                        shadow={false}
-                      >
+                      <Avatar style={{ backgroundColor: theme.banner.avatar }}>
                         {!isFetching && !isCitySubscribed && (
                           <Icon24NotificationOutline
                             fill={theme.banner.color}
@@ -272,7 +260,6 @@ export const Home = React.memo<Props>(
                       <Avatar
                         className="home__search__cell__rounded home__search__cell__rounded_active"
                         style={{ backgroundColor: theme.banner.avatar }}
-                        shadow={false}
                       >
                         {!isFetching && (
                           <Icon24StoryOutline fill={theme.banner.color} />
@@ -300,114 +287,113 @@ export const Home = React.memo<Props>(
                 </CustomizedCard>
               )}
             </Div>
-            <Banner />
-            <Div>
-              <Header>
-                <TextSFProRoundedSemibold>
-                  {!isFetching ? (
-                    <span
-                      style={{ color: theme.card.header }}
-                      className="unselectable"
-                    >
-                      ЗАГРЯЗНИТЕЛИ
-                    </span>
-                  ) : (
-                    <Skeleton height={12} width={85} />
-                  )}
-                </TextSFProRoundedSemibold>
-              </Header>
-              <CustomizedCard>
-                <div className="card__app">
-                  {isFetching &&
-                    [3, 2, 1, 0].map((c) => (
-                      <>
-                        <div
-                          key={`pollutant${c}`}
-                          style={{
-                            display: "grid",
-                            gridTemplateColumns: "1fr 50px",
-                          }}
-                        >
-                          <Skeleton width={91} height={17} />
-                          <Skeleton width={24} height={24} />
-                        </div>
-                        {c !== 0 && (
-                          <Spacing
-                            key={`pollutant_key${c}`}
-                            className="spacing"
-                            separator
-                            size={32}
-                          />
-                        )}
-                      </>
-                    ))}
-                  {!isFetching && [...pollutantsJSX].slice(0, 4)}
-                  {!isShowMore && pollutantsJSX.length > 4 && (
-                    <Cell onClick={() => setShowMore(true)}>
-                      <ListItem
-                        description={
-                          <Link style={{ color: theme.accent.default }}>
-                            Показать все
-                          </Link>
-                        }
+            {(pollutantsJSX.length > 0 || isFetching) && (
+              <Div>
+                <Header>
+                  <TextSFProRoundedSemibold>
+                    {!isFetching ? (
+                      <span
+                        style={{ color: theme.card.header }}
+                        className="unselectable"
                       >
-                        <Icon24Dropdown fill={theme.accent.icon} />
-                      </ListItem>
-                    </Cell>
-                  )}
-                  {isShowMore && !isFetching && (
-                    <>{[...pollutantsJSX].slice(4, 6)}</>
-                  )}
-                </div>
-              </CustomizedCard>
-            </Div>
-            <Div>
-              <Header>
-                <TextSFProRoundedSemibold>
-                  {!isFetching ? (
-                    <span
-                      style={{ color: theme.card.header }}
-                      className="unselectable"
-                    >
-                      ПРОГНОЗ НА НЕДЕЛЮ
-                    </span>
-                  ) : (
-                    <Skeleton height={12} width={85} />
-                  )}
-                </TextSFProRoundedSemibold>
-              </Header>
-              <CustomizedCard>
-                <div>
-                  {isFetching &&
-                    [5, 6, 7, 8, 9, 4, 10].map((c) => (
-                      <>
-                        <div
-                          key={`weather${c}`}
-                          style={{
-                            display: "grid",
-                            gridTemplateColumns: "24px 1fr 60px",
-                            gridGap: "10px",
-                          }}
-                        >
-                          <Skeleton width={24} height={24} />
-                          <Skeleton width={91} height={17} />
-                          <Skeleton width={52} height={24} />
+                        ЗАГРЯЗНИТЕЛИ
+                      </span>
+                    ) : (
+                      <Skeleton height={12} width={85} />
+                    )}
+                  </TextSFProRoundedSemibold>
+                </Header>
+                <CustomizedCard>
+                  <div className="card__app">
+                    {isFetching &&
+                      [3, 2, 1, 0].map((c) => (
+                        <div key={`pollutant${c}`}>
+                          <div
+                            style={{
+                              display: "grid",
+                              gridTemplateColumns: "1fr 50px",
+                            }}
+                          >
+                            <Skeleton width={91} height={17} />
+                            <Skeleton width={24} height={24} />
+                          </div>
+                          {c !== 0 && (
+                            <Spacing
+                              key={`pollutant_key${c}`}
+                              className="spacing"
+                              size={32}
+                            />
+                          )}
                         </div>
-                        {c !== 10 && (
-                          <Spacing
-                            key={`weather_spacing${c}`}
-                            className="spacing"
-                            separator
-                            size={16}
-                          />
-                        )}
-                      </>
-                    ))}
-                  {!isFetching && forecastsJSX}
-                </div>
-              </CustomizedCard>
-            </Div>
-            {stations.length !== 0 && (
+                      ))}
+                    {!isFetching && [...pollutantsJSX].slice(0, 4)}
+                    {!isShowMore && pollutantsJSX.length > 4 && (
+                      <Cell onClick={() => setShowMore(true)}>
+                        <ListItem
+                          description={
+                            <Link style={{ color: theme.accent.default }}>
+                              Показать все
+                            </Link>
+                          }
+                        >
+                          <Icon24Dropdown fill={theme.accent.icon} />
+                        </ListItem>
+                      </Cell>
+                    )}
+                    {isShowMore && !isFetching && (
+                      <>{[...pollutantsJSX].slice(4, 6)}</>
+                    )}
+                  </div>
+                </CustomizedCard>
+              </Div>
+            )}
+            {(forecastsJSX.length > 0 || isFetching) && (
+              <Div>
+                <Header>
+                  <TextSFProRoundedSemibold>
+                    {!isFetching ? (
+                      <span
+                        style={{ color: theme.card.header }}
+                        className="unselectable"
+                      >
+                        ПРОГНОЗ НА НЕДЕЛЮ
+                      </span>
+                    ) : (
+                      <Skeleton height={12} width={85} />
+                    )}
+                  </TextSFProRoundedSemibold>
+                </Header>
+                <CustomizedCard>
+                  <div>
+                    {isFetching &&
+                      [5, 6, 7, 8, 9, 4, 10].map((c) => (
+                        <div key={`weather${c}`}>
+                          <div
+                            style={{
+                              display: "grid",
+                              gridTemplateColumns: "24px 1fr 60px",
+                              gridGap: "10px",
+                            }}
+                          >
+                            <Skeleton width={24} height={24} />
+                            <Skeleton width={91} height={17} />
+                            <Skeleton width={52} height={24} />
+                          </div>
+                          {c !== 10 && (
+                            <Spacing
+                              key={`weather_spacing${c}`}
+                              className="spacing"
+                              size={16}
+                            />
+                          )}
+                        </div>
+                      ))}
+                    {!isFetching && forecastsJSX}
+                  </div>
+                </CustomizedCard>
+              </Div>
+            )}
+            {(stationsJSX.length > 0 || isFetching) && (
               <Div>
                 <Header>
                   <TextSFProRoundedSemibold>
@@ -422,9 +408,8 @@ export const Home = React.memo<Props>(
                   <div>
                     {isFetching &&
                       [5, 6, 7, 8, 9, 4, 10].map((c) => (
-                        <>
+                        <div key={`station${c}`}>
                           <div
-                            key={`station${c}`}
                             style={{
                               display: "grid",
                               gridTemplateColumns: "24px 1fr 60px",
@@ -438,12 +423,11 @@ export const Home = React.memo<Props>(
                           {c !== 10 && (
                             <Spacing
                               key={`station_spacing${c}}`}
-                              separator
                               className="spacing"
                               size={16}
                             />
                           )}
-                        </>
+                        </div>
                       ))}
                     {!isFetching && stationsJSX}
                   </div>

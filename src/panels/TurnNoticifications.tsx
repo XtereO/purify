@@ -46,6 +46,7 @@ export const TurnNoticification = React.memo<Props>(
           </div>
         }
         actions={
+          <div style={{width:"100%", display: "flex", justifyContent: "center"}}>
           <Button
             size="l"
             mode="primary"
@@ -57,6 +58,7 @@ export const TurnNoticification = React.memo<Props>(
           >
             <TextInterMedium>Включить</TextInterMedium>
           </Button>
+          </div>
         }
       />
     );

@@ -16,7 +16,8 @@ export const ListItem = memo<Props>(
         onClick={onClick ? onClick : () => {}}
         style={{
           display: "flex",
-          color: theme.gray[600]
+          color: theme.gray[600],
+          cursor: onClick ? "pointer" : "default"
         }}
       >
         <div

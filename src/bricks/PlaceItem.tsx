@@ -38,6 +38,7 @@ export const PlaceItem = memo<Props>(
           paddingTop: 4,
           display: "grid",
           gridTemplateColumns: "1fr 50px",
+          cursor: "pointer"
         }}
       >
         <div>

@@ -6,9 +6,13 @@ import {
   ModalPage,
   ModalPageHeader,
   Button,
+  usePlatform,
+  Platform,
+  PanelHeaderButton,
+  PanelHeaderClose,
 } from "@vkontakte/vkui";
 import "./Intro.css";
-import { Icon28NarrativeOutline } from "@vkontakte/icons";
+import { Icon24Dismiss, Icon28NarrativeOutline } from "@vkontakte/icons";
 import { Icon28Notifications } from "@vkontakte/icons";
 import { Icon28StoryOutline } from "@vkontakte/icons";
 import { Icon24LocationOutline } from "@vkontakte/icons";
@@ -27,14 +31,26 @@ export const Intro = React.memo<IntroProps>(
   ({ id, closeHandler, checkIntro, requestPermissionLocation }) => {
     const appeareance = useSelector(getTheme);
     const theme = useContext(ThemeContext);
+    const platform = usePlatform();
+
     return (
       <ModalPage
         id={id}
         onClose={closeHandler}
         header={
           <ModalPageHeader
-            className={`modal__app__${appeareance}`}
-          ></ModalPageHeader>
+          className={`modal__app__${appeareance}`}
+            before={
+              platform == Platform.ANDROID && 
+              <PanelHeaderClose onClick={closeHandler}/>
+            }
+            after={
+              platform == Platform.IOS && 
+              <PanelHeaderButton onClick={closeHandler}>
+                <Icon24Dismiss />
+              </PanelHeaderButton>
+            }
+            />
         }
       >
         <div style={{ background: theme.bgApp }}>
